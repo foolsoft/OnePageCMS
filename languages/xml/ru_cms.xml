@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+  <text name='cms_controller_message'>
+    <ru>Сообщение модуля</ru>
+  </text>
+  <text name='cms_text_comments'>
+    <ru>Комментарии</ru>
+  </text>
+  <text name='cms_search_result_null'>
+    <ru>Ничего не найдено</ru>
+  </text>
+  <text name='cms_register_success'>
+    <ru><![CDATA[
+      Вы успешно зарегистрированы! Можете воспользоваться 
+      <a title="Вход" href="{0}">формой</a> для входа на сайт.
+    ]]></ru>
+  </text>
+  <text name='cms_search_result'>
+    <ru>Результаты поиска</ru>
+  </text>
+  <text name='cms_lighter'>
+    <ru>Подсветка</ru>
+  </text>
+  <text name='cms_multilang'>
+    <ru>Мультиязычность</ru>
+  </text>
+  <text name='cms_allow_register'>
+    <ru>Разрешить регистрацию</ru>
+  </text>
+  <text name='cms_add_word'>
+    <ru>Добавить слово</ru>
+  </text>
+  <text name='cms_support'>
+    <ru>Поддержка</ru>
+  </text>
+  <text name='cms_your_question'>
+    <ru>Ваш вопрос</ru>
+  </text>
+  <text name='cms_with_selected'>
+    <ru>С отмеченными</ru>
+  </text>
+  <text name='cms_after_save'>
+    <ru>Изменения вступят в силу после сохранения</ru>
+  </text>
+  <text name='cms_dictionary_how_use'>
+    <ru><![CDATA[<small>
+      Словари - это механизм для реализации интернациональности Вашего ресурса.
+      Словари бывают двух типов: прямые (например en-to-ru - с английского на русский)
+      и шаблонные (xml). Механим перевода реализован в глобальной функции T.<br /> 
+      Пример использования функции для прямого перевода:<br />
+      Шаблон: T($stringInBasicLanguage), например:
+      echo T('Привет') или {T(Привет)}, где недоступно PHP.<br />
+      Пример использования функции для шаблонного перевода:<br />
+      Шаблон: T('XML'.$templateName), например: 
+      echo T('XMLtext_hello') или {T(XMLtext_hello)}, где недоступно PHP.<br />
+      В php шаблонах доступна фунция _T(...), которая является аналогом записи echo T(...). 
+    </small>]]></ru>
+  </text>
+  <text name='cms_text_search'>
+    <ru>Поиск</ru>
+  </text>
+  <text name='cms_apply'>
+    <ru>Применить</ru>
+  </text>
+  <text name='cms_page_suffix'>
+    <ru>Префикс страниц</ru>
+  </text>
+  <text name='cms_text_no_category_found'>
+    <ru>Добавьте хотя бы одну категорию!</ru>
+  </text>
+  <text name='cms_text_row_on_page'>
+    <ru>Записей на страницу</ru>
+  </text>
+  <text name='cms_text_first_row'>
+    <ru>Начинать со строки</ru>
+  </text>
+  <text name='cms_text_select'>
+    <ru>Выбрать</ru>
+  </text>
+  <text name='cms_text_no_dbtable'>
+    <ru>Таблица базы данных не найдена!</ru>
+  </text>
+  <text name='cms_text_comment_text'>
+    <ru>Ваш комментарий</ru>
+  </text>
+  <text name='cms_text_your_name'>
+    <ru>Ваше имя</ru>
+  </text>
+  <text name='cms_comments_toshort'>
+    <ru>Текст комментария слишком короткий</ru>
+  </text>
+  <text name='cms_comments_tolong'>
+    <ru>Текст комментария слишком длинный</ru>
+  </text>
+  <text name='cms_error_access'>
+    <ru>Ошибка доступа</ru>
+  </text>
+  <text name='cms_text_add_field'>
+    <ru>Дабавить поле</ru>
+  </text>
+  <text name='cms_text_user_fields'>
+    <ru>Поля пользователей</ru>
+  </text>
+  <text name='cms_text_need_add_menu'>
+    <ru>Необходимо добавить хотябы одно меню!</ru>
+  </text>
+  <text name='cms_0_infinity'>
+    <ru>0 - неограничено</ru>
+  </text>
+  <text name='cms_answer'>
+    <ru>Ответить</ru>
+  </text>
+  <text name='cms_text_posts_on_page'>
+    <ru>Записей на странице</ru>
+  </text>
+  <text name='cms_text_code'>
+    <ru>Код</ru>
+  </text>
+  <text name='cms_text_time'>
+    <ru>Время</ru>
+  </text>
+  <text name='cms_text_all'>
+    <ru>Все</ru>
+  </text>
+  <text name='cms_text_registration'>
+    <ru>Регистрация</ru>
+  </text>
+  <text name='cms_text_nocategory'>
+    <ru>Без категории</ru>
+  </text>
+  <text name='cms_text_short'>
+    <ru>Краткое</ru>
+  </text>
+  <text name='cms_text_need_all_data'>
+    <ru>Заполните все обязательные поля!</ru>
+  </text>
+  <text name='cms_allow_guests'>
+    <ru>Доступно незарегистрированным пользователям</ru>
+  </text>
+  <text name='cms_translate'>
+    <ru>Перевод</ru>
+  </text>
+  <text name='cms_original'>
+    <ru>Оригинал</ru>
+  </text>
+  <text name='cms_dictionary'>
+    <ru>Словари</ru>
+  </text>
+  <text name='cms_blocked_users'>
+    <ru>Блокированные пользователи</ru>
+  </text>
+  <text name='cms_blocked_ip'>
+    <ru>Блокированные IP</ru>
+  </text>
+  <text name='cms_text_required'>
+    <ru>Обязательно</ru>
+  </text>
+  <text name='cms_text_additional_fields'>
+    <ru>Дополнительные поля</ru>
+  </text>
+  <text name='cms_text_sure'>
+    <ru>Вы уверены?</ru>
+  </text>  
+  <text name='cms_text_create_menu'>
+    <ru>Создать меню</ru>
+  </text>
+  <text name='cms_text_add_post'>
+    <ru>Добавить запись</ru>
+  </text>
+  <text name='cms_send'>
+    <ru>Отправить</ru>
+  </text>
+  <text name='cms_text_add_category'>
+    <ru>Добавить категорию</ru>
+  </text>
+  <text name='cms_text_category'>
+    <ru>Категория</ru>
+  </text>
+  <text name='cms_text_categories'>
+    <ru>Категории</ru>
+  </text>
+  <text name='cms_text_date'>
+    <ru>Дата</ru>
+  </text>
+  <text name='cms_text_menu_editor'>
+    <ru>Редактор пунктов меню</ru>
+  </text>
+  <text name='cms_text_add_user'>
+    <ru>Добавить пользователя</ru>
+  </text>
+  <text name='cms_comments_sorting'>
+    <ru>Сортировка комментариев</ru>
+  </text>
+  <text name='cms_text_asc'>
+    <ru>Прямая</ru>
+  </text>
+  <text name='cms_text_desc'>
+    <ru>Обртаная</ru>
+  </text>
+  <text name='cms_text_max_log'>
+    <ru>Вы превысили допустимое число попыток входа!</ru>
+  </text>
+  <text name='cms_text_additional'>
+    <ru>Дополнительно</ru>
+  </text>
+  <text name='cms_text_login_error'>
+    <ru>Неверный логин или пароль!</ru>
+  </text>
+  <text name='cms_comments_maxlen'>
+    <ru>Максимальная длинна комменатрия, 0 - неограничено</ru>
+  </text>
+  <text name='cms_comments_minlen'>
+    <ru>Минимальная длинна комменатрия</ru>
+  </text>
+  <text name='cms_comments_time_for_edit'>
+    <ru>Время для редактирования пользователем, секунд</ru>
+  </text>
+  <text name='cms_text_page_not_found'>
+    <ru>Страница не найдена</ru>
+  </text>
+  <text name='cms_text_he_active'>
+    <ru>Активен</ru>
+  </text>
+  <text name='cms_text_bad_pwd_confirm'>
+    <ru>Пароли не совпадают!</ru>
+  </text>
+  <text name='cms_text_empty_pwd'>
+    <ru>Пароль не может быть пустым!</ru>
+  </text>
+  <text name='cms_text_login_not_unique'>
+    <ru>Логин должен быть уникальным!</ru>
+  </text>
+  <text name='cms_text_users'>
+    <ru>Пользователи</ru>
+  </text>
+  <text name='cms_text_login'>
+    <ru>Логин</ru>
+  </text>
+  <text name='cms_text_password'>
+    <ru>Пароль</ru>
+  </text>
+  <text name='cms_text_repassword'>
+    <ru>Пароль еще раз</ru>
+  </text>
+  <text name='cms_text_type'>
+    <ru>Тип</ru>
+  </text>
+  <text name='cms_text_add_page'>
+    <ru>Добавить страницу</ru>
+  </text>
+  <text name='cms_text_in_menu'>
+    <ru>Доступна в меню</ru>
+  </text>
+  <text name='cms_text_open'>
+    <ru>Открыть</ru>
+  </text>
+  <text name='cms_text_link'>
+    <ru>Ссылка</ru>
+  </text>
+  <text name='cms_text_is_active'>
+    <ru>Активна</ru>
+  </text>
+  <text name='cms_text_file_upload_error'>
+    <ru>Ошибка загрузки файла!</ru>
+  </text>
+  <text name='cms_text_loading'>
+    <ru>Загрузка</ru>
+  </text>
+  <text name='cms_text_archive_module'>
+    <ru>Архив модуля</ru>
+  </text>
+  <text name='cms_text_add_module'>
+    <ru>Добавить модуль</ru>
+  </text>
+  <text name='cms_text_itname'>
+    <ru>Название</ru>
+  </text>
+  <text name='cms_text_unique_link'>
+    <ru>Ссылка должна быть уникальной!</ru>
+  </text>
+  <text name='cms_text_as_menu'>
+    <ru>Доступна как пункт меню</ru>
+  </text>
+  <text name='cms_text_full_link'>
+    <ru>Полная ссылка</ru>
+  </text>
+  <text name='cms_text_link_from_list'>
+    <ru>или вы можете указать ссылку из спиcка</ru>
+  </text>
+  <text name='cms_text_parent_item'>
+    <ru>Родительский пункт</ru>
+  </text>
+  <text name='cms_text_template_code'>
+    <ru>Код для шаблона</ru>
+  </text>
+  <text name='cms_text_modules'>
+    <ru>Модули</ru>
+  </text>
+  <text name='cms_text_bad_file_format'>
+    <ru>Неверный формат файла!</ru>
+  </text>
+  <text name='cms_text_unzip_error'>
+    <ru>Ошибка UnZip!</ru>
+  </text>
+  <text name='cms_text_constants'>
+    <ru>Константы</ru>
+  </text>
+  <text name='cms_text_name'>
+    <ru>Имя</ru>
+  </text>
+  <text name='cms_text_value'>
+    <ru>Значение</ru>
+  </text>
+  <text name='cms_text_add_conts'>
+    <ru>Добавить константу</ru>
+  </text>
+  <text name='cms_text_menu'>
+    <ru>Меню</ru>
+  </text>
+  <text name='cms_text_default_template'>
+    <ru>Шаблон по умолчанию</ru>
+  </text>
+  <text name='cms_text_select_menu_for_redact'>
+    <ru>Выбрать пункт меню для редактирования</ru>
+  </text>
+  <text name='cms_text_add_block'>
+    <ru>Добавить блок</ru>
+  </text>
+  <text name='cms_text_action'>
+    <ru>Действие</ru>
+  </text>
+  <text name='cms_text_onall'>
+    <ru>На всех</ru>
+  </text>
+  <text name='cms_text_onpages'>
+    <ru>На страницах</ru>
+  </text>
+  <text name='cms_text_marker'>
+    <ru>Метка</ru>
+  </text>
+  <text name='cms_text_order'>
+    <ru>Порядок</ru>
+  </text>
+  <text name='cms_back'>
+    <ru>Назад</ru>
+  </text>
+  <text name='cms_delete'>
+    <ru>Удалить</ru>
+  </text>
+  <text name='cms_edit'>
+    <ru>Редактировать</ru>
+  </text>
+  <text name='cms_activate'>
+    <ru>Активировать</ru>
+  </text>
+  <text name='cms_settings'>
+    <ru>Настройка</ru>
+  </text>
+  <text name='cms_text_blocks'>
+    <ru>Блоки</ru>
+  </text>
+  <text name='cms_text_posts'>
+    <ru>Записи</ru>
+  </text>
+  <text name='cms_text_title'>
+    <ru>Заголовок</ru>
+  </text>
+  <text name='cms_text_content'>
+    <ru>Содержимое</ru>
+  </text>
+  <text name='cms_updated'>
+    <ru>Запись успешно обновлена!</ru>
+  </text>
+  <text name='cms_settings_updated'>
+    <ru>Настройки успешно обновлены!</ru>
+  </text>
+  <text name='cms_text_description'>
+    <ru>Описание</ru>
+  </text>
+  <text name='cms_text_kw'>
+    <ru>Ключевые слова</ru>
+  </text>
+  <text name='cms_text_email_for_send'>
+    <ru>Email рассылки писем</ru>
+  </text>
+  <text name='cms_text_404'>
+    <ru>HTML страницы 404</ru>
+  </text>
+  <text name='cms_text_template'>
+    <ru>Шаблон</ru>
+  </text>
+  <text name='cms_theme'>
+    <ru>Тема</ru>
+  </text>
+  <text name='cms_text_template_short'>
+    <ru>Шаблон превью</ru>
+  </text>
+  <text name='cms_text_default_page_template'>
+    <ru>Шаблон страниц по умолчанию</ru>
+  </text>
+  <text name='cms_save'>
+    <ru>Сохранить</ru>
+  </text>
+  <text name='cms_add'>
+    <ru>Добавить</ru>
+  </text>
+  <text name='cms_execute'>
+    <ru>Выполнить</ru>
+  </text>
+  <text name='cms_site_state'>
+    <ru>Состояние сайта</ru>
+  </text>
+  <text name='cms_bme_activate'>
+    <ru>Активация базовым методом невозможна!</ru>
+  </text>
+  <text name='cms_bme_delete'>
+    <ru>Удаление базовым методом невозможно!</ru>
+  </text>
+  <text name='cms_record_deleted'>
+    <ru>Запись успешно удалена!</ru>
+  </text>
+  <text name='cms_added'>
+    <ru>Запись успешно добавлена!</ru>
+  </text>
+  <text name='cms_bme_add'>
+    <ru>Добавление базовым методом невозможно!</ru>
+  </text>
+  <text name='cms_unknow_key'>
+    <ru>Неизвестный ключ!</ru>
+  </text>
+  <text name='cms_bme_edit'>
+    <ru>Редактирование базовым методом невозможно!</ru>
+  </text>
+  <text name='cms_info'>
+    <ru>Информация</ru>
+  </text>
+  <text name='cms_cache_table'>
+    <ru>Кеширование таблиц</ru>
+  </text>
+  <text name='cms_on'>
+    <ru>Включено</ru>
+  </text>
+  <text name='cms_off'>
+    <ru>Отключено</ru>
+  </text>
+  <text name='cms_load_from_cache'>
+    <ru>Загружать структуру таблиц из кеша</ru>
+  </text>
+  <text name='cms_yes'>
+    <ru>Да</ru>
+  </text>
+  <text name='cms_no'>
+    <ru>Нет</ru>
+  </text>
+  <text name='cms_cache_clear'>
+    <ru>Очистить кеш</ru>
+  </text>
+  <text name='cms_a'>
+    <ru>Маматов Андрей</ru>
+  </text>
+  <text name='cms_developer'>
+    <ru>Разработчик</ru>
+  </text>
+  <text name='cms_homepage'>
+    <ru>Открыть домашнюю страницу</ru>
+  </text>
+  <text name='cms_version'>
+    <ru>Версия</ru>
+  </text>
+  <text name='cms_locked'>
+    <ru>Заблокирован</ru>
+  </text>
+  <text name='cms_unlocked'>
+    <ru>Разблокирован</ru>
+  </text>
+  <text name='cms_lock'>
+    <ru>Заблокировать сайт</ru>
+  </text>
+  <text name='cms_unlock'>
+    <ru>Разблокировать сайт</ru>
+  </text>
+  <text name='cms_deleted'>
+    <ru>Удалено</ru>
+  </text>
+  <text name='cms_opensite'>
+    <ru>Перейти на сайт</ru>
+  </text>
+  <text name='cms_logout'>
+    <ru>Выход</ru>
+  </text>
+  <text name='cms_nokey'>
+    <ru>Ключ не указан!</ru>
+  </text>
+  <text name='cms_unique_data_error'>
+    <ru>Ошибка уникальности данных!</ru>
+  </text>
+  <text name='cms_error_action'>
+    <ru>Ошибка действия</ru>
+  </text>
+  <text name='cms_support_mail_title'>
+    <ru>OnePageCMS - Поддержка</ru>
+  </text>
+  <text name='cms_template_editor'>
+    <ru>Управление шаблонами</ru>
+  </text>
+  <text name='cms_request_sent'>
+    <ru>Запрос успешно отправлен</ru>
+  </text>
+  <text name='cms_html_attr_name'>
+    <ru>Имя HTML тега</ru>
+  </text>
+  <text name='cms_invalid_data'>
+    <ru>Неверный формат входных данных!</ru>
+  </text>
+  <text name='cms_page'>
+    <ru>Страница</ru>
+  </text>
+  <text name='cms_page_auth'>
+    <ru>Страница авторизации</ru>
+  </text>
+  <text name='cms_text_author'>
+    <ru>Автор</ru>
+  </text>
+  <text name='cms_invalid_command'>
+    <ru>Неизвестная команда!</ru>
+  </text>
+  <text name='cms_pages'>
+    <ru>Страницы</ru>
+  </text>
+  <text name='cms_group'>
+    <ru>Группа</ru>
+  </text>
+  <text name='cms_hide'>
+    <ru>Спрятать полоску</ru>
+  </text>
+  <text name='cms_panel'>
+    <ru>Панель администрирования</ru>
+  </text>
+  <text name='cms_text_enter'>
+    <ru>Вход</ru>
+  </text>
+  <text name='cms_linksuffix_warning'>
+    <ru>Внимание! Изменение данного параметра может повлиять на работоспособность ссылок на внутренние страницы сайта!</ru>
+  </text>
+</dictionary>

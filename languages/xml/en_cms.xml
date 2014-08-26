@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+  <text name='cms_text_search'>
+    <en>Search</en>
+  </text>  
+  <text name='cms_text_comments'>
+    <en>Comments</en>
+  </text>
+  <text name='cms_register_success'>
+    <en><![CDATA[
+      Now you registered! Can use  
+      <a title="Login" href="{0}">this form</a> for entering.
+    ]]></en>
+  </text>
+  <text name='cms_html_attr_name'>
+    <en>Name of HTML tag</en>
+  </text>
+  <text name='cms_send'>
+    <en>Send</en>
+  </text>
+  <text name='cms_lighter'>
+    <en>Lights</en>
+  </text>
+  <text name='cms_comments_time_for_edit'>
+    <en>Time for edit by user, seconds</en>
+  </text>
+  <text name='cms_multilang'>
+    <en>Multi language</en>
+  </text>
+  <text name='cms_support'>
+    <en>Support</en>
+  </text>
+  <text name='cms_your_question'>
+    <en>Your question</en>
+  </text>
+  <text name='cms_after_save'>
+    <en>Changes will be available after saving</en>
+  </text>
+  <text name='cms_add_word'>
+    <en>Add word</en>
+  </text>
+  <text name='cms_dictionary_how_use'>
+    <en><![CDATA[<small>
+      Dictionaries - it's way for create multilanguage site.
+      Dictionaries can be two types: direct (example en-to-ru - from english to russian)
+      and templated (xml). Translation realized inside function T.<br /> 
+      Usage example of function for direct type:<br />
+      Template: T($stringInBasicLanguage), example:
+      echo T('Hello') or {T(Hello)}, where PHP is not accessable.<br />
+      Usage example of function for templated type:<br />
+      Template: T('XML'.$templateName), example: 
+      echo T('XMLtext_hello') or {T(XMLtext_hello)}, where PHP is not accessable.<br />
+      In php templates availible function _T(...), which be analog of echo T(...). 
+    </small>]]></en>
+  </text>
+  <text name='cms_group'>
+    <en>Group</en>
+  </text>
+  <text name='cms_dictionary'>
+    <en>Dictionaries</en>
+  </text>
+  <text name='cms_translate'>
+    <en>Translate</en>
+  </text>
+  <text name='cms_original'>
+    <en>Original</en>
+  </text>
+  <text name='cms_comments_maxlen'>
+    <en>Max comment length, 0 - infinity</en>
+  </text>
+  <text name='cms_with_selected'>
+    <en>Selected</en>
+  </text>
+  <text name='cms_apply'>
+    <en>Apply</en>
+  </text>
+  <text name='cms_comments_minlen'>
+    <en>Min comment length</en>
+  </text>
+  <text name='cms_allow_guests'>
+    <en>Allow use for guests</en>
+  </text>
+  <text name='cms_blocked_users'>
+    <en>Blocked users</en>
+  </text>
+  <text name='cms_comments_toshort'>
+    <en>Text to short</en>
+  </text>
+  <text name='cms_text_comment_text'>
+    <en>Your comment</en>
+  </text>
+  <text name='cms_comments_tolong'>
+    <en>Text to long</en>
+  </text>
+  <text name='cms_error_action'>
+    <en>Action error</en>
+  </text>
+  <text name='cms_blocked_ip'>
+    <en>Blocked IP</en>
+  </text>
+  <text name='cms_text_author'>
+    <en>Author</en>
+  </text>
+  <text name='cms_text_required'>
+    <en>Required</en>
+  </text>
+  <text name='cms_comments_sorting'>
+    <en>Comments sorting</en>
+  </text>
+  <text name='cms_text_asc'>
+    <en>Ascending</en>
+  </text>
+  <text name='cms_text_desc'>
+    <en>Descending </en>
+  </text>
+  <text name='cms_text_additional_fields'>
+    <en>Additional fields</en>
+  </text>
+  <text name='cms_text_additional'>
+    <en>Additional</en>
+  </text>
+  <text name='cms_search_result'>
+    <en>Search results</en>
+  </text>
+  <text name='cms_search_result_null'>
+    <en>Nothing was found</en>
+  </text>
+  <text name='cms_allow_register'>
+    <en>Allow registration</en>
+  </text>
+  <text name='cms_controller_message'>
+    <en>Controller message</en>
+  </text>
+  <text name='cms_page_suffix'>
+    <en>Page prefix</en>
+  </text>
+  <text name='cms_text_no_dbtable'>
+    <en>DataBase table not found!</en>
+  </text>
+  <text name='cms_linksuffix_warning'>
+    <en>Attention! Changing this value may affect the performance of links to internal pages of your site!</en>
+  </text>
+  <text name='cms_text_row_on_page'>
+    <en>Rows on page</en>
+  </text>
+  <text name='cms_text_first_row'>
+    <en>First row</en>
+  </text>
+  <text name='cms_text_need_add_menu'>
+    <en>You need added one menu!</en>
+  </text>
+  <text name='cms_text_select'>
+    <en>Select</en>
+  </text>
+  <text name='cms_error_access'>
+    <en>Access error</en>
+  </text>
+  <text name='cms_text_user_fields'>
+    <en>User fields</en>
+  </text>
+  <text name='cms_text_loading'>
+    <en>Loading</en>
+  </text>
+  <text name='cms_text_add_field'>
+    <en>Add field</en>
+  </text>
+  <text name='cms_text_time'>
+    <en>Time</en>
+  </text>
+  <text name='cms_text_all'>
+    <en>All</en>
+  </text>
+  <text name='cms_text_posts_on_page'>
+    <en>Posts on page</en>
+  </text>
+  <text name='cms_text_code'>
+    <en>Code</en>
+  </text>
+  <text name='cms_theme'>
+    <en>Theme</en>
+  </text>
+  <text name='cms_request_sent'>
+    <en>Request sent successfully</en>
+  </text>
+  <text name='cms_text_registration'>
+    <en>Registration</en>
+  </text>
+  <text name='cms_text_nocategory'>
+    <en>No category</en>
+  </text>
+  <text name='cms_text_no_category_found'>
+    <en>You need added one category!</en>
+  </text>
+  <text name='cms_text_template_short'>
+    <en>Preview template</en>
+  </text>
+  <text name='cms_template_editor'>
+    <en>Templates manager</en>
+  </text>
+  <text name='cms_support_mail_title'>
+    <en>OnePageCMS - Support</en>
+  </text>
+  <text name='cms_text_need_all_data'>
+    <en>Some required fields is empty!</en>
+  </text>
+  <text name='cms_text_short'>
+    <en>Short</en>
+  </text>
+  <text name='cms_text_sure'>
+    <en>Are you sure?</en>
+  </text>  
+  <text name='cms_text_create_menu'>
+    <en>Create menu</en>
+  </text>
+   <text name='cms_text_menu_editor'>
+    <en>Menu editor</en>
+  </text>
+  <text name='cms_text_add_post'>
+    <en>Add post</en>
+  </text>
+  <text name='cms_text_add_category'>
+    <en>Add category</en>
+  </text>
+  <text name='cms_text_categories'>
+    <en>Categories</en>
+  </text>
+  <text name='cms_text_category'>
+    <en>Category</en>
+  </text>
+  <text name='cms_text_date'>
+    <en>Date</en>
+  </text>
+  <text name='cms_text_add_user'>
+    <en>Add user</en>
+  </text>
+  <text name='cms_text_max_log'>
+    <en>You have exceeded the allowed number of login attempts!</en>
+  </text>
+  <text name='cms_text_login_error'>
+    <en>Invalid login name or password!</en>
+  </text>
+  <text name='cms_text_page_not_found'>
+    <en>Page not found</en>
+  </text>
+  <text name='cms_text_he_active'>
+    <en>Active</en>
+  </text>
+  <text name='cms_text_posts'>
+    <en>Posts</en>
+  </text>
+  <text name='cms_text_bad_pwd_confirm'>
+    <en>Passwords must be equal!</en>
+  </text>
+  <text name='cms_text_bad_pwd_confirm'>
+    <en>Password can't be empty!</en>
+  </text>
+  <text name='cms_text_login_not_unique'>
+    <en>Login must be unique!</en>
+  </text>
+  <text name='cms_text_users'>
+    <en>Users</en>
+  </text>
+  <text name='cms_text_login'>
+    <en>Login</en>
+  </text>
+  <text name='cms_text_password'>
+    <en>Password</en>
+  </text>
+  <text name='cms_text_repassword'>
+    <en>Password again</en>
+  </text>
+  <text name='cms_text_type'>
+    <en>Type</en>
+  </text>
+  <text name='cms_text_add_page'>
+    <en>Add page</en>
+  </text>
+  <text name='cms_text_in_menu'>
+    <en>Available in menu</en>
+  </text>
+  <text name='cms_text_open'>
+    <en>Open</en>
+  </text>
+  <text name='cms_text_link'>
+    <en>Link</en>
+  </text>
+  <text name='cms_text_is_active'>
+    <en>Active</en>
+  </text>
+  <text name='cms_text_file_upload_error'>
+    <en>File upload error!</en>
+  </text>
+  <text name='cms_text_archive_module'>
+    <en>Module archive</en>
+  </text>
+  <text name='cms_text_add_module'>
+    <en>Add module</en>
+  </text>
+  <text name='cms_text_itname'>
+    <en>Name</en>
+  </text>
+  <text name='cms_text_unique_link'>
+    <en>Link must be unique!</en>
+  </text>
+  <text name='cms_text_as_menu'>
+    <en>As menu item</en>
+  </text>
+  <text name='cms_text_full_link'>
+    <en>Full link</en>
+  </text>
+  <text name='cms_text_link_from_list'>
+    <en>or select link from list</en>
+  </text>
+  <text name='cms_text_parent_item'>
+    <en>Parent item</en>
+  </text>
+  <text name='cms_text_template_code'>
+    <en>Template tag</en>
+  </text>
+  <text name='cms_text_modules'>
+    <en>Modules</en>
+  </text>
+  <text name='cms_text_bad_file_format'>
+    <en>Invalid file format!</en>
+  </text>
+  <text name='cms_text_unzip_error'>
+    <en>UnZip error!</en>
+  </text>
+  <text name='cms_text_constants'>
+    <en>Constants</en>
+  </text>
+  <text name='cms_text_name'>
+    <en>Name</en>
+  </text>
+  <text name='cms_text_value'>
+    <en>Value</en>
+  </text>
+  <text name='cms_text_add_conts'>
+    <en>Add constant</en>
+  </text>
+  <text name='cms_text_menu'>
+    <en>Menu</en>
+  </text>
+  <text name='cms_text_default_template'>
+    <en>Default template</en>
+  </text>
+  <text name='cms_text_select_menu_for_redact'>
+    <en>Menu for edit</en>
+  </text>
+  <text name='cms_text_add_block'>
+    <en>Add block</en>
+  </text>
+  <text name='cms_text_action'>
+    <en>Action</en>
+  </text>
+  <text name='cms_text_onall'>
+    <en>All</en>
+  </text>
+  <text name='cms_text_onpages'>
+    <en>On pages</en>
+  </text>
+  <text name='cms_text_marker'>
+    <en>Marker</en>
+  </text>
+  <text name='cms_text_order'>
+    <en>Order</en>
+  </text>
+  <text name='cms_back'>
+    <en>Back</en>
+  </text>
+  <text name='cms_delete'>
+    <en>Delete</en>
+  </text>
+  <text name='cms_edit'>
+    <en>Edit</en>
+  </text>
+  <text name='cms_activate'>
+    <en>Activate</en>
+  </text>
+  <text name='cms_settings'>
+    <en>Settings</en>
+  </text>
+  <text name='cms_text_blocks'>
+    <en>Blocks</en>
+  </text>
+  <text name='cms_text_title'>
+    <en>Title</en>
+  </text>
+  <text name='cms_text_content'>
+    <en>Content</en>
+  </text>
+  <text name='cms_updated'>
+    <en>Record updated successfully!</en>
+  </text>
+  <text name='cms_settings_updated'>
+    <en>Settings updated successfully!</en>
+  </text>
+  <text name='cms_text_description'>
+    <en>Description</en>
+  </text>
+  <text name='cms_answer'>
+    <en>Answer</en>
+  </text>
+  <text name='cms_text_kw'>
+    <en>Keywords</en>
+  </text>
+  <text name='cms_0_infinity'>
+    <en>0 - infinity</en>
+  </text>
+  <text name='cms_text_email_for_send'>
+    <en>Email for mails</en>
+  </text>
+  <text name='cms_text_404'>
+    <en>HTML of page 404</en>
+  </text>
+  <text name='cms_text_template'>
+    <en>Template</en>
+  </text>
+  <text name='cms_text_default_page_template'>
+    <en>Default pages template</en>
+  </text>
+  <text name='cms_save'>
+    <en>Save</en>
+  </text>
+  <text name='cms_text_your_name'>
+    <en>Your name</en>
+  </text>
+  <text name='cms_add'>
+    <en>Add</en>
+  </text>
+  <text name='cms_execute'>
+    <en>Execute</en>
+  </text>
+  <text name='cms_site_state'>
+    <en>Website state</en>
+  </text>
+  <text name='cms_bme_activate'>
+    <en>Basic method 'Activate' is not available!</en>
+  </text>
+  <text name='cms_bme_delete'>
+    <en>Basic method 'Delete' is not available!</en>
+  </text>
+  <text name='cms_record_deleted'>
+    <en>Record deleted successfully!</en>
+  </text>
+  <text name='cms_added'>
+    <en>Record added successfully!</en>
+  </text>
+  <text name='cms_bme_add'>
+    <en>Basic method 'Add' is not available!</en>
+  </text>
+  <text name='cms_unknow_key'>
+    <en>Unknown key!</en>
+  </text>
+  <text name='cms_bme_edit'>
+    <en>Basic method 'Edit' is not available!</en>
+  </text>
+  <text name='cms_info'>
+    <en>Information</en>
+  </text>
+  <text name='cms_cache_table'>
+    <en>Cache table</en>
+  </text>
+  <text name='cms_on'>
+    <en>On</en>
+  </text>
+  <text name='cms_off'>
+    <en>Off</en>
+  </text>
+  <text name='cms_load_from_cache'>
+    <en>Load table struct from cache</en>
+  </text>
+  <text name='cms_yes'>
+    <en>Yes</en>
+  </text>
+  <text name='cms_no'>
+    <en>No</en>
+  </text>
+  <text name='cms_cache_clear'>
+    <en>Clear cache</en>
+  </text>
+  <text name='cms_a'>
+    <en>Mamatov Andrey</en>
+  </text>
+  <text name='cms_developer'>
+    <en>Developer</en>
+  </text>
+  <text name='cms_homepage'>
+    <en>Open home page</en>
+  </text>
+  <text name='cms_version'>
+    <en>Version</en>
+  </text>
+  <text name='cms_locked'>
+    <en>Locked</en>
+  </text>
+  <text name='cms_unlocked'>
+    <en>Unlocked</en>
+  </text>
+  <text name='cms_lock'>
+    <en>Lock website</en>
+  </text>
+  <text name='cms_unlock'>
+    <en>Unlock website</en>
+  </text>
+  <text name='cms_deleted'>
+    <en>Deleted</en>
+  </text>
+  <text name='cms_opensite'>
+    <en>Open website</en>
+  </text>
+  <text name='cms_logout'>
+    <en>Logout</en>
+  </text>
+  <text name='cms_nokey'>
+    <en>Key doesn't exists!</en>
+  </text>
+  <text name='cms_unique_data_error'>
+    <en>Error of data uniqueness!</en>
+  </text>
+  <text name='cms_invalid_data'>
+    <en>Invalid data format!</en>
+  </text>
+  <text name='cms_page'>
+    <en>Page</en>
+  </text>
+  <text name='cms_invalid_command'>
+    <en>Unknown command!</en>
+  </text>
+  <text name='cms_pages'>
+    <en>Pages</en>
+  </text>
+  <text name='cms_page_auth'>
+    <en>Authorization page</en>
+  </text>
+  <text name='cms_hide'>
+    <en>Hide</en>
+  </text>
+  <text name='cms_panel'>
+    <en>Administration panel</en>
+  </text>
+  <text name='cms_text_enter'>
+    <en>Login</en>
+  </text>
+</dictionary>

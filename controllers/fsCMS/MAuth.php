@@ -1,0 +1,107 @@
+<?php
+class MAuth extends cmsController {
+  
+  protected $_tableName = 'users';
+  private $_authAdminCount = 5;
+  private $_methodAuthAdmin = 'AuthAdmin';
+  
+  public function actionDoAuth($Param)
+  {
+    if(AUTH) {
+      $this->Redirect(URL_ROOT);
+      return;
+    }
+    $this->_Referer();
+    $login = fsValidator::ClearData($Param->login);
+    $password =  fsValidator::ClearData($Param->password);
+    $userData = $this->_table->IsUser($login, $password);
+    if($userData !== false) {
+      fsSession::Create('AUTH', $userData);  
+    } else {
+      $this->Message(T('XMLcms_text_login_error'));
+    }
+  }
+  
+  public function actionDoAuthAdmin($Params)
+  {
+      if(AUTH) {
+        $this->Redirect(AUTH_ADMIN ? fsHtml::Url(URL_ROOT.'AdminPanel/Hello') : URL_ROOT);
+        return;
+      }
+      if (!fsSession::Exists('AUTH_COUNT')) {
+        fsSession::Create('AUTH_COUNT', 0);  
+      }
+      if (fsSession::GetInstance('AUTH_COUNT') >= $this->_authAdminCount) {
+        $this->Message(T('XMLcms_text_max_log'));
+        $this->Redirect($this->_My($this->_methodAuthAdmin));
+        return;
+      }
+      $login = fsValidator::ClearData($Params->login);
+      $password =  fsValidator::ClearData($Params->password);
+      $userData = $this->_table->IsAdmin($login, $password);
+      if($userData !== false) {
+        fsSession::Delete('AUTH_COUNT');
+        if(fsSession::Exists('AUTH', $userData)) {
+          fsSession::Set('AUTH', $userData);
+        } else {
+          fsSession::Create('AUTH', $userData);
+        }
+        $this->Redirect(fsHtml::Url(URL_ROOT.'AdminPanel/Hello'));
+      } else {
+        $this->Redirect($this->_My($this->_methodAuthAdmin));
+        fsSession::Set('AUTH_COUNT', fsSession::GetInstance('AUTH_COUNT') + 1);
+        if ($this->_authAdminCount == fsSession::GetInstance('AUTH_COUNT')) {
+          $this->Message(T('XMLcms_text_max_log'));
+          $this->_table->SetActive($login, 0);
+        } else {
+          $this->Message(T('XMLcms_text_login_error'));
+        }
+      }
+  }
+  
+  
+  public function actionDoLogout($Params)
+  {
+    if (fsSession::Exists('AUTH')) {
+      fsSession::Delete('AUTH');
+    } 
+    $this->Redirect(URL_ROOT);
+  }
+  
+  public function actionDoLogoutAdmin($Params)
+  {
+    $this->actionDoLogout($Params);
+    $this->Redirect($this->_My($this->_methodAuthAdmin));
+  }
+  
+  public function actionAuthAdmin($Params)
+  {
+    if(AUTH_ADMIN) {
+      $this->Redirect(fsHtml::Url(URL_ROOT.'AdminPanel/Hello'));
+    } else {
+      $this->Tag('title', T('XMLcms_text_enter'));   
+    }  
+  }
+  
+  public function FormLogin($param) 
+  {
+    $html = $this->CreateView(array(), $this->_Template('FormLogin'));
+    return "<form method='post' action='".fsHtml::Url(URL_ROOT.'MAuth/DoAuth')."' id='user-login-form' class='user-login-form'>".$html.'</form>';
+  }
+  
+  public function actionAuth($Param)
+  {
+    if (AUTH) {
+      $this->Redirect(URL_ROOT);
+      return;
+    }
+    $page = array();
+    $page['title'] = T('XMLcms_page_auth');
+    $page['meta_keywords'] = $page['title'];
+    $page['meta_description'] = $page['title'];
+    $this->Html($this->CreateView(array('page' => $page)));
+  }
+  
+}
+
+?>

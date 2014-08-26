@@ -1,0 +1,16 @@
+.authadmin-div-form {  
+  width: 100%;
+  padding-top: 20%;
+}
+.authadmin-div-footer {
+  font-size: 13px;
+  position: absolute;
+  bottom: 0px;
+  margin-top: -100px;
+  height: 50px;
+  left: 50px;
+}
+.authadmin-div-form .authadmin-btn-login { 
+  height: 30px;
+  width: 70px;
+}

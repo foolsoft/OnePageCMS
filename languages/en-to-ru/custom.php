@@ -1,0 +1,1 @@
+<?php $LANG = array('Sample'=>'Пример'); ?>

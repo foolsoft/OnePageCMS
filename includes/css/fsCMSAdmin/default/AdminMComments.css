@@ -1,0 +1,14 @@
+.div-row .label {
+  text-align: right;
+  width: 200px;
+  font-weight: bold;
+}
+.div-row .editor {
+  width: 370px;
+}
+.div-row .label:after {
+  content: ':';
+}
+.div-row .editor input[type=text], .div-row .editor textarea {
+  width: 100%;
+}

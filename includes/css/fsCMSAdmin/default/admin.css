@@ -1,0 +1,46 @@
+body { background: #EEEEE0; }
+p { margin: 0 0 5px 0; } p.title span { font-weight: normal; }
+h3 { margin: 0px; text-decoration: underline; }
+.fs-controller-message { background: url('../../../img/fsCMSAdmin/default/information.png') no-repeat scroll right 7px top 7px #B9D3EE; border: 2px solid #9FB6CD; margin-bottom: 15px; padding: 15px 0; text-align: center; width: 100%; }
+.admin-footer { margin-top: 10px; border-top: 1px dotted #000; margin-bottom: 10px; clear:both; font-size: 12px; width: 98%; text-align:right; padding-top: 10px; padding-right: 2%; }
+.fsCMS-btn { padding: 5px; border: 1px solid #000; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; cursor: pointer; text-align: center; display: block; margin-bottom: 5px; font-size: 15px; text-decoration: none; color: #000; }
+.fsCMS-btn:hover { background-color: #CDCDCD; }
+.admin-btn-back { width: 50px; }
+.admin-btn-small { display: block; width: 22px; height: 22px;  float: left;  margin-right: 3px; }
+.admin-btn-edit { background: url('../../../img/fsCMSAdmin/default/edit.png') no-repeat; }
+.admin-btn-delete, .admin-btn-delete-big  { background: url('../../../img/fsCMSAdmin/default/delete.png') no-repeat; }
+.admin-btn-delete-big { width: 120px; padding: 5px 0px 5px 20px; background-position: 6px 3px; }
+.admin-btn-activate { background: url('../../../img/fsCMSAdmin/default/activate.png') no-repeat; }
+.admin-btn-config { width: 100px;  padding: 5px 0px 5px 20px; background: url('../../../img/fsCMSAdmin/default/config.png') no-repeat; background-position: 6px 2px; background-repeat: no-repeat; }
+.admin-btn-add { width: 180px; padding: 5px 0px 5px 20px; background: url('../../../img/fsCMSAdmin/default/add.png') no-repeat 6px 2px; }
+.admin-btn-save { padding: 5px 0px 5px 20px; width: 150px; background: url('../../../img/fsCMSAdmin/default/submit.png') no-repeat 6px 2px; }
+.admin-btn-yes, .admin-btn-no { padding: 5px 0px 5px 20px; width: 50px; float: left; } 
+.admin-btn-yes { background: url('../../../img/fsCMSAdmin/default/yes.png') no-repeat; background-position: 4px 3px; }
+.admin-btn-no { margin-left: 30px; background: url('../../../img/fsCMSAdmin/default/no.png') no-repeat; background-position: 4px 3px; }
+.admin-row-active-0 { background: #CCC; } .admin-row-active-2 { background: #98FB98; }
+.delete-sure { text-align: center; margin-top: 20%; }
+.delete-buttons { width: 174px; margin: 20px auto; }
+.admin-action-td { width: 75px; margin: 0 auto; }
+.float-left { float: left; margin-right: 15px; } .float-right { float: right; margin-left: 15px; }
+.admin-content, .admin-panel-up, .admin-panel-left { padding: 10px; }
+.list-table { width: 100%; }
+.list-table th { border-bottom: 1px dotted #777; padding: 5px; }
+.list-table td { min-width: 100px; padding: 5px; }
+.list-table tr { text-align: center; }
+.admin-top { width: 100%; text-align: right; border-bottom: 1px dotted #000; margin-bottom: 10px; }
+.admin-left {  min-height: 500px; float: left; width: 15%; margin-right: 10px; }
+.admin-content { float: left; width: 80%; min-height: 500px; }
+.content-left-panel { width: 100%; min-height: 500px; border-right: 1px dotted #000; }
+.a-menu { z-index: 999999; padding: 0px; margin: 0px; list-style: none; }
+.a-menu li {  margin: 7px 0px 7px 0px; text-align: right; padding-right: 10px; }
+.a-menu li a { text-decoration: none; color: #000; font-weight: bold; }
+.a-menu li:hover { background: #EDEDD0;  }
+.a-menu li a:hover { color: #555; }
+.a-menu-item ul { border-top: 1px #000 dotted; border-right: 1px #000 dotted; border-bottom: 1px #000 dotted; position: absolute; display: none; margin-left: 15%; margin-top: -20px; }
+.a-menu-item ul li {  margin: 0px 0px 5px 0px; width: 200px; }
+.a-menu-item:hover > ul { display: block; background: #EDEDD0; }
+.a-menu-item:hover > ul menu-item { text-align: center; }  
+.dictionary-head { width: 80%; background:#eeeee0; padding:5px 0; border-bottom:1px solid #555; }
+.support { width: 600px; min-height: 400px; }
+form label:after { content: ':'; }
+.template-manager { width: 1000px; min-height: 300px;}

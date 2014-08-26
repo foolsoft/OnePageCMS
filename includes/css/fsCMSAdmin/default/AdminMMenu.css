@@ -1,0 +1,7 @@
+.sample-menu { background: #EEEEE0; float: left; margin: 0px; padding: 0px; border: 1px solid #000;}
+.sample-menu-item ul { margin-top: 10px; margin-left: -21px; position: absolute; display: none; }
+.sample-menu-item {  text-align: center; float: left; list-style: none; margin: 0px 20px; padding: 10px 0px; }
+.sample-menu-item a { padding: 0px 10px; display: block; text-decoration: none; font-family: Impact; color: #000; font-size: 15px;}
+.sample-menu-item:hover { }
+.sample-menu-item:hover a {  text-decoration: underline; }
+.sample-menu-item:hover > ul { height: 40px; display: block; border: 1px solid #111; }
