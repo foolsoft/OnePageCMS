@@ -42,6 +42,15 @@ class fsKernel extends fsController
 {
   private $_workTime; //время загрузки страницы
   
+  //Перевод строки
+  public function actionTranslate($param)
+  {
+    if (!$param->Exists('text') || $param->text == '') {
+      return $this->EmptyResponse(true);
+    }
+    $this->Html(T($param->text));
+  }
+  
   //Меняем язык пользователя
   public function actionLanguage($param)
   {

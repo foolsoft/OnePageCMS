@@ -99,7 +99,7 @@ class fsDBTableExtension extends fsDBTable
     }
     if (empty($key)) {
       return false;
-    }
+    }    
     return $this->Delete()->Where('`'.$key.'` = "'.$value.'"')->Execute();
   }
   

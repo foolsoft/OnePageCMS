@@ -8,6 +8,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 	config.enterMode = CKEDITOR.ENTER_BR;
+  config.extraPlugins = 'ajax,deposit,t';
   config.filebrowserUploadUrl = '/AdminMCkeditor/UploadImage/action/upload/';
 };
 

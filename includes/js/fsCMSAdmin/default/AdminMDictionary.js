@@ -5,13 +5,15 @@ $(document).ready(function() {
 
 function UpdateRedactor() 
 {
-  fsCMS.Ajax(URL_ROOT + 'AdminMDictionary/Redactor' + URL_SUFFIX, 'post', 'lang=' + $('#lang').val(), 'dictionary-redactor', 'dictionary-redactor', 16);
+  fsCMS.Ajax(URL_ROOT + 'AdminMDictionary/Redactor' + URL_SUFFIX, 'post', 'lang=' + $('#lang').val(), 'dictionary-redactor', 'dictionary-redactor', 16, function(answer) {
+  });
 }
 
 function DictionaryXmlTranslate(lang, row)
 {
   $('.xml-translate').hide();
   $('#xml-' + row + '-' + lang).show();
+  CKeditorRenew('#xml-' + row + '-' + lang);
 }
 
 function DictionaryAddWord()

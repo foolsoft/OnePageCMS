@@ -27,7 +27,7 @@ class AdminMPosts extends AdminPanel
       $this->_Referer();
       return false;
     }
-    $Param->alt = fsFunctions::Chpu($Param->alt);
+    $Param->alt = strtolower(fsFunctions::Chpu($Param->alt));
     $Param->active = $Param->Exists('active') ? 1 : 0;
     if ($Param->time == '') {
       $Param->time = date('H:i:s');

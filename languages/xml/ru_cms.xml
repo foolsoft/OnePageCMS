@@ -9,6 +9,9 @@
   <text name='cms_search_result_null'>
     <ru>Ничего не найдено</ru>
   </text>
+  <text name='cms_clear'>
+    <ru>Очистить</ru>
+  </text>
   <text name='cms_register_success'>
     <ru><![CDATA[
       Вы успешно зарегистрированы! Можете воспользоваться 
@@ -20,6 +23,9 @@
   </text>
   <text name='cms_lighter'>
     <ru>Подсветка</ru>
+  </text>
+  <text name='cms_sorting'>
+    <ru>Сортировка</ru>
   </text>
   <text name='cms_multilang'>
     <ru>Мультиязычность</ru>
@@ -63,7 +69,7 @@
     <ru>Применить</ru>
   </text>
   <text name='cms_page_suffix'>
-    <ru>Префикс страниц</ru>
+    <ru>Суффикс страниц</ru>
   </text>
   <text name='cms_text_no_category_found'>
     <ru>Добавьте хотя бы одну категорию!</ru>
@@ -265,6 +271,9 @@
   </text>
   <text name='cms_text_loading'>
     <ru>Загрузка</ru>
+  </text>
+  <text name='cms_browse'>
+    <ru>Обзор</ru>
   </text>
   <text name='cms_text_archive_module'>
     <ru>Архив модуля</ru>

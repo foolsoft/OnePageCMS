@@ -28,7 +28,7 @@ class MPages extends cmsController
     $page[0]['meta_description'] = fsFunctions::NotEmpty($page[0]['description'])
                             ? $page[0]['description'] 
                             : CMSSettings::GetInstance('default_description'); 
-    $this->Html($this->CreateView(array('page' => $page[0]), $template));
+    $this->Html($this->CreateView(array('page' => $page[0], 'htmlTags' => $Param->Exists('data') ? $Param->data : array()), $template));
   }
 }
 ?>

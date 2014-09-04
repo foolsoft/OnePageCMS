@@ -53,6 +53,26 @@ class AdminPanel extends cmsController
     $menu = MenuGenerator::Get(URL_ROOT, 'admin_menu', 'parent', 'a-menu', 'name', 'name', 'text',  array('order'), '1');
     return $this->CreateView(array('menu' => $menu), $this->_Template('Sidebar', 'AdminPanel'));
   }
+ 
+  public function actionDictionary($param)
+  {
+    $xml_file = PATH_CACHE.'_text_dictionary_'.fsSession::GetInstance('Language').'.xml';
+    if(file_exists($xml_file)) {
+      $xml = simplexml_load_file($xml_file);
+      $result = $xml->xpath('/dictionary');    
+      $json = array();
+      $substr = $param->Exists('substr') && $param->substr != '' ? strtolower($param->substr) : false;
+      foreach($result[0] as $name => $text) {
+        $cleanName = substr($name, 3);
+        if($substr === false || (strpos($cleanName, $substr) !== false || strpos(strtolower(T($name)), $substr) !== false)) {
+          $json[] = array('text' => $cleanName, 'value' => $name);
+        }
+      }
+      $this->Html(json_encode($json));
+    } else {
+      $this->EmptyResult(true);
+    }
+  }
   
   public function actonEdit($param)
   {

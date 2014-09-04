@@ -70,4 +70,16 @@ function TemplateManagerLoadFile(file) {
   }  
 }
 
+function CKeditorRenew(parent) 
+{
+  parent = parent || 'body';
+  var e = $(parent).find('.ckeditor');
+  for (var i = 0; i < e.length; ++i) { 
+    if (CKEDITOR.instances[$(e[i]).attr('id')]) {
+       CKEDITOR.instances[$(e[i]).attr('id')].destroy(true);
+    }
+    CKEDITOR.replace($(e[i]).attr('id'));
+  }
+}
+
 var cmsAdminAceEditor = null;

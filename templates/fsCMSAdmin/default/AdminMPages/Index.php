@@ -1,11 +1,6 @@
 [parent:../AdminPanel/Index.php]
 
 [block-content]
-<?php
-$textEdit = T('XMLcms_edit');
-$textDelete = T('XMLcms_delete');
-$textActivate = T('XMLcms_activate');
-?>  
 <?php echo fsHtml::Link($myLink.'Add', T('XMLcms_text_add_page'), false, array('class' => 'fsCMS-btn admin-btn-add')); ?>
 <hr />
 <table class="list-table">
@@ -24,18 +19,18 @@ $textActivate = T('XMLcms_activate');
       <div class='admin-action-td'>
       <?php if ($page['active'] == 0) { ?>
         <a href='<?php echo $myLink.'Activate/key/'.$page['id'].'/'; ?>'
-           title='<?php echo $textActivate; ?>'
+           title='<?php _T('XMLcms_activate'); ?>'
            class='admin-btn-small admin-btn-activate'
         >
         </a>   
       <?php } ?>
         <a href='<?php echo $myLink; ?>Edit/key/<?php echo $page['id']; ?>/'
-           title='<?php echo $textEdit; ?>'
+           title='<?php _T('XMLcms_edit'); ?>'
            class='admin-btn-small admin-btn-edit'
         >
         </a>   
         <a href='<?php echo $myLink; ?>Delete/key/<?php echo $page['id']; ?>/'
-           title='<?php echo $textDelete; ?>'
+           title='<?php _T('XMLcms_delete'); ?>'
            class='admin-btn-small admin-btn-delete'
         >
         </a>   

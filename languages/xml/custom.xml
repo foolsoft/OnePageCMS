@@ -1,7 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dictionary>
-<text name='cms_sample'>
-  <ru>Пример</ru>
-  <en>Sample</en>
-</text>
-</dictionary>
+<dictionary><text name="cms_sample"><en>Sample</en><ru>Пример</ru></text><text name="catalog_city"><en>City</en><ru>Город</ru></text><text name="catalog_null_search"><en>Nothing was found.</en><ru>По Вашему запросу предложений не найдено.</ru></text></dictionary>

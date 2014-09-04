@@ -202,7 +202,7 @@ class AdminMDictionary extends AdminPanel
         foreach($value as $lang => $text) {
           $html .= '<a href="javascript:DictionaryXmlTranslate(\''.$lang.'\', '.$idx.');" title="'.$lang.'">'.$lang.'</a> ';
           $htmlTemp .= '<div class="xml-translate hidden" id="xml-'.$idx.'-'.$lang.'">'.
-            $textTranslate.' ('.$lang.'):<br />'.fsHtml::Textarea('translate['.$idx.']['.$lang.']', $text, array('class' => 'input-100')).
+            $textTranslate.' ('.$lang.'):<br />'.fsHtml::Textarea('translate['.$idx.']['.$lang.']', $text, array('class' => 'ckeditor')).
             '</div>';
         }
         $html .= '</span>'.$btnDelete.'<div>'.$htmlTemp.'</div>';

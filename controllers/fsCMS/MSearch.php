@@ -6,7 +6,7 @@ class MSearch extends cmsController
   public function FormSearch($Param) 
   {
     $html = $this->CreateView(array(), $this->_Template('FormSearch'));
-    return "<form method='get' action='".$this->_My('Search')."' id='search_form' class='search_form'>".
+    return "<form method='get' action='".$this->_My('Search')."' id='search-form' class='search-form'>".
               $html.
            '</form>';
   

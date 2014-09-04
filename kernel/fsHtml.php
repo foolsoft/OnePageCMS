@@ -83,7 +83,17 @@ class fsHtml
       }  
       $values = $temp;
     }
+    $matches = array();
+    $patternGroupOpen = '/^\[group=(.+)\]$/i';
+    $patternGroupClose = '/^\[\/group=(.+)\]$/i';
     foreach($values as $value => $text) {
+      if(preg_match($patternGroupOpen, $value, $matches) || preg_match($patternGroupOpen, $text, $matches)) {
+        $options .= '<optgroup label="'.T($matches[1]).'">';
+        continue;  
+      } else if(preg_match($patternGroupClose, $value, $matches) || preg_match($patternGroupClose, $text, $matches)) {
+        $options .= '</optgroup>';
+        continue;  
+      } 
       $options .= '<option value="'.$value.'" '.($selectedValue == $value ? 'selected' : '').'>'.$text.'</option>';  
     }
     if(!isset($htmlAttributes['id'])) {

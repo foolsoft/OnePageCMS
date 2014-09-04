@@ -1,6 +1,14 @@
 <?php
 class fsHtaccess
 {
+  private static $_append = '';
+  
+  public static function Append($string) 
+  {
+    self::$_append .= '
+                     '.$string;
+  }
+  
   public static function Create($linkSuffix = null, $multilang = null)
   {
     if($multilang === null || ($multilang !== true && $multilang !== false)) {
@@ -78,7 +86,8 @@ FileETag MTime Size
   #MPages
   RewriteRule ^{11}404{1}$ /index.php?{7}controller=MPages&method=View&page=?404 [L]
   RewriteRule ^{12}?$ /index.php?{6}controller=MPages&method=View&page=0 [L]
-  RewriteRule ^{5}page/([0-9a-zA-Z_\-]+){1}$ /index.php?{6}controller=MPages&method=View&page=${9} [L]
+  RewriteCond %{QUERY_STRING} (.*)
+  RewriteRule ^{5}page/([0-9a-zA-Z_\-]+){1}$ /index.php?{6}controller=MPages&method=View&page=${9}&%1 [L]
   RewriteRule ^template/([0-9a-zA-Z_\-]+)$ /index.php?controller=MTemplate&method=Change&name=$1 [L]
   
   #MPosts
@@ -103,7 +112,7 @@ FileETag MTime Size
   RewriteCond %{QUERY_STRING} (.*)
   RewriteRule ^{5}([A-Za-z0-9]+){1}$ /index.php?{6}method=${9}&%1 [L]
 </IfModule>  
-    ', array(
+    '.self::$_append, array(
       str_replace('.', '\.', $domain).'\.'.$domainZone,
       $linkSuffix,
       $protocol.'//www.'.$domain.'.'.$domainZone,

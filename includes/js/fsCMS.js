@@ -65,7 +65,8 @@ var fsCMS = {
         }  
     });
   },
-  Chpu: function(str, id) {
+  Chpu: function(str, id, space) {
+    space = space || '-';
     str = str.replace(/а/g, 'a').replace(/б/g, 'b').replace(/в/g, 'v').replace(/г/g, 'g');
     str = str.replace(/д/g, 'd').replace(/е/g, 'e').replace(/ё/g, 'e').replace(/ж/g, 'j');
     str = str.replace(/з/g, 'z').replace(/и/g, 'i').replace(/й/g, 'i').replace(/к/g, 'k');
@@ -81,7 +82,7 @@ var fsCMS = {
     str = str.replace(/Р/g,'R').replace(/С/g,'S').replace(/Т/g,'T').replace(/У/g,'Y').replace(/Ф/g,'F');
     str = str.replace(/Х/g,'X').replace(/Ц/g,'C').replace(/Ч/g,'CH').replace(/Ш/g,'SH');
     str = str.replace(/Щ/g,'SH').replace(/Ъ/g,'').replace(/Ы/g,'I').replace(/Ь/g,'').replace(/Э/g,'E').replace(/Ю/g,'U').replace(/Я/g,'YA');
-    str = str.replace(/\s/g, '-').replace(/\//g, '_');
+    str = str.replace(/\s/g, space).replace(/\//g, '_');
     str = str.replace(/[\*%&\\№\?#!:;\$\^,\(\)\[\]=\.]/g, '');
     id = id || false;
     if (id) {

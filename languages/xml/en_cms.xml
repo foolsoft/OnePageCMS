@@ -21,11 +21,17 @@
   <text name='cms_lighter'>
     <en>Lights</en>
   </text>
+  <text name='cms_sorting'>
+    <en>Sort</en>
+  </text>
   <text name='cms_comments_time_for_edit'>
     <en>Time for edit by user, seconds</en>
   </text>
   <text name='cms_multilang'>
     <en>Multi language</en>
+  </text>
+  <text name='cms_browse'>
+    <en>Browse</en>
   </text>
   <text name='cms_support'>
     <en>Support</en>
@@ -132,7 +138,7 @@
     <en>Controller message</en>
   </text>
   <text name='cms_page_suffix'>
-    <en>Page prefix</en>
+    <en>Page suffix</en>
   </text>
   <text name='cms_text_no_dbtable'>
     <en>DataBase table not found!</en>
@@ -478,6 +484,9 @@
   </text>
   <text name='cms_cache_clear'>
     <en>Clear cache</en>
+  </text>
+  <text name='cms_clear'>
+    <en>Clear</en>
   </text>
   <text name='cms_a'>
     <en>Mamatov Andrey</en>

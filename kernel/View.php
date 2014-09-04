@@ -60,12 +60,16 @@ class View
     } while (++$try < $this->_compileLoop && $hash != md5($buffer));
     if (!$adminMode) {
         $buffer = $this->LanguageCompile($buffer);
-        $buffer = $this->HtmlCompile($buffer, array(
+        $htmlParams = array(
           'USER_LANG' => fsSession::GetInstance('Language'),  
           'SYSTEM_LANG' => fsConfig::GetInstance('system_language'),
           'URL_ROOT' => URL_ROOT,
           'URL_SUFFIX' => fsConfig::GetInstance('links_suffix'),
-        ));
+        );
+        if(isset($params['htmlTags']) && fsFunctions::IsArrayAssoc($params['htmlTags'])) {
+          $htmlParams = $params['htmlTags'] + $htmlParams;
+        }
+        $buffer = $this->HtmlCompile($buffer, $htmlParams);
     }
     if ($show) {
       echo $buffer;

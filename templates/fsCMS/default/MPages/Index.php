@@ -7,6 +7,7 @@
   <link href="http://fonts.googleapis.com/css?family=Arvo:400,700" rel="stylesheet" type="text/css" />
   <?php fsFunctions::IncludeFile(PATH_TPL.'shared.php'); ?>
   <script src=" <?php echo URL_THEME_JS; ?>scripts.js" type="text/javascript"></script>
+  [block-head]<!-- ACCESS TO <HEAD> FOR CHILD TEMPLATES -->[endblock-head]
   <?php
   if (file_exists(PATH_THEME_JS.$_REQUEST['controller'].'.js')) {
     echo "<script src='".URL_THEME_JS.$_REQUEST['controller'].".js' type='text/javascript'></script>";

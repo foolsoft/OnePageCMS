@@ -9,6 +9,47 @@ class fsFunctions
     return isset($obj) && !empty($obj);
   }
   
+  public static function RequestGet($url, $data = null, $options = array()) 
+  {
+    $defaults = array(
+        CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query($data),
+        CURLOPT_HEADER => 0,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_TIMEOUT => 4
+    );
+    $ch = curl_init();
+    curl_setopt_array($ch, ($options + $defaults));
+    if(!($result = curl_exec($ch)))
+    {
+        trigger_error(curl_error($ch));
+    }
+    curl_close($ch);
+    return $result; 
+  }
+  
+  public static function RequestPost($url, $data = null, $options = array()) 
+  {
+    $defaults = array(
+        CURLOPT_POST => 1,
+        CURLOPT_HEADER => 0,
+        CURLOPT_URL => $url,
+        CURLOPT_FRESH_CONNECT => 1,
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_FORBID_REUSE => 1,
+        CURLOPT_TIMEOUT => 4,
+        CURLOPT_POSTFIELDS => http_build_query($data)
+    );
+
+    $ch = curl_init();
+    curl_setopt_array($ch, ($options + $defaults));
+    if(!($result = curl_exec($ch)))
+    {
+        trigger_error(curl_error($ch));
+    }
+    curl_close($ch);
+    return $result;  
+  }
+  
   //Форматированный вывод print_r($data)
   public static function FormatPrint($data)
   {
@@ -145,8 +186,20 @@ class fsFunctions
         }
         $fileName = $path.$dir;
         if ($searchFile && is_file($fileName)) {
-          if($prefix !== false && strpos($dir, $prefix) !== 0) {
-            continue;
+          if($prefix !== false) {
+            if(!is_array($prefix)) {
+              $prefix = array($prefix);
+            }
+            $next = false;
+            foreach($prefix as $p) {
+              if(strpos($dir, $p) !== 0) {
+                $next = true;
+                break;
+              }
+            }
+            if($next) {
+              continue;
+            } 
           }
           $ext = pathinfo($fileName, PATHINFO_EXTENSION);
           if ($fileFormatsCount > 0 &&
@@ -216,8 +269,8 @@ class fsFunctions
   
   //Проверяем является ли массив ассоциативным
   public static function IsArrayAssoc($array) 
-  {
-    return array_values($array) !== $array;
+  {                                     
+    return is_array($array) && count($array) > 0 && array_values($array) !== $array;
   }
   
   //Получем текущее время
@@ -280,7 +333,7 @@ class fsFunctions
   }
   
   //ЧПУ для $string
-  public static function Chpu($string)
+  public static function Chpu($string, $space = '_')
   {
     $rus = array('а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п',
       'р', 'с', 'т', 'у', 'ф', 'х', 'ъ', 'ы', 'ь', 'э', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'З', 
@@ -289,7 +342,7 @@ class fsFunctions
     $lat = array('a', 'b', 'v', 'g', 'd', 'e', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
       'r', 's', 't', 'u', 'f', 'h', '_', 'i', '_', 'e', 'A', 'B', 'V', 'G', 'D', 'E', 'Z',
       'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', '_', 'I', '_',
-      'E', '_', 'yo','zh','tc','ch','sh','sh','yu','ya','YO','ZH','TC','CH','SH','SH','YU','YA');
+      'E', $space, 'yo','zh','tc','ch','sh','sh','yu','ya','YO','ZH','TC','CH','SH','SH','YU','YA');
     return str_replace($rus, $lat, $string);   
   }
   

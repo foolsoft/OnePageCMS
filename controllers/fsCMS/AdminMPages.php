@@ -10,7 +10,7 @@ class AdminMPages extends AdminPanel
       $this->_Referer();
       return false;
     }
-    $Param->alt = fsFunctions::Chpu($Param->alt);
+    $Param->alt = strtolower(fsFunctions::Chpu($Param->alt));
     $Param->in_menu = $Param->Exists('in_menu') ? 1 : 0;
     $Param->active = $Param->Exists('active') ? 1 : 0;
     return true;
