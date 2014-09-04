@@ -38,13 +38,13 @@ if (!file_exists(PATH_JS.'initFsCMS.js')) {
   $fw->WriteLine('var LANGUAGE = "{0}";', array(fsSession::GetInstance('Language')));
   $fw->WriteLine('function T(name){return cmsDictionary[name]==undefined?name:cmsDictionary[name];}');
   $fw->Close();
-}
+}    
 //Обработка закрытого сайта 
 if (file_exists(FILE_LOCK) 
   && !AUTH_ADMIN 
-  && ($_SERVER['REQUEST_URI'] != '/page/closed/' && $_SERVER['REQUEST_URI'] != '/page/closed.html') 
+  && $_SERVER['REQUEST_URI'] != fsHtml::Url((fsConfig::GetInstance('multi_language') ? '/'.fsSession::GetInstance('Language') : '').'/page/closed') 
   && ($_REQUEST['controller'] != 'MAuth' || ($_REQUEST['method'] != 'AuthAdmin' && $_REQUEST['method'] != 'DoAuthAdmin'))) {
-    fsFunctions::Redirect(URL_ROOT.'page/closed.html');
+    fsFunctions::Redirect(fsHtml::Url(URL_ROOT.'page/closed'));
 }
 //Добавляем полоску "Панель администрирования"
 if (AUTH_ADMIN && strpos(strtolower($_REQUEST['controller']), 'admin') !== 0) {
