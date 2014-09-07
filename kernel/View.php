@@ -1,9 +1,10 @@
 <?php
 class View 
 {
+  private $_recursionLevel = -1;
   private $_compileLoop   = 3;
   public  $actionsCompile = true;
-  public  $parentCompile  = true;
+  public  $blocksCompile  = true;
   
   public function __construct() { }
   
@@ -12,19 +13,26 @@ class View
     $tags = array();
     $matches = array();
     $matchesParent = array();
-    $matchesCount = preg_match_all("/\[block\-([0-9a-zA-Z_]+)\](.*)\[endblock\-\\1\]/s", $html, $matches);
+    $matchesCount = preg_match_all("/\[block\-([0-9a-zA-Z_\-]+)\](.*)\[endblock\-\\1\]/s", $html, $matches);
     $matchesCountParent = preg_match_all("/\[parent:([0-9a-zA-Z_\-\.\/]+\\".EXT_TPL.")\]/s", $html, $matchesParent);
     if ($matchesCountParent == 1) {
-      $this->parentCompile = false;
-      $html = $this->CreateView($tpl_path.$matchesParent[1][0], $params);
+      $this->blocksCompile = false;
+      $html = $this->CreateView($tpl_path.$matchesParent[1][0], $params, false, false);
+    } 
+    if($this->blocksCompile) { 
+      for ($i = 0; $i < $matchesCount; ++$i) {
+        $html = preg_replace("/\[block\-(".$matches[1][$i].")\](.*)\[endblock\-\\1\]/s", $matches[2][$i], $html);
+        $html = str_replace('[block-'.$matches[1][$i].']', '', $html);
+        $html = str_replace('[endblock-'.$matches[1][$i].']', '', $html);        
+      }
+      if($this->_recursionLevel == 0) {
+        $html = preg_replace("/\[block\-([a-zA-Z0-9\-\_]+)\](.*)\[endblock\-\\1\]/s", "\\2", $html);
+      }
     }
-    for ($i = 0; $i < $matchesCount; ++$i) {
-      $html = preg_replace("/\[block\-(".$matches[1][$i].")\](.*)\[endblock\-\\1\]/s", $matches[2][$i], $html);
-      $html = str_replace('[block-'.$matches[1][$i].']', '', $html);
-      $html = str_replace('[endblock-'.$matches[1][$i].']', '', $html);        
+    if ($matchesCountParent != 1) {
+      $this->blocksCompile = true;
     }
-    $html = preg_replace("/\[block\-([a-zA-Z0-9\-\_]+)\](.*)\[endblock\-\\1\]/s", "\\2", $html);
-    return $html; 
+    return $html;                  
   }
   
   public function LanguageCompile($html) 
@@ -37,8 +45,9 @@ class View
     return $html;
   }
    
-  public function CreateView($template, $params = array(), $show = false, $adminMode = false) 
+  public function CreateView($template, $params = array(), $show = false, $noHtmlCompile = false) 
   {
+    ++$this->_recursionLevel;
     $tpl_path = fsFunctions::GetDirectoryFromFullFilePath($template);
     $buffer = fsFunctions::PhpOutput($template, $params);
     $hash = '';
@@ -48,38 +57,33 @@ class View
     do {
       $hash = md5($buffer);
       try {
+        $buffer = $this->_TemplateCompile($tpl_path, $buffer, $params);
         if ($this->actionsCompile) {
           $buffer = $this->_ActionsCompile($buffer, $params);
-        }
-        if ($this->parentCompile) {
-          $buffer = $this->_TemplateCompile($tpl_path, $buffer, $params);
         }
       } catch (Exception $e) { 
         throw new ViewException($e);
       }
-    } while (++$try < $this->_compileLoop && $hash != md5($buffer));
-    if (!$adminMode) {
+    } while ($this->_recursionLevel == 0 && ++$try < $this->_compileLoop && $hash != md5($buffer));
+    if (!$noHtmlCompile) {
         $buffer = $this->LanguageCompile($buffer);
-        $htmlParams = array(
+        $buffer = $this->HtmlCompile($buffer, array(
           'USER_LANG' => fsSession::GetInstance('Language'),  
           'SYSTEM_LANG' => fsConfig::GetInstance('system_language'),
           'URL_ROOT' => URL_ROOT,
           'URL_SUFFIX' => fsConfig::GetInstance('links_suffix'),
-        );
-        if(isset($params['htmlTags']) && fsFunctions::IsArrayAssoc($params['htmlTags'])) {
-          $htmlParams = $params['htmlTags'] + $htmlParams;
-        }
-        $buffer = $this->HtmlCompile($buffer, $htmlParams);
+        ));
     }
     if ($show) {
       echo $buffer;
     }
+    --$this->_recursionLevel;
     return $buffer;
   }
   
   public function HtmlCompile($html, $params = array())
   {
-    if(!is_array($params)) {
+    if(!fsFunctions::IsArrayAssoc($params)) {
       return $html;
     }
     foreach($params as $tag => $value) {
@@ -148,7 +152,5 @@ class View
   }
 }
 
-class ViewException extends Exception
-{
-}
+class ViewException extends Exception { }
 ?>

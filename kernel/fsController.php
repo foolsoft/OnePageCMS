@@ -292,6 +292,23 @@ class fsController
   }
   
   /**
+  * Set response HTML as JSON string  
+  * @api
+  * @since 1.0.0
+  * @param mixed $data Array of data or string.  
+  * @return string JSON string.      
+  */
+  final public function Json($data)
+  {
+    $this->Html(json_encode(
+      !fsFunctions::IsArrayAssoc($data) 
+        ? array('data' => $data)
+        : $data  
+      ), true); 
+    return $this->Html();  
+  }
+  
+  /**
   * fsController constructor  
   * @api
   * @since 1.0.0
