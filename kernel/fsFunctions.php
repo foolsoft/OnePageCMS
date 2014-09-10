@@ -1,8 +1,11 @@
 <?php
+/**
+* Kernel global functions class
+* @package fsKernel
+*/
 class fsFunctions
 {
   private static $_slash = '/';
-  
   
   public static function NotEmpty($obj)
   {
@@ -123,43 +126,41 @@ class fsFunctions
   {
     $zag = $text;
     $un = strtoupper(uniqid(time()));
-    if (isset($file['path']) && is_array($file['path'])) {
-      if (!isset($file['name']) ||
-          !is_array($file['name']) ||
-          count($file['name']) != count($file['path'])) {
+    if (isset($file['path']) && is_array($file['path']) && count($file['path']) > 0) {
+      if (!isset($file['name']) || !is_array($file['name']) || count($file['name']) != count($file['path'])) {
         $file['name'] = array();
         foreach ($file['path'] as $path) {
           $file['name'][] = basename($path);
         } 
       } 
-      $zag = "------------".$un."\nContent-Type:".$contentType.";\n";
-      $zag .= "Content-Transfer-Encoding: 8bit\n\n$text\n\n";
+      $zag = "------------".$un."\r\nContent-Type:".$contentType.";\r\n";
+      $zag .= "Content-Transfer-Encoding: base64\r\n\r\n".base64_encode($text)."\r\n\r\n";
       foreach($file['path'] as $idx => $path) {
         $f   = fopen($path, 'rb');
-        $zag .= "------------".$un."\n";
+        $zag .= "------------".$un."\r\n";
         $zag .= "Content-Type: application/octet-stream;";
-        $zag .= "name=\"".basename($path)."\"\n";
-        $zag .= "Content-Transfer-Encoding:base64\n";
+        $zag .= "name=\"".basename($path)."\"\r\n";
+        $zag .= "Content-Transfer-Encoding:base64\r\n";
         $zag .= "Content-Disposition:attachment;";
-        $zag .= "filename=\"".$file['name'][$idx]."\"\n\n";
-        $zag .= chunk_split(base64_encode(fread($f, filesize($path))))."\n";
+        $zag .= "filename=\"".$file['name'][$idx]."\"\r\n\r\n";
+        $zag .= chunk_split(base64_encode(fread($f, filesize($path))))."\r\n";
         fclose($f);
       }
     }
-    $head = "To: $to\n";
+    $head = "";
     if ($from) {
-      $head .= "From: $from\n";
-      $head .= "Reply-To: $from\n";
+      $head .= "From: $from\r\n";
+      $head .= "Reply-To: $from\r\n";
     }
-    $head .= "X-Mailer: PHPMail Tool\n";
-    $head .= "Mime-Version: 1.0\n";
+    $head .= "X-Mailer: PHPMail Tool\r\n";
+    $head .= "Mime-Version: 1.0\r\n";
     $head .= "Content-Type:";
     if ($zag == $text) {
-       $head .= $contentType."; charset=".$charset;
+      $head .= $contentType."; charset=\"".$charset."\";";
     } else {
       $head .= "multipart/mixed;";
     }
-    $head .= "boundary=\"----------".$un."\"\n\n";
+    $head .= "boundary=\"----------".$un."\"\r\n\r\n";
     return mail($to, $subj, $zag, $head);
   }
   
@@ -549,7 +550,5 @@ class fsFunctions
                     'Lng'      => self::_GetGps($exif["GPSLongitude"], $exif['GPSLongitudeRef']));
     return $result;
   } 
-
-
 }
 ?>
