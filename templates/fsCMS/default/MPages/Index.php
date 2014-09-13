@@ -6,24 +6,21 @@
   <meta name="description" content="<?php echo isset($page['meta_description']) ? $page['meta_description'] : $tag->meta_description; ?>">
   <link href="http://fonts.googleapis.com/css?family=Arvo:400,700" rel="stylesheet" type="text/css" />
   <?php fsFunctions::IncludeFile(PATH_TPL.'shared.php'); ?>
-  <script src=" <?php echo URL_THEME_JS; ?>scripts.js" type="text/javascript"></script>
   [block-head]<!-- ACCESS TO <HEAD> FOR CHILD TEMPLATES -->[endblock-head]
   <?php
+  fsInclude::AddJs(URL_THEME_JS.'scripts.js');
+  fsInclude::AddCss(URL_THEME_CSS.'styles.css');
   if (file_exists(PATH_THEME_JS.$_REQUEST['controller'].'.js')) {
-    echo "<script src='".URL_THEME_JS.$_REQUEST['controller'].".js' type='text/javascript'></script>";
+    fsInclude::AddJs(URL_THEME_JS.$_REQUEST['controller'].'.js');
   } else if (file_exists(PATH_DTHEME_JS.$_REQUEST['controller'].'.js')) {
-    echo "<script src='".URL_DTHEME_JS.$_REQUEST['controller'].".js' type='text/javascript'></script>";
+    fsInclude::AddJs(URL_DTHEME_JS.$_REQUEST['controller'].'.js');
   } 
-  if (file_exists(PATH_THEME_CSS.'styles.css')) {
-    echo "<link rel='stylesheet' type='text/css' href='".URL_THEME_CSS."styles.css'>";
-  } else if (file_exists(PATH_DTHEME_CSS.'styles.css')) {
-    echo "<link rel='stylesheet' type='text/css' href='".URL_DTHEME_CSS."styles.css'>";
-  }
   if (file_exists(PATH_THEME_CSS.$_REQUEST['controller'].'.css')) {
-    echo "<link rel='stylesheet' type='text/css' href='".URL_THEME_CSS.$_REQUEST['controller'].".css'>";
+    fsInclude::AddCss(URL_THEME_CSS.$_REQUEST['controller'].'.css');
   } else if (file_exists(PATH_DTHEME_CSS.$_REQUEST['controller'].'.css')) {
-    echo "<link rel='stylesheet' type='text/css' href='".URL_DTHEME_CSS.$_REQUEST['controller'].".css'>";
+    fsInclude::AddCss(URL_DTHEME_CSS.$_REQUEST['controller'].'.css');
   } 
+  echo fsInclude::Generate(array('ico', 'css'));
   ?>
 </head>
 <body>
@@ -101,5 +98,6 @@
   <div id="footer">
   	<p><?php echo $tag->constants->copy; ?></p>
   </div>
+  <?php echo fsInclude::Generate(array('js')); ?>
 </body>
 </html>

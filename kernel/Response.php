@@ -6,15 +6,16 @@ class Response
   
   public function __construct()
   {
-    $responseConfig = Array();
-    $responseConfig['template'] = Array('Value' => '');
-    $responseConfig['message'] = Array('Value' => '');
-    $responseConfig['html'] = Array('Value' => '');
-    $responseConfig['redirect'] = Array('Value' => '');
-    $responseConfig['empty'] = Array('Value' => false);
-    $this->tag = new fsStruct(Array(), true);
+    $responseConfig = array();
+    $responseConfig['template'] = array('Value' => '');
+    $responseConfig['message'] = array('Value' => '');
+    $responseConfig['html'] = array('Value' => '');
+    $responseConfig['redirect'] = array('Value' => '');
+    $responseConfig['empty'] = array('Value' => false);
+    $this->tag = new fsStruct(array(), true);
     $this->_struct = new fsStruct($responseConfig);
   }
+  
   public function __set($attr, $value)
   {
     switch ($attr) {
@@ -33,6 +34,7 @@ class Response
         }
     }
   }
+  
   public function __get($attr)
   {
     switch ($attr) {
@@ -53,7 +55,5 @@ class Response
   }
 }
 
-class ResponseException extends Exception
-{
-}
+class ResponseException extends Exception {}
 ?>

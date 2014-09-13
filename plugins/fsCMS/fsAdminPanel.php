@@ -184,7 +184,7 @@ class AdminPanel extends cmsController
   {
     $this->Html(T('XMLcms_deleted'));
     fsSession::Delete('Language');
-    fsFunctions::DeleteDirectory(PATH_CACHE);
+    fsCache::Clear();
     fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');
   }
   

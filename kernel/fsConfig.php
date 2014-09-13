@@ -5,12 +5,12 @@
 */
 class fsConfig implements iSingleton 
 {
-	/** @var fsStruct Instance of $GLOBALS['CONFIG'] as fsStruct @ */
+  /** @var fsStruct Instance of $GLOBALS['CONFIG'] as fsStruct */
   protected static $obj = null;
 	
   private function __construct(){ }
-	private function __clone()    { } 
-	private function __wakeup()   { }
+  private function __clone()    { } 
+  private function __wakeup()   { }
 	
   /**
     * Get kernel config value.   

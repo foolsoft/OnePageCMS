@@ -22,21 +22,23 @@ if(!file_exists('.htaccess')) {
 }
 //Подключаем файлы
 fsFunctions::CreateDirectory(PATH_ROOT.'temp');
-fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/CMSSettings.php');
-fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/MenuGenerator.php');
-fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/fsCMS.php');
-fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/fsAdminPanel.php');
+fsFunctions::IncludeFiles(array(
+    PATH_PLUGINS.'fsCMS/CMSSettings.php',
+    PATH_PLUGINS.'fsCMS/MenuGenerator.php',
+    PATH_PLUGINS.'fsCMS/fsCMS.php',
+    PATH_PLUGINS.'fsCMS/fsAdminPanel.php'
+ ));
 fsFunctions::IncludeFolder(PATH_ROOT.'controllers/fsCMS/');
 //Создаем файл с константами для JavaScript
 if (!file_exists(PATH_JS.'initFsCMS.js')) {
   $fw = new fsFileWorker(PATH_JS.'initFsCMS.js', 'w+');
-  $fw->WriteLine('var URL_ROOT = "{0}";', array(URL_ROOT));
-  $fw->WriteLine('var URL_IMG = "{0}";', array(URL_IMG));
-  $fw->WriteLine('var URL_JS = "{0}";', array(URL_JS));
-  $fw->WriteLine('var URL_CSS = "{0}";', array(URL_CSS));
-  $fw->WriteLine('var URL_SUFFIX = "{0}";', array(fsConfig::GetInstance('links_suffix')));
-  $fw->WriteLine('var LANGUAGE = "{0}";', array(fsSession::GetInstance('Language')));
   $fw->WriteLine('function T(name){return cmsDictionary[name]==undefined?name:cmsDictionary[name];}');
+  $fw->Write('var URL_ROOT="{0}",', array(URL_ROOT));
+  $fw->Write('URL_IMG="{0}",', array(URL_IMG));
+  $fw->Write('URL_JS="{0}",', array(URL_JS));
+  $fw->Write('URL_CSS="{0}",', array(URL_CSS));
+  $fw->Write('URL_SUFFIX="{0}",', array(fsConfig::GetInstance('links_suffix')));
+  $fw->Write('LANGUAGE="{0}";', array(fsSession::GetInstance('Language')));
   $fw->Close();
 }    
 //Обработка закрытого сайта 
