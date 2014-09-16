@@ -3,17 +3,18 @@
 <head>
     <title>OnePageCMS - <?php echo T('XMLcms_panel').($tag->title != '' ? ' - '.$tag->title : ''); ?></title>
     <?php 
-    include PATH_TPL.'shared.php';
-    fsInclude::AddJs(array(URL_PLUGINS.'ace/ace.js', URL_PLUGINS.'ckeditor/ckeditor.js', URL_JS.'jqui/jqui-datepicker.js', URL_JS.'fsCMSAdmin/admin.js'));
+    fsFunctions::IncludeFile(PATH_TPL.'shared.php');
+    fsInclude::AddJs(array(URL_JS.'fsCMSAdmin/admin.js'));
     fsInclude::AddCss(array(URL_CSS.'jqui/jqui-datepicker.css', URL_ATHEME_CSS.'admin.css'));
+    echo fsInclude::Generate(array('ico')).fsInclude::GenerateCache(array('css'), 'admin');
     if (file_exists(PATH_ATHEME_JS.$_REQUEST['controller'].'.js')) {
-        fsInclude::AddJs(URL_ATHEME_JS.$_REQUEST['controller'].'.js');
+        fsInclude::AttachJs(URL_ATHEME_JS.$_REQUEST['controller'].'.js');
     }
     if (file_exists(PATH_ATHEME_CSS.$_REQUEST['controller'].'.css')) {
-        fsInclude::AddCss(URL_ATHEME_CSS.$_REQUEST['controller'].'.css');
+        fsInclude::AttachCss(URL_ATHEME_CSS.$_REQUEST['controller'].'.css');
     }
-    echo fsInclude::Generate(array('ico', 'css'));
     ?>
+    [block-head]<?php /* ACCESS TO <HEAD> FOR CHILD TEMPLATES */ ?>[endblock-head]
 </head>
 <body>
     <div class='admin-top'>
@@ -25,7 +26,7 @@
       </div>
       <div class='admin-content'>
         <?php echo $tag->message; ?>
-        [block-content]<!-- Method Template -->[endblock-content]
+        [block-content]<?php /* Method Template */ ?>[endblock-content]
       </div>
       <div class="clr"></div>  
     </div>
@@ -36,6 +37,9 @@
     <div id="support" class="support hidden">
       <?php echo $tag->panelSupport; ?>  
     </div>
-    <?php echo fsInclude::Generate(array('js')); ?>
+    <?php 
+    echo fsInclude::GenerateCache(array('js'), 'admin'); 
+    fsInclude::AttachJs(array(URL_PLUGINS.'ace/ace.js', URL_PLUGINS.'ckeditor/ckeditor.js', URL_JS.'jqui/jqui-datepicker.js'));
+    ?>
 </body>
 </html>

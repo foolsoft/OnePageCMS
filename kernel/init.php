@@ -27,12 +27,14 @@ fsFunctions::IncludeFiles(array(
     PATH_ROOT.'kernel/fsLanguage.php'
 ));
 fsLanguage::GetInstance();
-define('URL_ROOT',    'http://'.$_SERVER['SERVER_NAME'].'/'.(fsConfig::GetInstance('multi_language') === true ? fsSession::GetInstance('Language').'/' : ''));
-define('URL_PLUGINS', 'http://'.$_SERVER['SERVER_NAME'].'/plugins/');
-define('URL_TPL',     'http://'.$_SERVER['SERVER_NAME'].'/templates/');
-define('URL_CSS',     'http://'.$_SERVER['SERVER_NAME'].'/includes/css/');
-define('URL_JS',      'http://'.$_SERVER['SERVER_NAME'].'/includes/js/');
-define('URL_IMG',     'http://'.$_SERVER['SERVER_NAME'].'/includes/img/');
+define('URL_ROOT_CLEAR', 'http://'.$_SERVER['SERVER_NAME'].'/');
+define('URL_ROOT',    URL_ROOT_CLEAR.(fsConfig::GetInstance('multi_language') === true ? fsSession::GetInstance('Language').'/' : ''));
+define('URL_PLUGINS', URL_ROOT_CLEAR.'plugins/');
+define('URL_CACHE',   URL_ROOT_CLEAR.'cache/');
+define('URL_TPL',     URL_ROOT_CLEAR.'templates/');
+define('URL_CSS',     URL_ROOT_CLEAR.'includes/css/');
+define('URL_JS',      URL_ROOT_CLEAR.'includes/js/');
+define('URL_IMG',     URL_ROOT_CLEAR.'includes/img/');
 fsFunctions::IncludeFiles(array(
     PATH_ROOT.'kernel/fsFileWorker.php',
     PATH_ROOT.'kernel/fsDBconnection.php',

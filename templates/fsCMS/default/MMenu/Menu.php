@@ -1,6 +1,4 @@
-<ul id="menu-level-<?php echo $tag->level; ?>"
-    class="<?php echo $tag->class; ?> <?php echo $tag->class; ?>-level-<?php echo $tag->level; ?>"
->
+<ul id="menu-level-<?php echo $tag->level; ?>" class="<?php echo $tag->class; ?> <?php echo $tag->class; ?>-level-<?php echo $tag->level; ?>">
   <?php
   foreach ($tag->items as $itemId => $item) {
     $title = T($item['title']);

@@ -6,7 +6,7 @@ class MMenu extends cmsController
 
   private function _CacheFile($name, $level = 1, $parent = 0)
   {
-    return PATH_CACHE.'_'.fsSession::GetInstance('Language').'_'.$name.'_'.$parent.$level.$this->_cache_file;
+    return '_'.fsSession::GetInstance('Language').'_'.$name.'_'.$parent.$level.$this->_cache_file;
   }
 
   private function _TagInit($param)
