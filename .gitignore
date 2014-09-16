@@ -5,10 +5,5 @@ nbproject/project.properties
 nbproject/project.xml
 includes/js/initFsCMS.js
 .htaccess
-<<<<<<< HEAD
 settings/Settings.php
 settings/dbSettings.php
-=======
-includes/js/initFsCMS.js
->>>>>>> origin/master
-includes/js/initFsCMS.js

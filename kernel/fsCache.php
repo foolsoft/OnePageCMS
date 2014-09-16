@@ -5,7 +5,6 @@
 */
 class fsCache
 {
-<<<<<<< HEAD
     /** @var string Path of cache folder */
     private static $_path = PATH_CACHE;
     /** @var string Url of cache folder */
@@ -95,11 +94,3 @@ class fsCache
     }
 }
 ?>
-=======
-    private $_path = PATH_CACHE;
-    
-    public static function Create()
-    {
-    }
-}
->>>>>>> origin/master
