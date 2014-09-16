@@ -3,6 +3,7 @@ class fsStruct
 {
   protected $fields = array();
   protected $allowNull;
+  protected $_undefinedValue = '';
   
   //Выводим на экран содержимое структуры
   public function ToScreen($formated = true) {
@@ -70,7 +71,6 @@ class fsStruct
     }
   }
   
-  
   function __construct($fields = null, $allowNull = false)
   {
     $this->allowNull = $allowNull;
@@ -98,7 +98,7 @@ class fsStruct
     if (isset($this->fields[$field])) {
       return $this->fields[$field]['Value'];
     } else {
-      return '';
+      return $this->_undefinedValue;
     }
   }
   
@@ -115,7 +115,5 @@ class fsStruct
   }
 }
 
-class fsStructException extends Exception 
-{
-}
+class fsStructException extends Exception {}
 ?>

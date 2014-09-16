@@ -14,36 +14,43 @@ define('PATH_TPL', PATH_ROOT.'templates/');
 define('PATH_CSS', PATH_ROOT.'includes/css/');
 define('PATH_JS',  PATH_ROOT.'includes/js/');
 define('PATH_IMG', PATH_ROOT.'includes/img/');
-//Грузим ядро
 include PATH_ROOT.'kernel/fsFunctions.php';
 fsFunctions::CreateDirectory(PATH_CACHE);
 fsFunctions::RestrucGlobalFILES();
 fsFunctions::IncludeFolder(PATH_ROOT.'kernel/interfaces/');
-fsFunctions::IncludeFile(PATH_ROOT.'settings/Settings.php');
-fsFunctions::IncludeFile(PATH_ROOT.'settings/dbSettings.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsStruct.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsSession.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsConfig.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsLanguage.php');
+fsFunctions::IncludeFiles(array(
+    PATH_ROOT.'settings/Settings.php',  
+    PATH_ROOT.'settings/dbSettings.php',
+    PATH_ROOT.'kernel/fsStruct.php',
+    PATH_ROOT.'kernel/fsSession.php',
+    PATH_ROOT.'kernel/fsConfig.php',
+    PATH_ROOT.'kernel/fsLanguage.php'
+));
 fsLanguage::GetInstance();
-define('URL_ROOT',    'http://'.$_SERVER['SERVER_NAME'].'/'.(fsConfig::GetInstance('multi_language') === true ? fsSession::GetInstance('Language').'/' : ''));
-define('URL_PLUGINS', 'http://'.$_SERVER['SERVER_NAME'].'/plugins/');
-define('URL_TPL',     'http://'.$_SERVER['SERVER_NAME'].'/templates/');
-define('URL_CSS',     'http://'.$_SERVER['SERVER_NAME'].'/includes/css/');
-define('URL_JS',      'http://'.$_SERVER['SERVER_NAME'].'/includes/js/');
-define('URL_IMG',     'http://'.$_SERVER['SERVER_NAME'].'/includes/img/');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsFileWorker.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsDBconnection.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsValidator.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsDBTable.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsDBTableExtension.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsHtml.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsHtaccess.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/Response.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/View.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsController.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsKernel.php');
-fsFunctions::IncludeFile(PATH_ROOT.'kernel/fsRoute.php');
+define('URL_ROOT_CLEAR', 'http://'.$_SERVER['SERVER_NAME'].'/');
+define('URL_ROOT',    URL_ROOT_CLEAR.(fsConfig::GetInstance('multi_language') === true ? fsSession::GetInstance('Language').'/' : ''));
+define('URL_PLUGINS', URL_ROOT_CLEAR.'plugins/');
+define('URL_CACHE',   URL_ROOT_CLEAR.'cache/');
+define('URL_TPL',     URL_ROOT_CLEAR.'templates/');
+define('URL_CSS',     URL_ROOT_CLEAR.'includes/css/');
+define('URL_JS',      URL_ROOT_CLEAR.'includes/js/');
+define('URL_IMG',     URL_ROOT_CLEAR.'includes/img/');
+fsFunctions::IncludeFiles(array(
+    PATH_ROOT.'kernel/fsFileWorker.php',
+    PATH_ROOT.'kernel/fsDBconnection.php',
+    PATH_ROOT.'kernel/fsValidator.php',
+    PATH_ROOT.'kernel/fsDBTable.php',
+    PATH_ROOT.'kernel/fsDBTableExtension.php',
+    PATH_ROOT.'kernel/fsHtml.php',
+    PATH_ROOT.'kernel/fsHtaccess.php',
+    PATH_ROOT.'kernel/Response.php',
+    PATH_ROOT.'kernel/View.php',
+    PATH_ROOT.'kernel/fsController.php',
+    PATH_ROOT.'kernel/fsKernel.php',
+    PATH_ROOT.'kernel/fsRoute.php',
+    PATH_ROOT.'kernel/fsCache.php',
+    PATH_ROOT.'kernel/fsInclude.php',
+));
 fsRoute::Request();
 fsFunctions::IncludeFile(PATH_PLUGINS.'init.php');
 fsFunctions::IncludeFile(PATH_ROOT.'controllers/init.php');

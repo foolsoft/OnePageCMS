@@ -68,7 +68,7 @@ class AdminMModules extends AdminPanel
             unlink(PATH_ROOT.'install.php');
          }
          $this->Redirect($this->_My());
-         fsFunctions::DeleteDirectory(PATH_CACHE);
+         fsCache::Clear();
         } else {
           $this->Message(T('XMLcms_text_unzip_error'));
           return;

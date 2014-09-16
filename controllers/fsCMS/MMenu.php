@@ -6,14 +6,7 @@ class MMenu extends cmsController
 
   private function _CacheFile($name, $level = 1, $parent = 0)
   {
-    return PATH_CACHE.'_'.fsSession::GetInstance('Language').'_'.$name.'_'.$parent.$level.$this->_cache_file;
-  }
-
-  private function _CachePart($name)
-  {
-    $fileCache = new fsFileWorker($name, 'w+'); 
-    $fileCache->Write($this->Html()); 
-    $fileCache->Close();
+    return '_'.fsSession::GetInstance('Language').'_'.$name.'_'.$parent.$level.$this->_cache_file;
   }
 
   private function _TagInit($param)
@@ -55,7 +48,7 @@ class MMenu extends cmsController
     }
     $this->Tag('items', $arr);
     $this->Html($this->CreateView(array(), $this->_Template($template)));
-    $this->_CachePart($cache);
+    fsCache::CreateOrUpdate($cache, $this->Html());
     return $this->Html(); 
   }
   
@@ -92,7 +85,7 @@ class MMenu extends cmsController
     }
     $this->Tag('items', $arr);
     $this->Html($this->CreateView(array(), $this->_Template($template)));
-    $this->_CachePart($cache);
+    fsCache::CreateOrUpdate($cache, $this->Html());
     return $this->Html();
   }
 }

@@ -173,7 +173,7 @@ class AdminMPosts extends AdminPanel
     if ($postId > 0) {
       $pc = new post_category();
       $pc->Add($postId, $Param->id_category);
-      fsFunctions::DeleteDirectory(PATH_CACHE);
+      fsCache::Clear();
     }
   }
   
@@ -186,7 +186,7 @@ class AdminMPosts extends AdminPanel
     $pc = new post_category();
     $pc->DeleteBy($Param->key, 'id_post');
     $pc->Add($Param->key, $Param->id_category);
-    fsFunctions::DeleteDirectory(PATH_CACHE);
+    fsCache::Clear();
     return parent::actionDoEdit($Param);
   }
   
@@ -227,7 +227,7 @@ class AdminMPosts extends AdminPanel
       } else {
         $pc->DeleteBy($Param->key, 'id_post');
       }
-      fsFunctions::DeleteDirectory(PATH_CACHE);
+      fsCache::Clear();
     }
   }
 

@@ -1,2 +1,9 @@
 includes/img/fsCMS/default/Thumbs.db
 includes/img/fsCMSAdmin/default/Thumbs.db
+/nbproject/private/
+nbproject/project.properties
+nbproject/project.xml
+includes/js/initFsCMS.js
+.htaccess
+settings/Settings.php
+settings/dbSettings.php

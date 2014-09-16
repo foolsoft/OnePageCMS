@@ -56,9 +56,8 @@ class AdminPanel extends cmsController
  
   public function actionDictionary($param)
   {
-    $xml_file = PATH_CACHE.'_text_dictionary_'.fsSession::GetInstance('Language').'.xml';
-    if(file_exists($xml_file)) {
-      $xml = simplexml_load_file($xml_file);
+    $xml = fsCache::GetXml('_text_dictionary_'.fsSession::GetInstance('Language').'.xml');
+    if($xml !== null) {
       $result = $xml->xpath('/dictionary');    
       $json = array();
       $substr = $param->Exists('substr') && $param->substr != '' ? strtolower($param->substr) : false;
@@ -68,7 +67,7 @@ class AdminPanel extends cmsController
           $json[] = array('text' => $cleanName, 'value' => $name);
         }
       }
-      $this->Html(json_encode($json));
+      $this->Json($json);
     } else {
       $this->EmptyResult(true);
     }
@@ -184,7 +183,7 @@ class AdminPanel extends cmsController
   {
     $this->Html(T('XMLcms_deleted'));
     fsSession::Delete('Language');
-    fsFunctions::DeleteDirectory(PATH_CACHE);
+    fsCache::Clear();
     fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');
   }
   

@@ -11,8 +11,7 @@ define('PATH_DTHEME_CSS',  PATH_CSS.'fsCMS/default/');
 define('PATH_DTHEME_JS',   PATH_JS.'fsCMS/default/');
 define('PATH_DTHEME_IMG',  PATH_IMG.'fsCMS/default/');
 define('EMAIL_SUPPORT',  'foolsoft@rambler.ru');
-if (!file_exists(PATH_ROOT.'settings/dbSettings.php') 
-  || !file_exists(PATH_ROOT.'settings/Settings.php')) {
+if (!file_exists(PATH_ROOT.'settings/dbSettings.php') || !file_exists(PATH_ROOT.'settings/Settings.php')) {
   fsFunctions::Redirect(URL_ROOT.'setup.php');
 }
 if(!file_exists('.htaccess')) {
@@ -20,33 +19,31 @@ if(!file_exists('.htaccess')) {
   header('Location: /');
   exit;
 }
-//Подключаем файлы
 fsFunctions::CreateDirectory(PATH_ROOT.'temp');
-fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/CMSSettings.php');
-fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/MenuGenerator.php');
-fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/fsCMS.php');
-fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/fsAdminPanel.php');
+fsFunctions::IncludeFiles(array(
+    PATH_PLUGINS.'fsCMS/CMSSettings.php',
+    PATH_PLUGINS.'fsCMS/MenuGenerator.php',
+    PATH_PLUGINS.'fsCMS/fsCMS.php',
+    PATH_PLUGINS.'fsCMS/fsAdminPanel.php'
+ ));
 fsFunctions::IncludeFolder(PATH_ROOT.'controllers/fsCMS/');
-//Создаем файл с константами для JavaScript
 if (!file_exists(PATH_JS.'initFsCMS.js')) {
   $fw = new fsFileWorker(PATH_JS.'initFsCMS.js', 'w+');
-  $fw->WriteLine('var URL_ROOT = "{0}";', array(URL_ROOT));
-  $fw->WriteLine('var URL_IMG = "{0}";', array(URL_IMG));
-  $fw->WriteLine('var URL_JS = "{0}";', array(URL_JS));
-  $fw->WriteLine('var URL_CSS = "{0}";', array(URL_CSS));
-  $fw->WriteLine('var URL_SUFFIX = "{0}";', array(fsConfig::GetInstance('links_suffix')));
-  $fw->WriteLine('var LANGUAGE = "{0}";', array(fsSession::GetInstance('Language')));
   $fw->WriteLine('function T(name){return cmsDictionary[name]==undefined?name:cmsDictionary[name];}');
+  $fw->Write('var URL_ROOT="{0}",', array(URL_ROOT));
+  $fw->Write('URL_IMG="{0}",', array(URL_IMG));
+  $fw->Write('URL_JS="{0}",', array(URL_JS));
+  $fw->Write('URL_CSS="{0}",', array(URL_CSS));
+  $fw->Write('URL_SUFFIX="{0}",', array(fsConfig::GetInstance('links_suffix')));
+  $fw->Write('LANGUAGE="{0}";', array(fsSession::GetInstance('Language')));
   $fw->Close();
 }    
-//Обработка закрытого сайта 
 if (file_exists(FILE_LOCK) 
   && !AUTH_ADMIN 
   && $_SERVER['REQUEST_URI'] != fsHtml::Url((fsConfig::GetInstance('multi_language') ? '/'.fsSession::GetInstance('Language') : '').'/page/closed') 
   && ($_REQUEST['controller'] != 'MAuth' || ($_REQUEST['method'] != 'AuthAdmin' && $_REQUEST['method'] != 'DoAuthAdmin'))) {
     fsFunctions::Redirect(fsHtml::Url(URL_ROOT.'page/closed'));
 }
-//Добавляем полоску "Панель администрирования"
 if (AUTH_ADMIN && strpos(strtolower($_REQUEST['controller']), 'admin') !== 0) {
   $HL = T('XMLcms_hide'); $PA = T('XMLcms_panel');
   $_REQUEST['includeBody'] .= "<div class='admin_panel_top' id='admin-panel-top' style='border-bottom:2px solid #000;margin:0px;position:fixed;top:0px;background:rgba(0,0,0,0.5);width:100%;height:22px;left:0px;z-index:99999999999;'><a style='float:left;text-decoration:none;color:#EEE;font-family:Tahoma;padding-left:15px;' onmouseout=\"this.style.color='#EEE';\" onmouseover=\"this.style.color='#FFFF00';\" href='".fsHtml::Url(URL_ROOT."AdminPanel/Hello")."' title='".$PA."'>".$PA."</a><a href='#' onclick=\"$('#admin-panel-top').slideUp('slow');\" style='float:right;text-decoration:none;color:#EEE;font-family:Tahoma;margin-right:10px;' onmouseout=\"this.style.color='#EEE';\" onmouseover=\"this.style.color='#FFFF00';\" title='".$HL."'>X</a></div>";  

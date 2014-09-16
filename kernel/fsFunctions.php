@@ -97,7 +97,14 @@ class fsFunctions
   public static function CreateDirectory($path, $access = 0777)
   {
     if (!is_dir($path)) {
-      mkdir($path, $access);
+      $parts = explode('/', $path);
+      $fullPartPath = '';
+      foreach ($parts as $part) {
+          $fullPartPath .= $part.'/';
+          if(!is_dir($fullPartPath)) {
+              mkdir($fullPartPath, $access);
+          }
+      }
       return true;
     }
     return false;
@@ -250,6 +257,15 @@ class fsFunctions
       return true;
     } 
     return false;    
+  }
+  
+  //Подключение файла $file,
+  //$data - ассоциативный массив переменных для файла file  
+  public static function IncludeFiles($files, $data = array())
+  {
+      foreach ($files as $file) {
+        self::IncludeFile($file, $data);
+      }    
   }
   
   //Подключение файлов из директории $path      

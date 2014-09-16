@@ -10,46 +10,41 @@ class AdminMMenu extends AdminPanel
     parent::Init($request);
   }
   
-  public function actionDoItems($Param)
+  public function actionDoItems($param)
   {
-    if ($Param->Exists('key', true)) {
-      if ($Param->key < 1) {
+    if ($param->Exists('key', true)) {
+      if ($param->key < 1) {
         $this->_Referer();
         return;
       } 
-      $Param->table = 'menu_items';
-      parent::actionDoEdit($Param);
+      $param->table = 'menu_items';
+      parent::actionDoEdit($param);
     } else {
-      parent::actionDoAdd($Param);
+      parent::actionDoAdd($param);
     }
-    $this->Redirect($this->_My('EditItems?last='.$Param->menu_name));
-    $this->_DeleteCache();
+    $this->Redirect($this->_My('EditItems?last='.$param->menu_name));
+    fsCache::Clear();
   }
   
-  private function _DeleteCache()
+  public function actionDoAdd($param)
   {
-    fsFunctions::DeleteDirectory(PATH_CACHE);
-  }
-  
-  public function actionDoAdd($Param)
-  {
-    $Param->name = fsFunctions::Chpu($Param->name);
-    if(!$this->_CheckUnique($Param->name, 'name')) {
+    $param->name = fsFunctions::Chpu($param->name);
+    if(!$this->_CheckUnique($param->name, 'name')) {
       return;
     }
-    parent::actionDoAdd($Param);
+    parent::actionDoAdd($param);
   }
   
-  public function actionDoEdit($Param)
+  public function actionDoEdit($param)
   {
-    $Param->name = fsFunctions::Chpu($Param->name);
-    if(!$this->_CheckUnique($Param->name, 'name', $Param->key, 'name')) {
+    $param->name = fsFunctions::Chpu($param->name);
+    if(!$this->_CheckUnique($param->name, 'name', $param->key, 'name')) {
       return;
     }
-    if(parent::actionDoEdit($Param) === 0) {
+    if(parent::actionDoEdit($param) === 0) {
       $menu_items = new menu_items();
-      $menu_items->UpdateName($Param->key, $Param->name);
-      $this->_DeleteCache();
+      $menu_items->UpdateName($param->key, $param->name);
+      fsCache::Clear();
     }
   }
   
@@ -59,55 +54,52 @@ class AdminMMenu extends AdminPanel
     return $templates['NAMES'];
   }
   
-  public function actionAdd($Param)
+  public function actionAdd($param)
   {
     $this->Tag('templates', $this->_Templates());
     $this->Tag('current_template', $this->settings->default_template);
   }
   
-  public function actionConfig($Param)
+  public function actionConfig($param)
   {
     $this->Tag('templates', $this->_Templates());
     $this->Tag('current_template', $this->settings->default_template);
   }
   
-  public function actionEdit($Param)
+  public function actionEdit($param)
   {
-    $this->_table->current = $Param->key;
-    if ($this->_table->name != $Param->key) {
-      $this->_Referer();
-      return;
+    $this->_table->current = $param->key;
+    if ($this->_table->name != $param->key) {
+      return $this->_Referer();
     }
     $this->Tag('templates', $this->_Templates());
     $this->Tag('menu', $this->_table->result);
   }
   
-  public function actionAjaxItemsInMenu($Param)
+  public function actionAjaxItemsInMenu($param)
   {
     $menu_items = new menu_items();
-    $items = $menu_items->GetItemsInMenu($Param->menu);
+    $items = $menu_items->GetItemsInMenu($param->menu);
     $this->Html('<option value="0" '.($selected == 0 ? 'selected' : '').'>'.T('XMLcms_no').'</option>');
     foreach ($items as $item) {
       $this->Html('<option value="'.$item['id'].'">'.$item['title'].'</option>');
     }
   }
   
-  
-  public function actionEditItems($Param)
+  public function actionEditItems($param)
   {
     $menus = $this->_table->GetAll(true, false, array('title'));
     if (count($menus) == 0) {
-      $this->_Referer();
       $this->Message(T('XMLcms_text_need_add_menu'));
-      return;
+      return $this->_Referer();
     }
-    $this->Tag('last', $Param->Exists('last') ? $Param->last : '');
+    $this->Tag('last', $param->Exists('last') ? $param->last : '');
     $menu_items = new menu_items();
     $pages = new pages();
     $posts_category = new posts_category();
     $controller_menu = new controller_menu();
     
-    $key = $Param->Exists('key', true) ? $Param->key : 0;
+    $key = $param->Exists('key', true) ? $param->key : 0;
     $menu = $key == 0 ? $menus[0]['name'] : $menu_items->GetMenuName($key);
     $readyLinks = $pages->GetMenuPages(); 
     $readyControllerLinks = $controller_menu->GetAll();
@@ -126,28 +118,27 @@ class AdminMMenu extends AdminPanel
     $this->Tag('linksControllers', $readyControllerLinks);
   }
   
-  public function actionDelete($Param)
+  public function actionDelete($param)
   {
     $menu = '';
     $menu_items = new menu_items();
-    if ($Param->Exists('table')) {
-      $menu = $menu_items->GetMenuName($Param->key);
+    if ($param->Exists('table')) {
+      $menu = $menu_items->GetMenuName($param->key);
     }
-    if (parent::actionDelete($Param) == 0) {
-      if (!$Param->Exists('table')) {
-        $menu_items->DeleteBy($Param->key, 'menu_name');
+    if (parent::actionDelete($param) == 0) {
+      if (!$param->Exists('table')) {
+        $menu_items->DeleteBy($param->key, 'menu_name');
       } else {
-        $menu_items->NullParent($Param->key);
-        $this->Redirect($this->_My('EditItems?last='.$Param->menu_name));
+        $menu_items->NullParent($param->key);
+        $this->Redirect($this->_My('EditItems?last='.$param->menu_name));
       }
-      $this->_DeleteCache();
+      fsCache::Clear();
     }
   }
   
-  public function actionIndex($Param)
+  public function actionIndex($param)
   {
     $this->Tag('menus', $this->_table->GetAll(true, false, array('name')));
   }
-
 } 
 ?>

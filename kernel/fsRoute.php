@@ -9,8 +9,8 @@ class fsRoute
       return; 
     }
     $route = explode('/', $_REQUEST[self::$_requestField]);
-    $routeLength = count($route);
-    for ($i = 0; $i < $routeLength - 1; $i += 2) {
+    $routeLength = count($route) - 1;
+    for ($i = 0; $i < $routeLength; $i += 2) {
       if (!isset($_REQUEST['controller'])) {
         $_REQUEST['controller'] = $route[$i];
         $_REQUEST['method'] = $route[$i + 1]; 

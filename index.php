@@ -7,6 +7,5 @@ url: http://foolsoft.ru
 include './kernel/init.php';
 $fsKernel = new fsKernel();
 //fsFunctions::FormatPrint($_REQUEST); //Debug query
-$fsKernel->DoMethod($_REQUEST);
-//$fsKernel->WorkTime(); //Debug working time
+$fsKernel->DoMethod(true);
 ?>       
