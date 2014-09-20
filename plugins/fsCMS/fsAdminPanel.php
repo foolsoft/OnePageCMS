@@ -433,54 +433,83 @@ class AdminPanel extends cmsController
     return $html;
   }
 
-  public function actionHello($Params)
+  public function actionHello($param)
   {
   }
 
-  public function actionConfig($Param)
+  public function actionConfig($param)
   {
       $this->Tag('settings', $this->settings);
       $templates = fsFunctions::DirectoryInfo(PATH_TPL.'fsCMS', false, true);
       $templatesFiles = fsFunctions::DirectoryInfo(PATH_TPL.$this->settings->template.'/MPages/', true, false, 'Index', array('php'));
-      $theme = fsFunctions::Slash($this->settings->template);
       $this->Tag('templates', $templates['NAMES']);
       $this->Tag('templatesFiles', $templatesFiles['NAMES']);
+      $start_pages = array();
+      $start_pages['group_pages'] = '[group='.T('XMLcms_pages').']';
+      $db = new fsDBTableExtension('pages');
+      $db->Select()->Order(array('title'))->Execute('', false);
+      while($db->Next())
+      {
+          $start_pages['page/'.$db->result->alt] = T($db->result->title);
+      }
+      $start_pages['group_pages_end'] = '[/group='.T('XMLcms_pages').']';
+      $start_pages['group_categories'] = '[group='.T('XMLcms_text_categories').']';
+      $db = new fsDBTableExtension('posts_category');
+      $db->Select()->Order(array('name'))->Execute('', false);
+      while($db->Next())
+      {
+          $start_pages['posts/'.$db->result->alt] = T($db->result->name);
+      }
+      $start_pages['group_categories_end'] = '[/group='.T('XMLcms_text_categories').']';
+      $start_pages['group_posts'] = '[group='.T('XMLcms_text_posts').']';
+      $db = new fsDBTableExtension('posts');
+      $db->Select()->Order(array('title'))->Execute('', false);
+      while($db->Next())
+      {
+          $start_pages['post/'.$db->result->alt] = T($db->result->title);
+      }
+      $start_pages['group_posts_end'] = '[/group='.T('XMLcms_text_posts').']';
+      $this->Tag('start_pages', $start_pages);
   }
   
-  public function actionDoConfig($Param)
+  public function actionDoConfig($param)
   {
-    if ($Param->Exists('call') && $Param->call != '') {
-      $this->_Do($Param, $Param->call, 'doConfig');
+    if ($param->Exists('call') && $param->call != '') {
+      $this->_Do($param, $param->call, 'doConfig');
     } else {
       $cs = new controller_settings();
       $arr = $this->settings->GetStruct();
       foreach($arr as $f) {
-        if ($f == 'controller' || !$Param->Exists($f)) {
+        if ($f == 'controller' || !$param->Exists($f)) {
           continue;
         }
-        $cs->Set($this->settings->controller, $f, $Param->$f);
+        $cs->Set($this->settings->controller, $f, $param->$f);
       }
       $this->_Referer();  
     }
     $settingsFile = PATH_ROOT.'settings/Settings.php';
-    if($Param->controller = 'AdminPanel' && $Param->Exists('links_suffix') 
+    $startPage = $param->start_page_custom != '' ? $param->start_page_custom : $param->start_page; 
+    if($param->controller = 'AdminPanel' && $param->Exists('links_suffix') 
       && file_exists($settingsFile)) {
       $s = file_get_contents($settingsFile);
       $s = preg_replace(
         "/'links_suffix'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
-        "'links_suffix' => array('ReadOnly' => true, 'Value' => '".$Param->links_suffix."')", $s);
+        "'links_suffix' => array('ReadOnly' => true, 'Value' => '".$param->links_suffix."')", $s);
+      $s = preg_replace(
+        "/'start_page'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
+        "'start_page' => array('ReadOnly' => true, 'Value' => '".$startPage."')", $s);
       $s = preg_replace(
         "/'url_404'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
-        "'url_404' => array('ReadOnly' => true, 'Value' => 'http://".$_SERVER['SERVER_NAME'].'/404'.$Param->links_suffix."')", $s);
+        "'url_404' => array('ReadOnly' => true, 'Value' => 'http://".$_SERVER['SERVER_NAME'].'/404'.$param->links_suffix."')", $s);
       $s = preg_replace(
         "/'multi_language'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+(true|false)\)/i", 
-        "'multi_language' => array('ReadOnly' => true, 'Value' => ".$Param->multi_language.")", $s);  
+        "'multi_language' => array('ReadOnly' => true, 'Value' => ".$param->multi_language.")", $s);  
       fsFileWorker::UpdateFile($settingsFile, $s);
-      fsHtaccess::Create($Param->links_suffix, $Param->multi_language == 'true');
+      fsHtaccess::Create($param->links_suffix, $param->multi_language == 'true');
       
       $this->Redirect('http://'.$_SERVER['SERVER_NAME'].'/'.
-        ($Param->multi_language == 'true' ? fsSession::GetInstance('Language').'/' : '').
-        'AdminPanel/Config'.$Param->links_suffix
+        ($param->multi_language == 'true' ? fsSession::GetInstance('Language').'/' : '').
+        'AdminPanel/Config'.$param->links_suffix
       );
       
       fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');

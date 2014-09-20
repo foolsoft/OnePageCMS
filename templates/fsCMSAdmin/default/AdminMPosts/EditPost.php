@@ -11,7 +11,7 @@ $postDate = $postDate[0];
 <form action="<?php echo $myLink; ?>DoEdit/key/<?php echo $tag->post->id; ?>/call/Post/" method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_name'); ?>:<br />
-    <input value="<?php echo $tag->post->title; ?>" onkeyup="fsCMS.Chpu(this.value, 'alt');" class='input-100' maxlength='100' type='text' name='title' />
+    <input value="<?php echo $tag->post->title; ?>" class='input-100' maxlength='100' type='text' name='title' />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_link'); ?>:<br />

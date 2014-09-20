@@ -6,7 +6,7 @@
 <form action="<?php echo $myLink; ?>DoEdit/key/<?php echo $tag->page->id; ?>/" method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_title'); ?>:<br />
-    <input value='<?php echo $tag->page->title; ?>' onkeyup="fsCMS.Chpu(this.value, 'alt');" class='input-100' maxlength='100' type='text' name='title' />
+    <input value='<?php echo $tag->page->title; ?>' class='input-100' maxlength='100' type='text' name='title' />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_link'); ?>:<br />

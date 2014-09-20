@@ -23,6 +23,12 @@
     <input class='input-100' type='text' name='robot_email' value='<?php echo $tag->settings->robot_email; ?>' />
   </p>
   <p class='title'>
+    <?php _T('XMLcms_text_start_page'); ?>:
+    <?php echo fsHtml::Select('start_page', $tag->start_pages, fsConfig::GetInstance('start_page')); ?>
+    <?php echo T('XMLcms_or_custom').': '.URL_ROOT; ?>
+    <input type="text" name="start_page_custom" value="<?php echo $tag->settings->start_page_custom; ?>" />
+  </p>
+  <p class='title'>
     <?php _T('XMLcms_text_404'); ?>:
   </p>
   <p>

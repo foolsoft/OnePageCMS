@@ -12,6 +12,9 @@
       <a title="Login" href="{0}">this form</a> for entering.
     ]]></en>
   </text>
+  <text name='cms_text_start_page'>
+    <en>Start page</en>
+  </text>
   <text name='cms_html_attr_name'>
     <en>Name of HTML tag</en>
   </text>
@@ -532,6 +535,9 @@
   </text>
   <text name='cms_page'>
     <en>Page</en>
+  </text>
+  <text name='cms_or_custom'>
+    <en>or custom</en>
   </text>
   <text name='cms_invalid_command'>
     <en>Unknown command!</en>

@@ -144,6 +144,18 @@ class fsKernel extends fsController
     echo $html; 
   }
   
+  /**
+  * Redirect to start page from config. 
+  * @since 1.0.0
+  * @api    
+  * @param fsStruct $param User request. 
+  * @return void.  
+  */
+  public function actionStartPage($param)
+  {
+      $this->Redirect(fsHtml::Url(URL_ROOT.fsConfig::GetInstance('start_page')));
+  }
+  
    /**
   * Html template of element with script work time. 
   * @since 1.0.0

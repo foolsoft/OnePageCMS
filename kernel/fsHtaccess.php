@@ -85,7 +85,7 @@ FileETag MTime Size
 
   #MPages
   RewriteRule ^{11}404{1}$ /index.php?{7}controller=MPages&method=View&page=?404 [L]
-  RewriteRule ^{12}?$ /index.php?{6}controller=MPages&method=View&page=0 [L]
+  RewriteRule ^{12}?$ /index.php?{6}&method=StartPage [L]
   RewriteCond %{QUERY_STRING} (.*)
   RewriteRule ^{5}page/([0-9a-zA-Z_\-]+){1}$ /index.php?{6}controller=MPages&method=View&page=${9}&%1 [L]
   RewriteRule ^template/([0-9a-zA-Z_\-]+)$ /index.php?controller=MTemplate&method=Change&name=$1 [L]

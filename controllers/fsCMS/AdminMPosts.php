@@ -87,10 +87,10 @@ class AdminMPosts extends AdminPanel
     $this->Tag('categories', $posts_category);
   }
   
-  public function actionEditPost($Param)
+  public function actionEditPost($param)
   {
-    $this->_table->current = $Param->key;
-    if ($this->_table->id != $Param->key) {
+    $this->_table->current = $param->key;
+    if ($this->_table->id != $param->key) {
       $this->_Referer();
       return;
     }
@@ -102,7 +102,7 @@ class AdminMPosts extends AdminPanel
     $this->Tag('templates_short', $templates_short['NAMES']);
     $this->Tag('categories', $posts_category->GetAll(true, false, array('name')));
     $this->Tag('post', $this->_table->result);
-    $this->Tag('post_categories', $post_category->GetByPostId($Param->key));
+    $this->Tag('post_categories', $post_category->GetByPostId($param->key));
   }
 
   public function actionAjaxPostsTable($Param)
