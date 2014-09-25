@@ -13,28 +13,28 @@
  */  
 class fsDBTable
 {
-  /** @var integer Table columns count @ */
+  /** @var integer Table columns count */
   protected $_columnsCount = 0;
   
-  /** @var fsDBsettings MySQL connection settings @ */
+  /** @var fsDBsettings MySQL connection settings */
   protected $_config       = null;
   
-  /** @var fsStruct Table structure @ */
+  /** @var fsStruct Table structure */
   protected $_struct       = null;
   
-  /** @var fsStruct Query structure @ */
+  /** @var fsStruct Query structure */
   protected $_query        = null;
   
-  /** @var fsStruct Query result structure @ */
+  /** @var fsStruct Query result structure */
   protected $_result       = null;
   
-  /** @var array Table columns names @ */
+  /** @var array Table columns names */
   protected $_columns      = array();
   
-  /** @var array Table columns types @ */
+  /** @var array Table columns types */
   private   $_columnsType  = array();
   
-  /** @var array Foreign keys @ */
+  /** @var array Foreign keys */
   private   $_join         = array();
   
   /**

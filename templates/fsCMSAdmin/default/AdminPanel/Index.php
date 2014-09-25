@@ -31,7 +31,7 @@
       <div class="clr"></div>  
     </div>
     <div class='admin-footer'>
-      2011-<?php echo date("Y"); ?> (c) <a href="http://foolsoft.ru" title="<?php _T('XMLcms_a'); ?>" target="_blank"><?php _T('XMLcms_a'); ?></a> | 
+      2011-<?php echo date("Y"); ?> &copy; <a href="http://foolsoft.ru" title="<?php _T('XMLcms_a'); ?>" target="_blank"><?php _T('XMLcms_a'); ?></a> | 
       <a class="fancybox" href="#support" title="<?php _T('XMLcms_support'); ?>"><?php _T('XMLcms_support'); ?></a>
     </div>
     <div id="support" class="support hidden">

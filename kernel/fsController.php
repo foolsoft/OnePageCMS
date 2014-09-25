@@ -5,19 +5,19 @@
 */
 class fsController 
 {
-  /** @var Response Instance of response object @ */
+  /** @var Response Instance of response object  */
   protected $_response  = null;  
   
-  /** @var View Instance of view object @ */
+  /** @var View Instance of view object */
   protected $_view      = null;  
   
-  /** @var string Url to current controller @ */
+  /** @var string Url to current controller */
   protected $_link      = '';    
   
-  /** @var string Controller MySQL table name or empty string if table not exits @ */
+  /** @var string Controller MySQL table name or empty string if table not exits */
   protected $_tableName = ''; 
      
-  /** @var fsDBTableExtension|object|null Instance of MySQL table as controller model or fsDBTableExtension object or null if $_tableName is empty @ */
+  /** @var fsDBTableExtension|object|null Instance of MySQL table as controller model or fsDBTableExtension object or null if $_tableName is empty */
   protected $_table     = null; 
   
   /**

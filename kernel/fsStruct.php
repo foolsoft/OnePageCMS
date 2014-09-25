@@ -1,11 +1,24 @@
 <?php
+/**
+* Base data structure
+* @package fsKernel
+*/
 class fsStruct
 {
+  /** @var array Data lisst */   
   protected $fields = array();
+  /** @var bollean Flag for allow inline data generation */ 
   protected $allowNull;
+  /** @var string Value for not existing data */ 
   protected $_undefinedValue = '';
   
-  //Выводим на экран содержимое структуры
+  /**
+    * Print inner structure.    
+    * @since 1.0.0
+    * @api  
+    * @param boolean $formated (optional) Flag for 'pre' tag using. Default <b>true</b>.   
+    * @return void.  
+    */
   public function ToScreen($formated = true) {
     if($formated !== true) {
       print_r($this->fields);
@@ -14,7 +27,13 @@ class fsStruct
     }
   }
   
-  //Получение массива всех полей структуры за исключением значений из $filter  
+   /**
+    * Get data fields names.    
+    * @since 1.0.0
+    * @api  
+    * @param array $filter (optional) Data for exclude from result.   
+    * @return array Fields names.  
+    */
   public function GetStruct($filter = array())
   {
     $result = array();
@@ -26,8 +45,13 @@ class fsStruct
     return $result; 
   }
   
-  //Очистка всех значнией структуры, которые не указаны в $filter 
-  //и которые имеют атрибут ReadOnly = false
+  /**
+    * Clear not 'ReadOnly' inner data.    
+    * @since 1.0.0
+    * @api  
+    * @param array $filter (optional) Data for exclude from result.   
+    * @return void.  
+    */
   public function Clear($filter = array())
   {
     foreach ($this->fields as $field => $struct) {
@@ -37,7 +61,12 @@ class fsStruct
     }
   }
   
-  //Возвращает структуру в виде ассоциативного массива
+  /**
+    * Get inner data as associative array.    
+    * @since 1.0.0
+    * @api  
+    * @return array Inner data.  
+    */
   public function ToArray()
   {
     $arr = array();
@@ -47,17 +76,27 @@ class fsStruct
     return $arr;
   }
   
-  //Проверка существования в структуре элемента с именем $field 
-  //$check_numeric = true дополнительно провреят является ли значение элемента
-  //$field числом
-  public function Exists($field, $check_numeric = false)
+   /**
+    * Check data existing.    
+    * @since 1.0.0
+    * @api  
+    * @param string $field Name of data to be check.
+    * @param boolean $checkNumeric Flag for additional check for numeric type. Default <b>false</b>.
+    * @return boolean Result of checking.  
+    */
+  public function Exists($field, $checkNumeric = false)
   {
     return isset($this->fields[$field]) && 
-           (!$check_numeric || is_numeric($this->fields[$field]['Value'])); 
+           (!$checkNumeric || is_numeric($this->fields[$field]['Value'])); 
   }
   
-  //Удаление из струтуры элемента с именем $field (или значениями массива $field),
-  //если $field не указано удаляются все элементы структуры
+  /**
+    * Delete inner data.    
+    * @since 1.0.0
+    * @api  
+    * @param string|boolean $field (optional) Name of data to be delete. If <b>false</b> delete all data. Default <b>false</b>.
+    * @return void.  
+    */
   public function Delete($field = false)
   {
     if ($field === false) {
@@ -71,6 +110,14 @@ class fsStruct
     }
   }
   
+  /**
+    * Constructor for fsStruct.    
+    * @since 1.0.0
+    * @api  
+    * @param array $fields (optional) Inner data for structure.
+    * @param boolean $allowNull (optional) Flag for dynamic structure. Default <b>false</b>.
+    * @return void.  
+    */
   function __construct($fields = null, $allowNull = false)
   {
     $this->allowNull = $allowNull;

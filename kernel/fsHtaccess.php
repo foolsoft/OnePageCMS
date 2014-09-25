@@ -22,7 +22,7 @@ class fsHtaccess
     $domain = explode('.', $domain[2]);
     $firstIndex = $domain[0] == 'www' ? 1 : 0;
     $domainZone = $domain[count($domain) - 1];
-    if(count($domain) - $firstIndex == 2) {
+    if(count($domain) == 2) {
       $domain = $domain[0];
     } else {
       $temp = '';
@@ -74,12 +74,12 @@ FileETag MTime Size
   RewriteEngine On
   
   #Redirect to domain with www	
-  #RewriteCond %{HTTP_HOST} ^{0}$ [NC]
-  #RewriteRule ^(.*)$ {2}/$1 [R=301,L]
+  RewriteCond %{HTTP_HOST} ^{0}$ [NC]
+  RewriteRule ^(.*)$ {2}/$1 [R=301,L]
 
   #Redirect to domain without www	
-  RewriteCond %{HTTP_HOST} ^www\.{0}$ [NC]
-  RewriteRule ^(.*)$ {3}$1 [R=301,L]
+  #RewriteCond %{HTTP_HOST} ^www\.{0}$ [NC]
+  #RewriteRule ^(.*)$ {3}$1 [R=301,L]
 
   {4}
 

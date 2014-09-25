@@ -7,5 +7,5 @@ url: http://foolsoft.ru
 include './kernel/init.php';
 $fsKernel = new fsKernel();
 //fsFunctions::FormatPrint($_REQUEST); //Debug query
-$fsKernel->DoMethod(true);
+$fsKernel->DoMethod(); 
 ?>       

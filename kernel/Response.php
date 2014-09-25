@@ -1,9 +1,26 @@
 <?php
+/**
+* Cache class
+* @package fsKernel
+* @property string $template Template for page generation
+* @property string $message Message for controller
+* @property string $html Response answer as HTML code
+* @property string $redirect Response answer as redirect 
+* @property string $empty Flag for skip page generation in controller  
+*/
 class Response
 {
-  private $_struct;
+  /** @var fsStruct Data for controoler */
+  protected $_struct;
+  /** @var fsStruct Response data */
   public  $tag;
   
+  /**
+  * Response constructor  
+  * @api
+  * @since 1.0.0
+  * @return void      
+  */
   public function __construct()
   {
     $responseConfig = array();

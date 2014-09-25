@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>OnePage CMS - <?php _T('XMLcms_panel').' '.($tag->title != '' ? '- '.$tag->title : ''); ?></title>
+	<title>OnePageCMS - <?php _T('XMLcms_panel').' '.($tag->title != '' ? '- '.$tag->title : ''); ?></title>
   <?php fsFunctions::IncludeFile(PATH_TPL.'shared.php'); ?>
   <link rel="stylesheet" type="text/css" href="<?php echo URL_ATHEME_CSS.'admin.css'; ?>">
   <link rel="stylesheet" type="text/css" href="<?php echo URL_THEME_CSS.'MAuth.css'; ?>">
@@ -30,7 +30,7 @@
       </form>
   </div>
   <div class='authadmin-div-footer'>
-      2011-<?php echo date("Y"); ?> (c) <a href='http://foolsoft.ru' title='<?php _T('XMLcms_a'); ?>' target='_blank'><?php _T('XMLcms_a'); ?></a>
+      2011-<?php echo date("Y"); ?> &copy; <a href='http://foolsoft.ru' title='<?php _T('XMLcms_a'); ?>' target='_blank'><?php _T('XMLcms_a'); ?></a>
   </div>
 </body>
 </html>

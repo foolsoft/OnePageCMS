@@ -6,12 +6,28 @@
 class fsFunctions
 {
   private static $_slash = '/';
-  
+ 
+  /**
+    * Check that object exists and not empty.    
+    * @since 1.0.0
+    * @api    
+    * @param mixed $obj Object for checking.
+    * @return boolean Result of checking.  
+    */
   public static function NotEmpty($obj)
   {
     return isset($obj) && !empty($obj);
   }
   
+  /**
+    * Send GET request 
+    * @since 1.0.0
+    * @api    
+    * @param string $url Url for request.
+    * @param array $data (optional) Request data. Default <b>null</b>.
+    * @param array $options (optional) Additional CURL options. Default <b>empty array</b>.
+    * @return string Server answer.  
+    */
   public static function RequestGet($url, $data = null, $options = array()) 
   {
     $defaults = array(
@@ -30,6 +46,15 @@ class fsFunctions
     return $result; 
   }
   
+  /**
+    * Send POST request 
+    * @since 1.0.0
+    * @api    
+    * @param string $url Url for request.
+    * @param array $data (optional) Request data. Default <b>null</b>.
+    * @param array $options (optional) Additional CURL options. Default <b>empty array</b>.
+    * @return string Server answer.  
+    */
   public static function RequestPost($url, $data = null, $options = array()) 
   {
     $defaults = array(
@@ -53,7 +78,13 @@ class fsFunctions
     return $result;  
   }
   
-  //Форматированный вывод print_r($data)
+  /**
+    * Print array data
+    * @since 1.0.0
+    * @api    
+    * @param array $data Data for print.
+    * @return void.  
+    */
   public static function FormatPrint($data)
   {
     echo '<pre>';
@@ -61,25 +92,47 @@ class fsFunctions
     echo '</pre>';
   }
   
-  //Возвращаем путь к директории файла $filePath 
+  /**
+    * Get directory from full file path.
+    * @since 1.0.0
+    * @api    
+    * @param string $filePath Full file path.
+    * @return string Directory path.  
+    */
   public static function GetDirectoryFromFullFilePath($filePath)
   {
     return substr($filePath, 0, strrpos($filePath, self::$_slash, -3) + 1);
   }
   
-  //Вычисляем дату относительно $startDate
-  public static function AddTime($stringOfChange, $startDate = false) 
+  /**
+    * Calculate new date.
+    * @since 1.0.0
+    * @api    
+    * @param string $stringOfChange Change commad (e.g. '+2 days').
+    * @param date $startDate (optional) Base timestamp. Default <b>now</b>.
+    * @return date Calculated date.  
+    */
+  public static function AddTime($stringOfChange, $startDate = null) 
   {
-    if($startDate === false) {
+    if(null == $startDate || $startDate === false) {
       $startDate = date('Y-m-d H:i:s');
     }
     return date('Y-m-d H:i:s', strtotime($stringOfChange, strtotime($startDate)));
   }
   
-  //Split с возможностью удалять пустые вхождения
-  public static function Explode($delimiter, $string, $deleteEmpty = false, $limit = false) 
+  /**
+    * Split string.
+    * @since 1.0.0
+    * @api    
+    * @param string $delimiter Delimiter.
+    * @param string $string String for split.
+    * @param boolean $deleteEmpty (optional) Flag for skipping empty entries. Default <b>false</b>.
+    * @param integer $limit (optional) Msximum result array length. If 0 - no limit. Default <b>0</b>.
+    * @return array Splitting string.  
+    */
+  public static function Explode($delimiter, $string, $deleteEmpty = false, $limit = 0) 
   {
-    $arr = is_numeric($limit) ? explode($delimiter, $string) : explode($delimiter, $string, $limit);
+    $arr = is_numeric($limit) && $limit > 0 ? explode($delimiter, $string) : explode($delimiter, $string, $limit);
     if($deleteEmpty !== false) {
       $temp = array();
       foreach($arr as $a) {
@@ -93,7 +146,14 @@ class fsFunctions
     return $arr;
   }
   
-  //Создание директории $path если таковая не существует с правами $access
+  /**
+    * Create new directory if it not exists.
+    * @since 1.0.0
+    * @api    
+    * @param string $path Directory path.
+    * @param integer $access Permissions.
+    * @return void  
+    */
   public static function CreateDirectory($path, $access = 0777)
   {
     if (!is_dir($path)) {
@@ -110,7 +170,13 @@ class fsFunctions
     return false;
   } 
   
-  //Редирект на страницу $url
+  /**
+    * Set redirect header and stop script.
+    * @since 1.0.0
+    * @api    
+    * @param string $url Url for redirection.
+    * @return void  
+    */
   public static function Redirect($url)
   {
     Header('Location: '.$url);
@@ -119,9 +185,9 @@ class fsFunctions
   
   //Проверяем наличие строки $slash на конце строки $string
   //если $slash в $string отсутсвует, приписываем ее
-  public static function Slash($string, $slash = false)
+  public static function Slash($string, $slash = null)
   {
-    if ($slash === false) {
+    if ($slash === null) {
       $slash = self::$_slash;
     }
     return substr($string, -strlen($slash)) != $slash ? $string.$slash : $string;

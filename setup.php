@@ -74,6 +74,13 @@ if ($_POST) {
     $f = new fsFileWorker($path.'Settings.php', 'w+');
     $f->WriteLine('<?php');
     $f->WriteLine("\$GLOBALS['CONFIG'] = array(");
+    $alph = '0123tyuiop456789qwerasdfghjklzVFRTGxcvbnmQAZXSWEDCBNH$%^YUJMKIOLP!@#&*()_ +=-';
+    $secret = '';
+    while(strlen($secret) < 25) {
+        $secret .= $alph[rand(0, strlen($alph))];
+    }
+    $f->WriteLine("'secret' => array('ReadOnly' => true, 'Value' => '{0}'),",
+                  array($secret));
     $f->WriteLine("'main_admin' => array('ReadOnly' => true, 'Value' => '{0}'),",
                   array($_POST["admin_login"]));
     $f->WriteLine("'system_language' => array('ReadOnly' => true, 'Value' => '{0}'),",
@@ -238,15 +245,6 @@ if ($_POST) {
         PRIMARY KEY (`id`),
         UNIQUE KEY `alt` (`alt`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=".$_POST['db_codepage'].";
-    ");
-    
-    $connection->Query("
-      CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."page_post` (
-        `id_page` int(11) NOT NULL,
-        `id_block` int(11) NOT NULL,
-        UNIQUE KEY `id_page` (`id_page`,`id_block`),
-        UNIQUE KEY `id_page_2` (`id_page`,`id_block`)
-      ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
     ");
     
     $connection->Query("

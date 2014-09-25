@@ -1,11 +1,22 @@
 <?php    
+/**
+* Language class
+* @package fsKernel
+*/
 class fsLanguage implements iSingleton
 {
-  protected static $obj = null;
-	private function __construct(){ }
-	private function __clone()    { } 
-	private function __wakeup()   { }
+    /** @var fsStruct Class instance */ 
+    protected static $obj = null;
+    private function __construct(){ }
+    private function __clone()    { } 
+    private function __wakeup()   { }
   
+    /**
+    * Generate language files.    
+    * @since 1.0.0
+    * @api    
+    * @return void.  
+    */
   public static function GetInstance()
   {
     if (self::$obj == null) {
@@ -103,6 +114,7 @@ class fsLanguage implements iSingleton
       unset($isDCACHEFILE);
       unset($isSDCACHEFILE);
       unset($isXDCACHEFILE);
+      self::$obj = true;
     }
   }  
 }

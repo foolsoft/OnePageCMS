@@ -1,19 +1,19 @@
 <?php
-class MAuth extends cmsController {
-  
+class MAuth extends cmsController 
+{
   protected $_tableName = 'users';
   private $_authAdminCount = 5;
   private $_methodAuthAdmin = 'AuthAdmin';
   
-  public function actionDoAuth($Param)
+  public function actionDoAuth($param)
   {
     if(AUTH) {
       $this->Redirect(URL_ROOT);
       return;
     }
     $this->_Referer();
-    $login = fsValidator::ClearData($Param->login);
-    $password =  fsValidator::ClearData($Param->password);
+    $login = fsValidator::ClearData($param->login);
+    $password =  fsValidator::ClearData($param->password);
     $userData = $this->_table->IsUser($login, $password);
     if($userData !== false) {
       fsSession::Create('AUTH', $userData);  
@@ -22,7 +22,7 @@ class MAuth extends cmsController {
     }
   }
   
-  public function actionDoAuthAdmin($Params)
+  public function actionDoAuthAdmin($param)
   {
       if(AUTH) {
         $this->Redirect(AUTH_ADMIN ? fsHtml::Url(URL_ROOT.'AdminPanel/Hello') : URL_ROOT);
@@ -36,9 +36,8 @@ class MAuth extends cmsController {
         $this->Redirect($this->_My($this->_methodAuthAdmin));
         return;
       }
-      $login = fsValidator::ClearData($Params->login);
-      $password =  fsValidator::ClearData($Params->password);
-      $userData = $this->_table->IsAdmin($login, $password);
+      $login = fsValidator::ClearData($param->login);
+      $userData = $this->_table->IsAdmin($login, fsValidator::ClearData($param->password));
       if($userData !== false) {
         fsSession::Delete('AUTH_COUNT');
         if(fsSession::Exists('AUTH', $userData)) {
@@ -60,7 +59,7 @@ class MAuth extends cmsController {
   }
   
   
-  public function actionDoLogout($Params)
+  public function actionDoLogout($param)
   {
     if (fsSession::Exists('AUTH')) {
       fsSession::Delete('AUTH');
@@ -68,13 +67,13 @@ class MAuth extends cmsController {
     $this->Redirect(URL_ROOT);
   }
   
-  public function actionDoLogoutAdmin($Params)
+  public function actionDoLogoutAdmin($param)
   {
-    $this->actionDoLogout($Params);
+    $this->actionDoLogout($param);
     $this->Redirect($this->_My($this->_methodAuthAdmin));
   }
   
-  public function actionAuthAdmin($Params)
+  public function actionAuthAdmin($param)
   {
     if(AUTH_ADMIN) {
       $this->Redirect(fsHtml::Url(URL_ROOT.'AdminPanel/Hello'));
@@ -82,14 +81,14 @@ class MAuth extends cmsController {
       $this->Tag('title', T('XMLcms_text_enter'));   
     }  
   }
-  
+          
   public function FormLogin($param) 
   {
-    $html = $this->CreateView(array(), $this->_Template('FormLogin'));
+    $html = $this->CreateView(array(), $this->_Template($param->Exists('template') && $param->template != '' ? $param->template : 'FormLogin'));
     return "<form method='post' action='".fsHtml::Url(URL_ROOT.'MAuth/DoAuth')."' id='user-login-form' class='user-login-form'>".$html.'</form>';
   }
   
-  public function actionAuth($Param)
+  public function actionAuth($param)
   {
     if (AUTH) {
       $this->Redirect(URL_ROOT);
@@ -101,7 +100,5 @@ class MAuth extends cmsController {
     $page['meta_description'] = $page['title'];
     $this->Html($this->CreateView(array('page' => $page)));
   }
-  
 }
-
 ?>

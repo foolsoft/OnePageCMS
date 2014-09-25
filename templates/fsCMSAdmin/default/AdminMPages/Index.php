@@ -21,19 +21,16 @@
         <a href='<?php echo $myLink.'Activate/key/'.$page['id'].'/'; ?>'
            title='<?php _T('XMLcms_activate'); ?>'
            class='admin-btn-small admin-btn-activate'
-        >
-        </a>   
+        ></a>   
       <?php } ?>
         <a href='<?php echo $myLink; ?>Edit/key/<?php echo $page['id']; ?>/'
            title='<?php _T('XMLcms_edit'); ?>'
            class='admin-btn-small admin-btn-edit'
-        >
-        </a>   
+        ></a>   
         <a href='<?php echo $myLink; ?>Delete/key/<?php echo $page['id']; ?>/'
            title='<?php _T('XMLcms_delete'); ?>'
            class='admin-btn-small admin-btn-delete'
-        >
-        </a>   
+        ></a>   
         <div class='clr'></div>
       </div>
     </td>

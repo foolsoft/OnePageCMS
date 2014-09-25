@@ -1,23 +1,45 @@
 <?php
+/**
+* View class
+* @package fsKernel
+*/
 class View 
 {
+  /** @var integer Current recursion level for page generation */
   private $_recursionLevel = -1;
+  /** @var integer Maximum count of function calls */
   private $_compileLoop   = 3;
+  /** @var boolean Flag for skipping actions render  */
   public  $actionsCompile = true;
+  /** @var boolean Flag for skipping blocks render */
   public  $blocksCompile  = true;
   
+  /**
+  * View constructor  
+  * @api
+  * @since 1.0.0
+  * @return void      
+  */
   public function __construct() { }
   
-  protected function _TemplateCompile($tpl_path, $html, $params = array()) 
+  /**
+  * Render templates blocks 
+  * @api
+  * @since 1.0.0
+  * @param string $tplPath Template path.  
+  * @param string $html Template html code.  
+  * @param array $params (optional) Template data.  
+  * @return string Html code.      
+  */
+  protected function _TemplateCompile($tplPath, $html, $params = array()) 
   {
-    $tags = array();
     $matches = array();
     $matchesParent = array();
     $matchesCount = preg_match_all("/\[block\-([0-9a-zA-Z_\-]+)\](.*)\[endblock\-\\1\]/s", $html, $matches);
     $matchesCountParent = preg_match_all("/\[parent:([0-9a-zA-Z_\-\.\/]+\\".EXT_TPL.")\]/s", $html, $matchesParent);
     if ($matchesCountParent == 1) {
       $this->blocksCompile = false;
-      $html = $this->CreateView($tpl_path.$matchesParent[1][0], $params, false, false);
+      $html = $this->CreateView($tplPath.$matchesParent[1][0], $params, false, false);
     } 
     if($this->blocksCompile) { 
       for ($i = 0; $i < $matchesCount; ++$i) {
@@ -35,6 +57,13 @@ class View
     return $html;                  
   }
   
+  /**
+  * Render dictionary function 
+  * @api
+  * @since 1.0.0
+  * @param string $html Template html code.  
+  * @return string Html code.      
+  */
   public function LanguageCompile($html) 
   {
     $matches = array();
@@ -44,7 +73,17 @@ class View
     } 
     return $html;
   }
-   
+  
+  /**
+  * Render template 
+  * @api
+  * @since 1.0.0
+  * @param string $template Template path.  
+  * @param array $params (optional) Template data.  
+  * @param boolean $show (optional) Flag for auto 'echo' of result. Default <b>false</b>.  
+  * @param boolean $noHtmlCompile (optional) Flag for skipping html variables. Default <b>false</b>.  
+  * @return string Html code.      
+  */
   public function CreateView($template, $params = array(), $show = false, $noHtmlCompile = false) 
   {
     ++$this->_recursionLevel;
@@ -81,6 +120,14 @@ class View
     return $buffer;
   }
   
+  /**
+  * Render html variables 
+  * @api
+  * @since 1.0.0
+  * @param string $html Template html code.  
+  * @param array $params (optional) Template data.  
+  * @return string Html code.      
+  */
   public function HtmlCompile($html, $params = array())
   {
     if(!fsFunctions::IsArrayAssoc($params)) {
@@ -115,6 +162,14 @@ class View
     return $html;
   }
   
+  /**
+  * Render controller calls 
+  * @api
+  * @since 1.0.0
+  * @param string $html Template html code.  
+  * @param array $params (optional) Template data.  
+  * @return string Html code.      
+  */
   protected function _ActionsCompile($html, $params = array())
   {
     $matches = array();            

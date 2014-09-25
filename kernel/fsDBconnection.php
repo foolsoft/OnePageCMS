@@ -44,16 +44,16 @@ class fsDBsettings extends fsStruct
 */
 class fsDBconnection
 {
-  /** @var fsDBsettings MySQL connection settings @ */
+  /** @var fsDBsettings MySQL connection settings */
   protected $_settings = null;
   
-  /** @var mysqli Mysqli connection object @ */
+  /** @var mysqli Mysqli connection object */
   protected $_connection = null;
   
-  /** @var integer Id of last inserted row @ */
+  /** @var integer Id of last inserted row */
   protected $_last = -1;
   
-  /** @var integer Count of affected rows in last query @ */
+  /** @var integer Count of affected rows in last query */
   protected $_affectedRows = 0;
   
   /**

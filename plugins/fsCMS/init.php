@@ -10,7 +10,7 @@ define('URL_DTHEME_IMG',  URL_IMG.'fsCMS/default/');
 define('PATH_DTHEME_CSS',  PATH_CSS.'fsCMS/default/');
 define('PATH_DTHEME_JS',   PATH_JS.'fsCMS/default/');
 define('PATH_DTHEME_IMG',  PATH_IMG.'fsCMS/default/');
-define('EMAIL_SUPPORT',  'foolsoft@rambler.ru');
+define('EMAIL_SUPPORT',  'support@onepagecms.net');
 if (!file_exists(PATH_ROOT.'settings/dbSettings.php') || !file_exists(PATH_ROOT.'settings/Settings.php')) {
   fsFunctions::Redirect(URL_ROOT.'setup.php');
 }
