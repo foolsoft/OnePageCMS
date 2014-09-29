@@ -29,25 +29,34 @@ class MPosts extends cmsController
                 URL_ROOT.'posts/'.$param->category,
                 'page',
                 $count,
-                $this->settings->page_count,
-                $param->page
+                $pcount,
+                $param->page,
+                $param->Exists('ajax_pages') 
+                       ? array(
+                           'data-category' => $param->category, 
+                           'class' => 'posts-page-ajax',
+                           'data-count' => $pcount,
+                           'onclick' => 'return ajaxChangeCategoryPage(this);'
+                        ) 
+                       : array()
                )
     );
-    $page = array();
-    $page['title'] = $posts_category->result->name;
-    $page['meta_keywords'] = $posts_category->result->meta_keywords;
-    $page['meta_description'] = $posts_category->result->meta_description;
-    
+    $page = array(
+        'title' => $posts_category->result->name,
+        'meta_keywords' => $posts_category->result->meta_keywords,
+        'meta_description' => $posts_category->result->meta_description
+    );
     $template = $param->Exists('in_template') && file_exists($this->_Template('Inline'.$posts_category->result->tpl))
             ? $this->_Template('Inline'.$posts_category->result->tpl)
             : $this->_Template($posts_category->result->tpl);
             
     $html = $this->CreateView(array('page' => $page), $template);
-    if ($param->Exists('in_template')) {
-        return $html;
-    } else {
-        $this->Html($html);
+    if($param->Exists('ajax_pages')) {
+        $html = '<div id="category-ajax-'.$param->category.'">'.$html.'</div>';
+        $this->_AddMyScriptsAndStyles(true, false, URL_THEME_JS);
     }
+    
+    return $this->Html($html);
   }
   
   public function actionPost($Param = false)
@@ -57,15 +66,13 @@ class MPosts extends cmsController
       $this->Redirect(URL_ROOT.'404');
       return;  
     }
-    $page = array();
-    $page['title'] = $this->_table->result->title;
-    $page['meta_keywords'] = $this->_table->result->meta_keywords;
-    $page['meta_description'] = $this->_table->result->meta_description;
-    $this->Tag('post', $this->_table->result);
-    $this->Html($this->CreateView(array('page' => $page),
-                                  $this->_Template($this->_table->result->tpl))
+    $page = array(
+        'title' => $this->_table->result->title,
+        'meta_keywords' => $this->_table->result->meta_keywords,
+        'meta_description' => $this->_table->result->meta_description
     );
+    $this->Tag('post', $this->_table->result);
+    $this->Html($this->CreateView(array('page' => $page), $this->_Template($this->_table->result->tpl)));
   } 
-
 }
 ?>

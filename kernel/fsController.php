@@ -64,7 +64,8 @@ class fsController
   * @param string|bollean $urlCss (optional) Url to folder with controller styles file. If <b>false</b> uses URL_CSS constant value. Default <b>false</b>.
   * @return void      
   */
-  final protected function _AddMyScriptsAndStyles($js = true, $css = true, $urlJs = false, $urlCss = false) {
+  final protected function _AddMyScriptsAndStyles($js = true, $css = true, $urlJs = false, $urlCss = false) 
+  {
     if($urlJs === false) {
       $urlJs = URL_JS;
     }

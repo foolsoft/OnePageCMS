@@ -7,24 +7,32 @@
 //@ $current тукущая страница 
 class Paginator 
 {
- public static function Get($link, $param, $count, $pp = 20, $current = 1)
- {
-    $pCount = ($count % $pp == 0) ? (int)($count / $pp) : (int)($count / $pp) + 1;
-    if($pCount < 2) {
-      return '';
+    public static function Get($link, $param, $count, $pp = 20, $current = 1, $htmlAttributes = array())
+    {
+        $pCount = ($count % $pp == 0) ? (int)($count / $pp) : (int)($count / $pp) + 1;
+        if($pCount < 2) {
+          return '';
+        }
+        $attributes = ''; $PT = T('XMLcms_page');
+        if(isset($htmlAttributes['class'])) {
+            $htmlAttributes['class'] .= ' paginator-item';
+        } else {
+            $htmlAttributes['class'] = 'paginator-item';
+        }
+        foreach($htmlAttributes as $attributeName => $attributeValue) {
+          $attributes .= ' '.$attributeName.'="'.$attributeValue.'"';
+        }
+        $asReplace = preg_match('/^{.+}$/', $param);
+        $html = '<span class="text-pages">'.T('XMLcms_pages').':</span> ';     
+        $sym = false === strpos($link, '?') ? '?' : (substr($link, -1) == '&' ? '' : '&');
+        for ($i = 1; $i <= $pCount; ++$i) {
+          $html .= ($i != $current
+                    ? "<a ".$attributes." href='".($asReplace ? str_replace($param, $i, $link) : $link.$sym.$param."=".$i)."' title='".$PT." ".$i."'>".$i.'</a>'
+                    : '<b>'.$i.'</b>').
+                ($i == $pCount ? '' : ' | ');
+        }
+        return $html;
     }
-    $asReplace = preg_match('/^{.+}$/', $param);
-    $html = '<span class="text-pages">'.T('XMLcms_pages').':</span> ';     
-    $PT = T('XMLcms_page');
-    $sym = false === strpos($link, '?') ? '?' : (substr($link, -1) == '&' ? '' : '&');
-    for ($i = 1; $i <= $pCount; ++$i) {
-      $html .= ($i != $current
-                ? "<a href='".($asReplace ? str_replace($param, $i, $link) : $link.$sym.$param."=".$i)."' ".$i."' title='".$PT." ".$i."' class='paginator-item'>".$i.'</a>'
-                : '<b>'.$i.'</b>').
-            ($i == $pCount ? '' : ' | ');
-    }
-    return $html;
-  } 
 }
 
 class cmsController extends fsController 
