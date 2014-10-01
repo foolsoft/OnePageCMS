@@ -66,4 +66,3 @@ class fsCaptcha
         exit;
     }
 }
-?>

@@ -60,8 +60,7 @@ class fsDBTable
       if (!empty($result)) {
           $result .= " ".$logic." ";
       }
-      $str = '';
-      $logic = 'AND';
+      $str = ''; $logic = 'AND';
       if (isset($arr[$i]['logic']) && fsValidator::Match($arr[$i]['logic'], '(AND|OR)')) {
         $logic = $arr[$i]['logic'];
       }
@@ -807,7 +806,7 @@ class fsDBTable
     $this->_query = new fsStruct($queryConfig);
     $db->Close();
     if ($createCache) {
-      $this->_Ceche();
+      $this->_Cache();
     }
   }
   
@@ -817,7 +816,7 @@ class fsDBTable
   * @since 1.0.0
   * @return void      
   */
-  private function _Ceche()
+  private function _Cache()
   {
     if (!is_dir(PATH_CACHE_DB)) {
       mkdir(PATH_CACHE_DB, 0777);
@@ -923,24 +922,20 @@ class fsDBTable
     }
     $file->WriteLine(');');
     $file->WriteLineWithTabsAction("publ"."ic function Get(\$what) {", array(), 1); 
-    $file->WriteLineWithTabsAction("if (isset(\$this->\$what)) {", array(), 1);
-    $file->WriteLineWithTabsAction("return \$this->\$what;", array(), -1);
-    $file->WriteLineWithTabsAction("}", array(), -1);
-    $file->WriteLineWithTabsAction("}");
+    $file->WriteLineWithTabsAction('if (isset(\$this->\$what)) {', array(), 1);
+    $file->WriteLineWithTabsAction('return \$this->\$what;', array(), -1);
+    $file->WriteLineWithTabsAction('}', array(), -1);
+    $file->WriteLineWithTabsAction('}');
     $file->WriteLineWithTabsAction("pub"."lic function Set(\$what, \$value) \n {", array(), 1); 
-    $file->WriteLineWithTabsAction("if (isset(\$this->\$what)) {", array(), 1);
+    $file->WriteLineWithTabsAction('if (isset(\$this->\$what)) {', array(), 1);
     $file->WriteLineWithTabsAction("\$this->\$what = \$value;", array(), -1);
-    $file->WriteLineWithTabsAction("}", array(), -1);
-    $file->WriteLineWithTabsAction("}", array(), -1);
-    $file->WriteLineWithTabsAction("}", array(), -1);
-    $file->Write("?");
-    $file->Write(">");
+    $file->WriteLineWithTabsAction('}', array(), -1);
+    $file->WriteLineWithTabsAction('}', array(), -1);
+    $file->WriteLineWithTabsAction('}', array(), -1);
+    $file->Write('?'.'>');
     $file->Close();
   }
   
 }
 
-class fsDBTableException extends Exception 
-{
-}
-?>
+class fsDBTableException extends Exception {}

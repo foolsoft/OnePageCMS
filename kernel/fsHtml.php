@@ -1,146 +1,285 @@
 <?php
+/**
+* Html helper
+* @package fsKernel
+*/
 class fsHtml
 {
-  private static function _HtmlAttributesToString($htmlAttributes = array()) 
-  {
-    $attributes = '';
-    foreach($htmlAttributes as $attributeName => $attributeValue) {
-      $attributes .= ' '.$attributeName.'="'.$attributeValue.'"';
-    }
-    return $attributes;
-  }
-  
-  public static function Input($type, $name, $value = '', $htmlAttributes = array())
-  {
-    if(!isset($htmlAttributes['id'])) {
-      $htmlAttributes['id'] = $name;
-    }
-    return fsFunctions::StringFormat('<input type="{0}"{1} value="{2}"{3}/>', array(
-      $type,
-      $name === false ? ' ' : ' name="'.$name.'"',
-      $value,
-      self::_HtmlAttributesToString($htmlAttributes)     
-    ));
-  }
-  
-  public static function Hidden($name, $value = '', $htmlAttributes = array())
-  {
-    return self::Input('hidden', $name, $value, $htmlAttributes);
-  }
-  public static function Password($name, $value = '', $htmlAttributes = array())
-  {
-    return self::Input('password', $name, $value, $htmlAttributes);
-  }
-  public static function Editor($name, $value = '', $htmlAttributes = array())
-  {
-    return self::Input('text', $name, $value, $htmlAttributes);
-  }
-  public static function Number($name, $value = '', $htmlAttributes = array())
-  {
-    return self::Input('number', $name, $value, $htmlAttributes);
-  }
-  public static function Checkbox($name, $value = '', $htmlAttributes = array())
-  {
-    return self::Input('checkbox', $name, $value, $htmlAttributes);
-  }
-  public static function Radio($name, $value = '', $htmlAttributes = array())
-  {
-    return self::Input('radio', $name, $value, $htmlAttributes);
-  }
-  public static function File($name, $value = '', $htmlAttributes = array())
-  {
-    return self::Input('file', $name, $value, $htmlAttributes);
-  }
-  public static function Button($value, $onclick = false, $htmlAttributes = array())
-  {
-    $htmlAttributes['onclick'] = $onclick;
-    $name = false;
-    if(isset($htmlAttributes['name'])) {
-      $name = $htmlAttributes['name']; 
-      unset($htmlAttributes['name']);
-    }
-    return self::Input('button', $name, $value, $htmlAttributes);
-  }
-  public static function Textarea($name, $value = '', $htmlAttributes = array())
-  {
-    if(!isset($htmlAttributes['id'])) {
-      $htmlAttributes['id'] = $name;
-    }
-    return fsFunctions::StringFormat('<textarea name="{0}"{2}>{1}</textarea>', array(
-      $name,
-      $value,
-      self::_HtmlAttributesToString($htmlAttributes)
-    ));
-  }
-  
-  public static function Select($name, $values = array(), $selectedValue = false, $htmlAttributes = array())
-  {
-    $options = '';
-    if(!fsFunctions::IsArrayAssoc($values)) {
-      $temp = array();
-      foreach($values as $value) {
-        $temp[$value] = $value;
-      }  
-      $values = $temp;
-    }
-    $matches = array();
-    $patternGroupOpen = '/^\[group=(.+)\]$/i';
-    $patternGroupClose = '/^\[\/group=(.+)\]$/i';
-    foreach($values as $value => $text) {
-      if(preg_match($patternGroupOpen, $value, $matches) || preg_match($patternGroupOpen, $text, $matches)) {
-        $options .= '<optgroup label="'.T($matches[1]).'">';
-        continue;  
-      } else if(preg_match($patternGroupClose, $value, $matches) || preg_match($patternGroupClose, $text, $matches)) {
-        $options .= '</optgroup>';
-        continue;  
-      } 
-      $options .= '<option value="'.$value.'" '.($selectedValue == $value ? 'selected' : '').'>'.$text.'</option>';  
-    }
-    if(!isset($htmlAttributes['id'])) {
-      $htmlAttributes['id'] = $name;
-    }
-    return fsFunctions::StringFormat('<select name="{0}"{2}>{1}</select>', array(
-      $name,
-      $options,
-      self::_HtmlAttributesToString($htmlAttributes),
-    ));
-  }
-  
-  public static function Url($href, $addSuffix = true)
-  {
-    $hrefSuffix = fsConfig::GetInstance('links_suffix');
-    if($hrefSuffix !== null && $addSuffix === true) {
-      $params = strpos($href, '?');
-      if($params === false) {
-        $href .= $hrefSuffix;
-      } else {
-        $href = preg_replace('/\?/', $hrefSuffix.'?', $href, 1);
+    private static function _HtmlAttributesToString($htmlAttributes = array()) 
+    {
+      $attributes = '';
+      foreach($htmlAttributes as $attributeName => $attributeValue) {
+        $attributes .= ' '.$attributeName.'="'.$attributeValue.'"';
       }
+      return $attributes;
     }
-    return $href; 
-  }
   
-  public static function Link($href, $text, $title = false, $htmlAttributes = array())
-  {
-    $href = self::Url($href, !isset($htmlAttributes['suffix']) || $htmlAttributes['suffix'] === true);
-    if(isset($htmlAttributes['suffix'])) {
-      unset($htmlAttributes['suffix']);
+    /** 
+    * Create input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $type Type of input field.
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Input($type, $name, $value = '', $htmlAttributes = array())
+    {
+      if(!isset($htmlAttributes['id'])) {
+        $htmlAttributes['id'] = $name;
+      }
+      return fsFunctions::StringFormat('<input type="{0}"{1} value="{2}"{3}/>', array(
+        $type,
+        $name === false ? ' ' : ' name="'.$name.'"',
+        $value,
+        self::_HtmlAttributesToString($htmlAttributes)     
+      ));
     }
-    return fsFunctions::StringFormat('<a href="{0}" title="{2}"{3}>{1}</a>', array(
-      $href,
-      $text,
-      !$title ? $text : $title,
-      self::_HtmlAttributesToString($htmlAttributes)     
-    ));
-  }
   
-  public static function Label($text, $for = false, $htmlAttributes = array())
-  {
-     return fsFunctions::StringFormat('<label{1}{2}>{0}</label>', array(
-      $text,
-      $for !== false ? ' for="'.$for.'"' : '',
-      self::_HtmlAttributesToString($htmlAttributes) 
-     ));
-  } 
+    /** 
+    * Create hidden input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Hidden($name, $value = '', $htmlAttributes = array())
+    {
+      return self::Input('hidden', $name, $value, $htmlAttributes);
+    }
+    
+    /** 
+    * Create password input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Password($name, $value = '', $htmlAttributes = array())
+    {
+      return self::Input('password', $name, $value, $htmlAttributes);
+    }
+    
+    /** 
+    * Create text input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Editor($name, $value = '', $htmlAttributes = array())
+    {
+      return self::Input('text', $name, $value, $htmlAttributes);
+    }
+    
+    /** 
+    * Create number input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Number($name, $value = '', $htmlAttributes = array())
+    {
+      return self::Input('number', $name, $value, $htmlAttributes);
+    }
+    
+    /** 
+    * Create checkbox input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Checkbox($name, $value = '', $htmlAttributes = array())
+    {
+      return self::Input('checkbox', $name, $value, $htmlAttributes);
+    }
+    
+    /** 
+    * Create radio input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Radio($name, $value = '', $htmlAttributes = array())
+    {
+      return self::Input('radio', $name, $value, $htmlAttributes);
+    }
+    
+    /** 
+    * Create file input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function File($name, $value = '', $htmlAttributes = array())
+    {
+      return self::Input('file', $name, $value, $htmlAttributes);
+    }
+    
+    /** 
+    * Create button input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $value Button text.
+    * @param string $onclick (optional) JavaScript for onclick event. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Button($value, $onclick = '', $htmlAttributes = array())
+    {
+      $htmlAttributes['onclick'] = $onclick;
+      $name = false;
+      if(isset($htmlAttributes['name'])) {
+        $name = $htmlAttributes['name']; 
+        unset($htmlAttributes['name']);
+      }
+      return self::Input('button', $name, $value, $htmlAttributes);
+    }
+    
+    /** 
+    * Create textarea input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Textarea($name, $value = '', $htmlAttributes = array())
+    {
+      if(!isset($htmlAttributes['id'])) {
+        $htmlAttributes['id'] = $name;
+      }
+      return fsFunctions::StringFormat('<textarea name="{0}"{2}>{1}</textarea>', array(
+        $name,
+        $value,
+        self::_HtmlAttributesToString($htmlAttributes)
+      ));
+    }
+
+    /** 
+    * Create select input field.   
+    * @since 1.0.0
+    * @api    
+    * @param string $name Name for input field.
+    * @param array $values (optional) Possible values. Default <b>empty array</b>.
+    * @param string|boolean $selectedValue (optional) Selected value. Default <b>false</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Select($name, $values = array(), $selectedValue = false, $htmlAttributes = array())
+    {
+      $options = '';
+      if(!fsFunctions::IsArrayAssoc($values)) {
+        $temp = array();
+        foreach($values as $value) {
+          $temp[$value] = $value;
+        }  
+        $values = $temp;
+      }
+      $matches = array();
+      $patternGroupOpen = '/^\[group=(.+)\]$/i';
+      $patternGroupClose = '/^\[\/group=(.+)\]$/i';
+      foreach($values as $value => $text) {
+        if(preg_match($patternGroupOpen, $value, $matches) || preg_match($patternGroupOpen, $text, $matches)) {
+          $options .= '<optgroup label="'.T($matches[1]).'">';
+          continue;  
+        } else if(preg_match($patternGroupClose, $value, $matches) || preg_match($patternGroupClose, $text, $matches)) {
+          $options .= '</optgroup>';
+          continue;  
+        } 
+        $options .= '<option value="'.$value.'" '.($selectedValue == $value ? 'selected' : '').'>'.$text.'</option>';  
+      }
+      if(!isset($htmlAttributes['id'])) {
+        $htmlAttributes['id'] = $name;
+      }
+      return fsFunctions::StringFormat('<select name="{0}"{2}>{1}</select>', array(
+        $name,
+        $options,
+        self::_HtmlAttributesToString($htmlAttributes),
+      ));
+    }
+
+    /** 
+    * Generate link
+    * @since 1.0.0
+    * @api    
+    * @param string $href Url address.
+    * @param boolean $addSuffix (optional) Flag for suffix append. Default <b>true</b>.
+    * @return string Url address.      
+    */
+    public static function Url($href, $addSuffix = true)
+    {
+      $hrefSuffix = fsConfig::GetInstance('links_suffix');
+      if($hrefSuffix !== null && $addSuffix === true) {
+        $params = strpos($href, '?');
+        if($params === false) {
+          $href .= $hrefSuffix;
+        } else {
+          $href = preg_replace('/\?/', $hrefSuffix.'?', $href, 1);
+        }
+      }
+      return $href; 
+    }
+    
+    /** 
+    * Generate link tag
+    * @since 1.0.0
+    * @api    
+    * @param string $href Url address.
+    * @param string $text Link text.
+    * @param string $title (optional) Link title. If empty use text value. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Link($href, $text, $title = '', $htmlAttributes = array())
+    {
+      $href = self::Url($href, !isset($htmlAttributes['suffix']) || $htmlAttributes['suffix'] === true);
+      if(isset($htmlAttributes['suffix'])) {
+        unset($htmlAttributes['suffix']);
+      }
+      return fsFunctions::StringFormat('<a href="{0}" title="{2}"{3}>{1}</a>', array(
+        $href,
+        $text,
+        empty($title) ? $text : $title,
+        self::_HtmlAttributesToString($htmlAttributes)     
+      ));
+    }
+    
+    /** 
+    * Generate label tag
+    * @since 1.0.0
+    * @api    
+    * @param string $text Label text.
+    * @param string $for (optional) Value for 'For' attribute. Default <b>empty string</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function Label($text, $for = '', $htmlAttributes = array())
+    {
+       return fsFunctions::StringFormat('<label{1}{2}>{0}</label>', array(
+        $text,
+        !empty($for) ? ' for="'.$for.'"' : '',
+        self::_HtmlAttributesToString($htmlAttributes) 
+       ));
+    } 
 }
-?>

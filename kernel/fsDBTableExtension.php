@@ -108,4 +108,3 @@ class fsDBTableExtension extends fsDBTable
     parent::__destruct();
   }
 }
-?>

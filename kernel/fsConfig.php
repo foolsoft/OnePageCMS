@@ -32,4 +32,3 @@ class fsConfig implements iSingleton
         : null;
   }
 }
-?>

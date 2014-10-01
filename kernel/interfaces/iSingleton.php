@@ -1,10 +1,15 @@
 <?php
 /**
 * Interface for singleton pattern
-* @method mixed GetInstance()
+* @package fsKernel
 */
 interface iSingleton
 {
-  public static function GetInstance();
+    /**
+    * Return object instance  
+    * @api
+    * @since 1.0.0
+    * @return mixed Object.      
+    */
+    public static function GetInstance();
 }
-?>

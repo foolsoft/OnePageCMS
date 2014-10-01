@@ -93,4 +93,3 @@ class fsCache
         fsFunctions::DeleteDirectory(self::$_path);
     }
 }
-?>

@@ -57,4 +57,3 @@ fsFunctions::IncludeFile(PATH_ROOT.'controllers/init.php');
 fsFunctions::IncludeFolder(PATH_CACHE, false, array('php'));
 fsFunctions::IncludeFolder(PATH_CACHE_DB, false, array('php'));
 fsFunctions::IncludeFolder(PATH_ROOT.'models/', false, array('php'));
-?>

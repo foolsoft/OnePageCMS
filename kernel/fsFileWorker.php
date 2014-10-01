@@ -132,7 +132,7 @@ class fsFileWorker
     }
   }
   
-    /**
+  /**
   * fsFileWorker constructor  
   * @api
   * @since 1.0.0
@@ -150,6 +150,4 @@ class fsFileWorker
   {
     $this->Close();
   }
-
 }
-?>

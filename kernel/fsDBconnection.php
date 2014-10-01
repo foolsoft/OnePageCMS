@@ -173,4 +173,3 @@ class fsDBconnection
     $this->_settings->Delete();
   }
 }
-?>

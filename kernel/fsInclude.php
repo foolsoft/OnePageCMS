@@ -252,4 +252,3 @@ class fsInclude implements iSingleton
         return $string;
     }
 }
-?>

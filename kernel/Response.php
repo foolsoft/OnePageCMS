@@ -73,4 +73,3 @@ class Response
 }
 
 class ResponseException extends Exception {}
-?>

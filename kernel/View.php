@@ -208,4 +208,3 @@ class View
 }
 
 class ViewException extends Exception { }
-?>

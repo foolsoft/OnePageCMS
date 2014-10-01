@@ -370,7 +370,4 @@ class fsController
   
 }
 
-class fsControllerException extends Exception
-{
-}
-?>
+class fsControllerException extends Exception {}
