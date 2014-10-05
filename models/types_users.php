@@ -6,4 +6,3 @@ class types_users extends fsDBTableExtension
     parent::__destruct();
   }
 }
-?>

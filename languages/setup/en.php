@@ -1,6 +1,4 @@
-<?php
-
-$GLOBALS['L']['en'] = Array(
+<?php $GLOBALS['L']['en'] = Array(
 'text_lang_name' => 'English',
 'text_main' => 'Main', 
 'text_closed' => 'Closed', 
@@ -53,7 +51,4 @@ $GLOBALS['L']['en'] = Array(
 'ptitle_cms' => 'CMS Settings',
 'pcms_dbc' => 'MySQL tables codepage',
 'pcms_lang' => 'Language'
-
 );
-
-?>

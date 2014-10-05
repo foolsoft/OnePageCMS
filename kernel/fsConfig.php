@@ -16,7 +16,7 @@ class fsConfig implements iSingleton
     * Get kernel config value.   
     * @api
     * @since 1.0.0
-    * @param mixed $attr (optional) $attr String name of config filed or <b>false</b> for instance return. Default <b>false</b>. 
+    * @param mixed $attr (optional) String name of config filed or <b>false</b> for instance return. Default <b>false</b>. 
     * @return string|object Config value or config instance as fsStruct if $attr is <b>false</b>.     
     */
   public static function GetInstance($attr = false) 

@@ -96,4 +96,3 @@ class comments extends fsDBTableExtension
     return $result;
   }
 }
-?>

@@ -1,5 +1,4 @@
-<?php
-$GLOBALS['L']['ru'] = Array(
+<?php $GLOBALS['L']['ru'] = Array(
 'text_lang_name' => 'Русский', 
 'text_main' => 'Главная', 
 'text_closed' => 'Сайт закрыт', 
@@ -53,6 +52,3 @@ $GLOBALS['L']['ru'] = Array(
 'pcms_dbc' => 'Кодировка MySQL таблиц',
 'pcms_lang' => 'Язык по умолчанию'
 );
-
-
-?>

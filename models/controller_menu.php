@@ -27,4 +27,3 @@ class controller_menu extends fsDBTableExtension
   }
   
 }
-?>

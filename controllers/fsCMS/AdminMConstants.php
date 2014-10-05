@@ -9,14 +9,14 @@ class AdminMConstants extends AdminPanel
     parent::Init($request);
   }
 
-  public function actionDoEdit($Param)
+  public function actionDoEdit($param)
   {
-    $Param->name = fsFunctions::Chpu($Param->name);
-    if (!$this->_CheckUnique($Param->name, 'name', $Param->key, 'name')
-        || !$this->_Check($Param)) {
+    $param->name = fsFunctions::Chpu($param->name);
+    if (!$this->_CheckUnique($param->name, 'name', $param->key, 'name')
+        || !$this->_Check($param)) {
       return;
     }
-    parent::actionDoEdit($Param);
+    parent::actionDoEdit($param);
   }
 
   private function _Check($param) 
@@ -36,33 +36,32 @@ class AdminMConstants extends AdminPanel
     return $return; 
   }
 
-  public function actionDoAdd($Param)
+  public function actionDoAdd($param)
   {
-    $Param->name = fsFunctions::Chpu($Param->name);
-    if (!$this->_CheckUnique($Param->name, 'name') 
-        || !$this->_Check($Param)) {
+    $param->name = fsFunctions::Chpu($param->name);
+    if (!$this->_CheckUnique($param->name, 'name') 
+        || !$this->_Check($param)) {
       return;
     }
-    parent::actionDoAdd($Param);
+    parent::actionDoAdd($param);
   }
   
-  public function actionAdd($Param)
+  public function actionAdd($param)
   {                             
   }
 
-  public function actionIndex($Params)
+  public function actionIndex($param)
   {
     $this->Tag('consts', $this->Tag('constants')->ToArray());
   }
   
-  public function actionEdit($Param)
+  public function actionEdit($param)
   {
-    $this->_table->current = $Param->key;
-    if ($this->_table->result->name != $Param->key) {
+    $this->_table->current = $param->key;
+    if ($this->_table->result->name != $param->key) {
       $this->_Referer();
       return;
     }
-    $this->Tag('key', $Param->key);
+    $this->Tag('key', $param->key);
   }
 }
-?>

@@ -18,7 +18,7 @@ class users extends fsDBTableExtension
     $this->password = md5($password);
     $this->active = $active;
     $this->type = $type;
-    $this->insert()->execute();
+    $this->Insert()->Execute();
     return $this->insertedId;
   }
   
@@ -52,5 +52,3 @@ class users extends fsDBTableExtension
   }
   
 }
-
-?>

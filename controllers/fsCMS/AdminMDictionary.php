@@ -216,4 +216,3 @@ class AdminMDictionary extends AdminPanel
     return $html;
   }
 }
-?>

@@ -3,7 +3,7 @@ class MPosts extends cmsController
 {
   protected $_tableName = 'posts';
   
-  public function actionCategory($param = false)
+  public function actionCategory($param)
   {
     if (!$param->Exists('category')) {
       return $this->HttpNotFound();
@@ -59,9 +59,9 @@ class MPosts extends cmsController
     return $this->Html($html);
   }
   
-  public function actionPost($Param = false)
+  public function actionPost($param)
   {
-    $this->_table->Get($Param->post);
+    $this->_table->Get($param->post);
     if ($this->_table->result->id == '') {
       $this->Redirect(URL_ROOT.'404');
       return;  
@@ -75,4 +75,3 @@ class MPosts extends cmsController
     $this->Html($this->CreateView(array('page' => $page), $this->_Template($this->_table->result->tpl)));
   } 
 }
-?>

@@ -25,4 +25,3 @@ class admin_menu extends fsDBTableExtension
     return $this->Insert()->Execute();
   }
 }
-?>

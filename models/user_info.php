@@ -41,4 +41,3 @@ class user_info extends fsDBTableExtension
   }
   
 }
-?>

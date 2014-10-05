@@ -161,4 +161,3 @@ class AdminMComments extends AdminPanel
     $this->Tag('fields', $table->GetAll(true, false, array('title', 'name')));
   }
 }
-?>

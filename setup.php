@@ -69,7 +69,6 @@ if ($_POST) {
     $f->WriteLine("public static \$password   = '{0}';", array($_POST['db_password']));
     $f->WriteLineWithTabsAction("public static \$base   = '{0}';", array($_POST['db_name']), -1);
     $f->WriteLine('}');
-    $f->Write('?'.'>');
     $f->Close();
     $f = new fsFileWorker($path.'Settings.php', 'w+');
     $f->WriteLine('<?php');
@@ -102,8 +101,7 @@ if ($_POST) {
     $f->WriteLine("'start_page' => array('ReadOnly' => true, 'Value' => {0}),",
                   array(i('multilang', 'true', false))); 
     $f->WriteLine(");");
-    $f->Write('?'.'>');
-    $f->Close();
+   $f->Close();
     $connection->Query("SET NAMES ".$_POST['db_codepage']);
     $connection->Query("
        CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."admin_menu` (

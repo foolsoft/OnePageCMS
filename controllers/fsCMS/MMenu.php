@@ -89,4 +89,3 @@ class MMenu extends cmsController
     return $this->Html();
   }
 }
-?>

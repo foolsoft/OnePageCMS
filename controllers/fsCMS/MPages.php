@@ -3,16 +3,16 @@ class MPages extends cmsController
 {
   protected $_tableName = 'pages';
   
-  public function actionView($Param)
+  public function actionView($param)
   {
     $key = '='; 
-    if (!$Param->Exists('page') ||
-         $Param->page == '' ||
-         (is_numeric($Param->page) && ($Param->page < -1 || $Param->page == 0))) {
-      $Param->page = 0;
+    if (!$param->Exists('page') ||
+         $param->page == '' ||
+         (is_numeric($param->page) && ($param->page < -1 || $param->page == 0))) {
+      $param->page = 0;
       $key = '>';
     }
-    $page = $this->_table->Load($Param->page, $key);
+    $page = $this->_table->Load($param->page, $key);
     $template = '';
     if (count($page) != 1) {
       $page[0] = array();
@@ -28,7 +28,6 @@ class MPages extends cmsController
     $page[0]['meta_description'] = fsFunctions::NotEmpty($page[0]['description'])
                             ? $page[0]['description'] 
                             : CMSSettings::GetInstance('default_description'); 
-    $this->Html($this->CreateView(array('page' => $page[0], 'htmlTags' => $Param->Exists('data') ? $Param->data : array()), $template));
+    $this->Html($this->CreateView(array('page' => $page[0], 'htmlTags' => $param->Exists('data') ? $param->data : array()), $template));
   }
 }
-?>

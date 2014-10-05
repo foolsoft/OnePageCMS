@@ -35,6 +35,9 @@ class Paginator
     }
 }
 
+/*
+ * fsCMS base class
+ */
 class cmsController extends fsController 
 {
   protected $_autoLoadSettings = true;
@@ -62,18 +65,18 @@ class cmsController extends fsController
     return parent::CreateView($params, $template, $show, $adminMode);
   }
   
-  private function _LoadConstants()
-  {
-    $constants = new constants();
-	$constants = $constants->GetAll();
-    $arr = array();
-	foreach ($constants as $const) {
-      $arr[$const['name']] = array('Value' => $const['value'],
-                                  'ReadOnly' => true);
+    private function _LoadConstants()
+    {
+        $constants = new constants();
+        $constants = $constants->GetAll();
+        $arr = array();
+            foreach ($constants as $const) {
+          $arr[$const['name']] = array('Value' => $const['value'],
+                                      'ReadOnly' => true);
+        }
+        unset($constants);
+        $this->Tag('constants', new fsStruct($arr));
     }
-    unset($constants);
-    $this->Tag('constants', new fsStruct($arr));
-  }
   
   protected function _LoadSettings($className = '') 
   {
@@ -127,4 +130,3 @@ class cmsNeedAuthController extends cmsController
         parent::Init($param);
     }
 }
-?>

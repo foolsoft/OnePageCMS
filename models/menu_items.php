@@ -35,4 +35,3 @@ class menu_items extends fsDBTableExtension
   }
   
 }
-?>

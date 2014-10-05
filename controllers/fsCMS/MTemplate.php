@@ -10,4 +10,3 @@ class MTemplate extends cmsController
     fsSession::Set('Template', 'fsCMS/'.$param->name);
   }
 }
-?>

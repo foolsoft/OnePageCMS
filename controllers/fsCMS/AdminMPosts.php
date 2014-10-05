@@ -3,15 +3,15 @@ class AdminMPosts extends AdminPanel
 {
   protected $_tableName = 'posts';
   
-  private function _CheckCategoryData(&$Param)
+  private function _CheckCategoryData(&$param)
   {
-    if ($Param->name == '' || $Param->alt == '') {
+    if ($param->name == '' || $param->alt == '') {
       $this->Message(T('XMLcms_text_need_all_data'));
       $this->_Referer();
       return false;
     }
-    if ($Param->Exists('call')) {
-      $Param->Delete('call');
+    if ($param->Exists('call')) {
+      $param->Delete('call');
     }
     return true;
   }
@@ -190,13 +190,13 @@ class AdminMPosts extends AdminPanel
     return parent::actionDoEdit($Param);
   }
   
-  public function actionDoAddCategory($Param)
+  public function actionDoAddCategory($param)
   {
-    if (!$this->_CheckCategoryData($Param) ||
-        !$this->_CheckUnique($Param->alt, 'alt', false, false, 'posts_category')) {
+    if (!$this->_CheckCategoryData($param) ||
+        !$this->_CheckUnique($param->alt, 'alt', false, false, 'posts_category')) {
       return -1;
     }
-    return parent::actionDoAdd($Param);
+    return parent::actionDoAdd($param);
   }
   
   public function actionDoEditCategory($Param)
@@ -208,7 +208,7 @@ class AdminMPosts extends AdminPanel
     return parent::actionDoEdit($Param);
   }
 
-  public function actionConfig($Param)
+  public function actionConfig($param)
   {
     $this->Tag('settings', $this->settings);
   }
@@ -232,5 +232,3 @@ class AdminMPosts extends AdminPanel
   }
 
 }
-
-?>

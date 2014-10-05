@@ -101,4 +101,3 @@ class MAuth extends cmsController
     $this->Html($this->CreateView(array('page' => $page)));
   }
 }
-?>

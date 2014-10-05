@@ -1,4 +1,7 @@
 <?php 
+/*
+ * Initialize plugins 
+ */
 fsFunctions::IncludeFile(PATH_PLUGINS.'fsCMS/init.php');
 $folders = fsFunctions::DirectoryInfo(PATH_PLUGINS, false, true); 
 foreach ($folders['NAMES'] as $folder) { 

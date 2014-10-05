@@ -1,1 +1,1 @@
-<?php $LANG = array('Пример' => 'Sample'); ?>
+<?php $LANG = array('Пример' => 'Sample');

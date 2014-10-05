@@ -828,10 +828,10 @@ class fsDBTable
                      array($new_file),
                      1);
     $vars = array();
-    $file->WriteLine("pro"."tected static \$obj = null;"); 
-    $file->WriteLine("priv"."ate function __construct(){ }");
-    $file->WriteLine("priv"."ate function __clone(){ }");
-    $file->WriteLine("priv"."ate function __wakeup(){ }");
+    $file->WriteLine('pro'."tected static \$obj = null;"); 
+    $file->WriteLine('priv'."ate function __construct(){ }");
+    $file->WriteLine('priv'."ate function __clone(){ }");
+    $file->WriteLine('priv'."ate function __wakeup(){ }");
     $file->WriteLineWithTabsAction("public static func"."tion GetInstance() \n {",
                                     array(),
                                     1
@@ -922,20 +922,18 @@ class fsDBTable
     }
     $file->WriteLine(');');
     $file->WriteLineWithTabsAction("publ"."ic function Get(\$what) {", array(), 1); 
-    $file->WriteLineWithTabsAction('if (isset(\$this->\$what)) {', array(), 1);
-    $file->WriteLineWithTabsAction('return \$this->\$what;', array(), -1);
+    $file->WriteLineWithTabsAction("if (isset(\$this->\$what)) {", array(), 1);
+    $file->WriteLineWithTabsAction("return \$this->\$what;", array(), -1);
     $file->WriteLineWithTabsAction('}', array(), -1);
     $file->WriteLineWithTabsAction('}');
     $file->WriteLineWithTabsAction("pub"."lic function Set(\$what, \$value) \n {", array(), 1); 
-    $file->WriteLineWithTabsAction('if (isset(\$this->\$what)) {', array(), 1);
+    $file->WriteLineWithTabsAction("if (isset(\$this->\$what)) {", array(), 1);
     $file->WriteLineWithTabsAction("\$this->\$what = \$value;", array(), -1);
     $file->WriteLineWithTabsAction('}', array(), -1);
     $file->WriteLineWithTabsAction('}', array(), -1);
     $file->WriteLineWithTabsAction('}', array(), -1);
-    $file->Write('?'.'>');
     $file->Close();
   }
-  
 }
 
 class fsDBTableException extends Exception {}

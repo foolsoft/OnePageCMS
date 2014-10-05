@@ -3,16 +3,16 @@ class AdminMPages extends AdminPanel
 {
   protected $_tableName = 'pages';
 
-  private function _CheckParam(&$Param)
+  private function _CheckParam(&$param)
   {
-    if ($Param->alt == '' || $Param->title == '') {
+    if ($param->alt == '' || $param->title == '') {
       $this->Message(T('XMLcms_text_need_all_data'));
       $this->_Referer();
       return false;
     }
-    $Param->alt = strtolower(fsFunctions::Chpu($Param->alt));
-    $Param->in_menu = $Param->Exists('in_menu') ? 1 : 0;
-    $Param->active = $Param->Exists('active') ? 1 : 0;
+    $param->alt = strtolower(fsFunctions::Chpu($param->alt));
+    $param->in_menu = $param->Exists('in_menu') ? 1 : 0;
+    $param->active = $param->Exists('active') ? 1 : 0;
     return true;
   }
                
@@ -22,44 +22,44 @@ class AdminMPages extends AdminPanel
     parent::Init($request);
   }
 
-  public function actionDoAdd($Param)
+  public function actionDoAdd($param)
   {
-    if(!$this->_CheckParam($Param)) {
+    if(!$this->_CheckParam($param)) {
       return;
     }
-    if (!$this->_CheckUnique($Param->alt, 'alt')) {
+    if (!$this->_CheckUnique($param->alt, 'alt')) {
       return;
     }
-    parent::actionDoAdd($Param);
+    parent::actionDoAdd($param);
   }
   
-  public function actionAdd($Param)
+  public function actionAdd($param)
   {
     $templates = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPages/', true, false, false, array('php'));
     $this->Tag('templates', $templates['NAMES']);
   }
 
-  public function actionIndex($Params)
+  public function actionIndex($param)
   {
     $pages = new pages();
     $this->Tag('pages', $pages->GetAll(true, false, array('title')));
   }
   
-  public function actionDoEdit($Param)
+  public function actionDoEdit($param)
   {
-  	if(!$this->_CheckParam($Param)) {
+  	if(!$this->_CheckParam($param)) {
       return;
     }
-  	if (!$this->_CheckUnique($Param->alt, 'alt', $Param->key, 'id')) {
+  	if (!$this->_CheckUnique($param->alt, 'alt', $param->key, 'id')) {
       return;
     }
-    parent::actionDoEdit($Param);
+    parent::actionDoEdit($param);
   }
   
-  public function actionEdit($Param)
+  public function actionEdit($param)
   {
-    $this->_table->current = $Param->key;
-    if ($this->_table->result->id != $Param->key) {
+    $this->_table->current = $param->key;
+    if ($this->_table->result->id != $param->key) {
       $this->_Referer();
       return;
     }
@@ -69,5 +69,3 @@ class AdminMPages extends AdminPanel
   }
 
 }
-
-?>

@@ -35,4 +35,3 @@ class search extends fsDBTableExtension
     return $result;
   }
 }
-?>

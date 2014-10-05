@@ -12,4 +12,3 @@ class menu extends fsDBTableExtension
     return $this->_result->tpl;
   }
 }
-?>

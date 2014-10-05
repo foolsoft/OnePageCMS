@@ -141,4 +141,3 @@ class AdminMMenu extends AdminPanel
     $this->Tag('menus', $this->_table->GetAll(true, false, array('name')));
   }
 } 
-?>

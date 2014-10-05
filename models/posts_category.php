@@ -25,4 +25,3 @@ class posts_category extends fsDBTableExtension
   }
   
 }
-?>

@@ -532,7 +532,7 @@ class fsFunctions
       foreach ($array as $k => $v) {
         fwrite($f, "'".$k."'=>'".$v."',");
       }
-      fwrite($f, '); ?'.'>');
+      fwrite($f, ');');
       fclose($f);
       return true;
     }

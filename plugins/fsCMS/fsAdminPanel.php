@@ -1,4 +1,7 @@
 <?php
+/*
+ * fsCMS Administrator panel base class
+ */
 class AdminPanel extends cmsController
 {
   public function CreateView($params = array(), $template = '', $show = false, $adminMode = null) 
@@ -18,12 +21,12 @@ class AdminPanel extends cmsController
     return fsFunctions::Slash($path);
   }
   
-  protected function _Do($Param, $Method, $Prefix = '')
+  protected function _Do($param, $method, $prefix = '')
   {
-    $Prefix .= $Method;
+    $prefix .= $method;
     try {
-      if (!empty($Method) && method_exists($this, $Prefix)) {
-        return $this->$Prefix($Param);
+      if (!empty($method) && method_exists($this, $prefix)) {
+        return $this->$prefix($param);
       } else {
         $this->Message(T('XMLcms_invalid_command'));
       }
@@ -79,7 +82,7 @@ class AdminPanel extends cmsController
      $this->Message(T('XMLcms_nokey'));
      return $this->_Referer(); 
     }
-    $this->_Do($param, $param->call, "Edit");
+    $this->_Do($param, $param->call, 'Edit');
   }
   
   public function Init($request) 
@@ -201,7 +204,7 @@ class AdminPanel extends cmsController
     }
   }
   
-  public function actionAjaxLockSite($Param)
+  public function actionAjaxLockSite($param)
   {
     $altLock = 'XMLcms_unlock';
     if (file_exists(FILE_LOCK)) {
@@ -223,24 +226,24 @@ class AdminPanel extends cmsController
   } 
   
  
-  public function actionActivate($Param)
+  public function actionActivate($param)
   {
-    $this->_SetRedirect($Param->referer);
-    if ($Param->Exists('key')) {
-      if ($Param->field == '') {
-        $Param->field = 'active';
+    $this->_SetRedirect($param->referer);
+    if ($param->Exists('key')) {
+      if ($param->field == '') {
+        $param->field = 'active';
       }
-      $table_key = $Param->table_key;
-      $obj = $Param->table == '' ?  $this->_table : new fsDBTable($Param->table); 
-      if ($Param->table_key == '') {
-        $Param->table_key = ($obj->key == '' ?  'id' : $obj->key);
+      $table_key = $param->table_key;
+      $obj = $param->table == '' ?  $this->_table : new fsDBTable($param->table); 
+      if ($param->table_key == '') {
+        $param->table_key = ($obj->key == '' ?  'id' : $obj->key);
       }
       if ($obj == null) {
         $this->Message(T('XMLcms_bme_activate'));
         return -1;
       } else {
-        $key = $Param->key;
-        $where = "`".$Param->table_key."`";
+        $key = $param->key;
+        $where = "`".$param->table_key."`";
         if(is_array($key)) {
           $c = count($key);
           $where .= ' IN (';
@@ -249,9 +252,9 @@ class AdminPanel extends cmsController
           }
           $where .= ')';
         } else {
-          $where .= " = '".$Param->key."'";
+          $where .= " = '".$param->key."'";
         }
-        $obj->Update(array($Param->field), array('1'))->Where($where)->Execute();
+        $obj->Update(array($param->field), array('1'))->Where($where)->Execute();
         return 0;
       }
     }
@@ -260,7 +263,7 @@ class AdminPanel extends cmsController
   
   public function actionMultiAction($param)
   {
-    $this->_SetRedirect($Param->referer);
+    $this->_SetRedirect($param->referer);
     if (!$param->Exists('type') || !$param->Exists('keys')) {
       return -1;
     }
@@ -271,29 +274,32 @@ class AdminPanel extends cmsController
     $param->key = $keys;
     $param->Delete('keys');
     switch($param->type) {
-      case 'activate':  return $this->actionActivate($param);
-      case 'delete': return $this->actionDelete($param);
-      default: return 404;
+      case 'activate':  
+          return $this->actionActivate($param);
+      case 'delete': 
+          return $this->actionDelete($param);
+      default: 
+          return 404;
     }
   }
   
-  public function actionDelete($Param)
+  public function actionDelete($param)
   {
-    $this->_SetRedirect($Param->referer);
-    if (!$Param->Exists('key')) {
+    $this->_SetRedirect($param->referer);
+    if (!$param->Exists('key')) {
       return -1;
     }
     $return = 0;
-    if ($Param->Exists('confirm')) {
-      $obj = !$Param->Exists('table') ? $this->_table : new fsDBTable($Param->table);
+    if ($param->Exists('confirm')) {
+      $obj = !$param->Exists('table') ? $this->_table : new fsDBTable($param->table);
       if ($obj == null) {
         $this->Message(T('XMLcms_bme_delete'));
         $return = 4;
       } else {
-        $key = $Param->key;
-        $where = !$Param->Exists('table_key')
+        $key = $param->key;
+        $where = !$param->Exists('table_key')
                   ? '`'.($obj->key == '' ?  'id' : $obj->key).'`'
-                  : "`".$Param->table_key."`";
+                  : "`".$param->table_key."`";
         if(is_array($key)) {
           $c = count($key);
           $where .= ' IN (';
@@ -302,25 +308,25 @@ class AdminPanel extends cmsController
           }
           $where .= ')';
         } else {
-          $where .= " = '".$Param->key."'";
+          $where .= " = '".$param->key."'";
         }
         $obj->Delete()->Where($where)->Execute();
-        if ($Param->referer == '') {
+        if ($param->referer == '') {
           $this->_SetRedirect('Index');
         }
       }
       $this->Message(T('XMLcms_record_deleted'));
     } else {
-      $arr = $Param->GetStruct();
+      $arr = $param->GetStruct();
       $paramStr = '';
       foreach ($arr as $P) {
         if ($P == 'PHPSESSID' || $P == 'controller' || $P == 'method' ||
             $P == 'includeBody' || $P == 'includeHead') {
             continue;
         } else {
-          $temp = $Param->$P;
+          $temp = $param->$P;
           if(!is_array($temp)) {
-            $paramStr .= '&'.$P.'='.$Param->$P;
+            $paramStr .= '&'.$P.'='.$param->$P;
           } else {
             $c = count($temp);
             foreach($temp as $idx => $value) {
@@ -338,20 +344,20 @@ class AdminPanel extends cmsController
     return $return;
   }
   
-  public function actionDoAdd($Param)
+  public function actionDoAdd($param)
   { 
-    $this->_SetRedirect($Param->referer);
+    $this->_SetRedirect($param->referer);
     $return = -1;
-    if ($Param->Exists('call') && $Param->call != '') {
-      $return = $this->_Do($Param, $Param->call, 'actionDoAdd');
+    if ($param->Exists('call') && $param->call != '') {
+      $return = $this->_Do($param, $param->call, 'actionDoAdd');
     } else {
-      $obj = !$Param->Exists('table') ? $this->_table : new fsDBTable($Param->table);
+      $obj = !$param->Exists('table') ? $this->_table : new fsDBTable($param->table);
       if ($obj == null) {
         $this->Message(T('XMLcms_bme_add'));
       } else {  
         foreach($obj->columns as $c) {
-          if($Param->Exists($c)) {
-            $obj->$c = $Param->$c;
+          if($param->Exists($c)) {
+            $obj->$c = $param->$c;
           }
         }
         $obj->Insert()->Execute();
@@ -364,34 +370,34 @@ class AdminPanel extends cmsController
     return $return;
   }
   
-  public function actionDoEdit($Param)
+  public function actionDoEdit($param)
   { 
-    $this->_SetRedirect($Param->referer);
+    $this->_SetRedirect($param->referer);
     $return = 0;
-    if (!$Param->Exists('key')) {
+    if (!$param->Exists('key')) {
       $this->Message(T('XMLcms_unknow_key'));
       $return = 2;
     } else {
-      if ($Param->Exists('call') && $Param->call != '') {
-        $return = $this->_Do($Param, $Param->call, 'actionDoEdit');
+      if ($param->Exists('call') && $param->call != '') {
+        $return = $this->_Do($param, $param->call, 'actionDoEdit');
       } else {
-        $obj = !$Param->Exists('table') ? $this->_table : new fsDBTable($Param->table);
+        $obj = !$param->Exists('table') ? $this->_table : new fsDBTable($param->table);
         if ($obj == null) {
           $this->Message(T('XMLcms_bme_edit'));
           $return = 1;
         } else {  
-          $tk = !$Param->Exists('table_key') ? ($obj->key == '' ?  'id' : $obj->key) : $Param->table_key;
-          $where = '`'.$tk.'` = "'.$Param->key.'"';
+          $tk = !$param->Exists('table_key') ? ($obj->key == '' ?  'id' : $obj->key) : $param->table_key;
+          $where = '`'.$tk.'` = "'.$param->key.'"';
           $new_values = array();
           $idx = 0;
           $cols_to_edit = array();
           foreach($obj->columns as $c) {
-            if ($Param->Exists($c) || $obj->GetType($c) == 'enum') {
-              $new_values[$idx] = $Param->Exists($c) ? $Param->$c : 0;
+            if ($param->Exists($c) || $obj->GetType($c) == 'enum') {
+              $new_values[$idx] = $param->Exists($c) ? $param->$c : 0;
               $cols_to_edit[] = $c;
               if ($c == $tk) {
-                $redirect = str_replace('key='.$Param->key, 'key='.$new_values[$idx], $this->Redirect()); 
-                $redirect = str_replace('/key/'.$Param->key, '/key/'.$new_values[$idx], $redirect); 
+                $redirect = str_replace('key='.$param->key, 'key='.$new_values[$idx], $this->Redirect()); 
+                $redirect = str_replace('/key/'.$param->key, '/key/'.$new_values[$idx], $redirect); 
                 $this->Redirect($redirect);
               }
             }
@@ -409,10 +415,10 @@ class AdminPanel extends cmsController
     return $return;
   }
 
-  public function actionAjaxTemplateFiles($Param)
+  public function actionAjaxTemplateFiles($param)
   {
     $this->_response->empty = true;
-    $this->Html($this->_ThemeTemplateFiles($Param->theme));
+    $this->Html($this->_ThemeTemplateFiles($param->theme));
   }
   protected function _ThemeTemplateFiles($theme, $selected = false)
   {
@@ -489,8 +495,7 @@ class AdminPanel extends cmsController
     }
     $settingsFile = PATH_ROOT.'settings/Settings.php';
     $startPage = $param->start_page_custom != '' ? $param->start_page_custom : $param->start_page; 
-    if($param->controller = 'AdminPanel' && $param->Exists('links_suffix') 
-      && file_exists($settingsFile)) {
+    if($param->controller = 'AdminPanel' && $param->Exists('links_suffix') && file_exists($settingsFile)) {
       $s = file_get_contents($settingsFile);
       $s = preg_replace(
         "/'links_suffix'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
@@ -519,4 +524,3 @@ class AdminPanel extends cmsController
     }
   }
 }
-?>

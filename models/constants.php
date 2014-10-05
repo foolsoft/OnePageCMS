@@ -6,4 +6,3 @@ class constants extends fsDBTableExtension
     parent::__destruct();
   }
 }
-?>

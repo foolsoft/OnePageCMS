@@ -12,4 +12,3 @@ $LANG = array (
     'Dictionaries' => 'Словари',
   
 );
-?>

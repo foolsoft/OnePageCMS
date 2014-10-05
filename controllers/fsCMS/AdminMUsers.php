@@ -1,11 +1,11 @@
 <?php
-class AdminMUsers extends AdminPanel {
-
+class AdminMUsers extends AdminPanel
+{
   protected $_tableName = 'users';
 
-  private function _CheckParamField($Param)
+  private function _CheckParamField($param)
   {
-    if ($Param->name == '') {
+    if ($param->name == '') {
       $this->Message(T('XMLcms_text_need_all_data'));
       $this->_Referer();
       return false;
@@ -13,15 +13,15 @@ class AdminMUsers extends AdminPanel {
     return true;
   }
   
-  private function _CheckParam($Param, $checkPasswordEmpty = true)
+  private function _CheckParam($param, $checkPasswordEmpty = true)
   {
-    if ($Param->password == '' && $checkPasswordEmpty) {
+    if ($param->password == '' && $checkPasswordEmpty) {
       $this->Message(T('XMLcms_text_empty_pwd'));
-    } else if ($Param->password != $Param->rpassword) {
+    } else if ($param->password != $param->rpassword) {
       $this->Message(T('XMLcms_text_bad_pwd_confirm'));
-    } else if (!$this->_table->IsUnique($Param->login)) { 
-      if (!$Param->Exists('key') ||
-          ($Param->Exists('key') && $Param->key != $Param->login)) {
+    } else if (!$this->_table->IsUnique($param->login)) { 
+      if (!$param->Exists('key') ||
+          ($param->Exists('key') && $param->key != $param->login)) {
         $this->Message(T('XMLcms_text_login_not_unique'));
       }
     }
@@ -49,41 +49,41 @@ class AdminMUsers extends AdminPanel {
     parent::Init($request);
   }
 
-  public function actionAddField($Param)
+  public function actionAddField($param)
   {
   }
 
-  public function actionEditField($Param)
+  public function actionEditField($param)
   {
     $user_fields = new user_fields();
-    $user_fields->current = $Param->key;
-    if ($user_fields->id != $Param->key) {
+    $user_fields->current = $param->key;
+    if ($user_fields->id != $param->key) {
       $this->_Referer();
       return;
     }
     $this->Tag('field', $user_fields->result);
   }
 
-  public function actionDoEditField($Param)
+  public function actionDoEditField($param)
   {
-    if(!$this->_CheckParamField($Param)) {
+    if(!$this->_CheckParamField($param)) {
       return;
     }
-    if (!$this->_CheckUnique($Param->name, 'name', $Param->key, 'id', 'user_fields')) {
+    if (!$this->_CheckUnique($param->name, 'name', $param->key, 'id', 'user_fields')) {
       return;
     }
-    parent::actionDoEdit($Param);
+    parent::actionDoEdit($param);
   }
 
-  public function actionDoAddField($Param)
+  public function actionDoAddField($param)
   {
-    if(!$this->_CheckParamField($Param)) {
+    if(!$this->_CheckParamField($param)) {
       return;
     }
-    if (!$this->_CheckUnique($Param->name, 'name', false, false, 'user_fields')) {
+    if (!$this->_CheckUnique($param->name, 'name', false, false, 'user_fields')) {
       return;
     }
-    $fieldId = parent::actionDoAdd($Param);
+    $fieldId = parent::actionDoAdd($param);
     if ($fieldId > 0) {
       $user_info = new user_info();
       $users = $this->_table->GetAll();
@@ -93,23 +93,23 @@ class AdminMUsers extends AdminPanel {
     }
   }
 
-  public function actionDoAdd($Param)
+  public function actionDoAdd($param)
   {
-    if (!$this->_CheckParam($Param)) {
+    if (!$this->_CheckParam($param)) {
       return;
     }
-    $Param->active =  $Param->Exists('active') ? 1 : 0;
-    $Param->password = md5($Param->password);
-    $userId = parent::actionDoAdd($Param);
-    if ($userId > 0 && $Param->Exists('user_field')) {
+    $param->active =  $param->Exists('active') ? 1 : 0;
+    $param->password = md5($param->password);
+    $userId = parent::actionDoAdd($param);
+    if ($userId > 0 && $param->Exists('user_field')) {
       $user_info = new user_info();
-      foreach ($Param->user_field as $fieldId => $value) {
+      foreach ($param->user_field as $fieldId => $value) {
         $user_info->Add($userId, $fieldId, $value);  
       }
     }
   }
 
-  public function actionAdd($Param)
+  public function actionAdd($param)
   {
     $types_users = new types_users();
     $user_fields = new user_fields();
@@ -117,70 +117,68 @@ class AdminMUsers extends AdminPanel {
     $this->Tag('fields', $user_fields->GetAll(true, false, array('title')));
   }
 
-  public function actionFields($Param)
+  public function actionFields($param)
   {
     $user_fields = new user_fields();
     $this->Tag('fields', $user_fields->GetAll(true, false, array('name')));
   }
 
-  public function actionIndex($Params)
+  public function actionIndex($param)
   {
     $this->Tag('users', $this->_table->GetAll(true, true));
   }
   
-  public function actionDoEdit($Param)
+  public function actionDoEdit($param)
   {
-  	if (!$this->_CheckParam($Param, false)) {
+  	if (!$this->_CheckParam($param, false)) {
       return;
     }
-    if (!$this->_CheckUnique($Param->login, 'login', $Param->key, 'id')) {
+    if (!$this->_CheckUnique($param->login, 'login', $param->key, 'id')) {
       return;
     }
-    if ($Param->login != fsConfig::GetInstance('main_admin')) {
-      $Param->active = $Param->Exists('active') ? 1 : 0;
+    if ($param->login != fsConfig::GetInstance('main_admin')) {
+      $param->active = $param->Exists('active') ? 1 : 0;
     } else {
-      $Param->active = 1;
+      $param->active = 1;
     }
-    if ($Param->password != '') {
-      $Param->password = md5($Param->password);
+    if ($param->password != '') {
+      $param->password = md5($param->password);
     } else {
-      $Param->Delete('password');
+      $param->Delete('password');
     }
-    if (parent::actionDoEdit($Param) == 0) {
-      if ($Param->Exists('user_field')) {
+    if (parent::actionDoEdit($param) == 0) {
+      if ($param->Exists('user_field')) {
         $user_info = new user_info();
-        foreach ($Param->user_field as $fieldId => $value) {
-          $user_info->Change($Param->key, $fieldId, $value);
+        foreach ($param->user_field as $fieldId => $value) {
+          $user_info->Change($param->key, $fieldId, $value);
         }
       }  
     }
   }
   
-  public function actionEdit($Param)
+  public function actionEdit($param)
   {
-    $this->_table->current = $Param->key;
-    if ($this->_table->result->id != $Param->key) {
+    $this->_table->current = $param->key;
+    if ($this->_table->result->id != $param->key) {
       $this->_Referer();
       return;
     }
     $types_users = new types_users();
-    $this->Tag('fields', $this->_GetUserFields($Param->key));
+    $this->Tag('fields', $this->_GetUserFields($param->key));
     $this->Tag('types', $types_users->GetAll());
     $this->Tag('user', $this->_table->result);
   }
   
   
-  public function actionDelete($Param)
+  public function actionDelete($param)
   {
-    if (parent::actionDelete($Param) == 0) {
+    if (parent::actionDelete($param) == 0) {
       $user_info = new user_info();
-      if (!$Param->Exists('table')) {
-        $user_info->DeleteBy($Param->key, 'id_user');
+      if (!$param->Exists('table')) {
+        $user_info->DeleteBy($param->key, 'id_user');
       } else {
-        $user_info->DeleteBy($Param->key, 'id_field');
+        $user_info->DeleteBy($param->key, 'id_field');
       }
     }
   }
-  
 }
-?>

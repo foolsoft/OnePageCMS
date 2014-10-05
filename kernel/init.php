@@ -1,4 +1,7 @@
 <?php
+/*
+ * Initialize fsKernel 
+ */
 header('Content-type: text/html; charset=utf-8');
 session_start();
 $_REQUEST['includeBody'] = '';

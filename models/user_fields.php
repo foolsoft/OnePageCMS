@@ -6,4 +6,3 @@ class user_fields extends fsDBTableExtension
     parent::__destruct();
   }
 }
-?>

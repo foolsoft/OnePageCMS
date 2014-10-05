@@ -11,7 +11,7 @@ class AdminMModules extends AdminPanel
     parent::Init($request);
   }
 
-  public function actionDoAdd($Param)
+  public function actionDoAdd($param)
   {
     $error = fsFunctions::CheckUploadFiles('userfile',
                                            array('application/zip',
@@ -78,20 +78,20 @@ class AdminMModules extends AdminPanel
     }
   }
 
-  public function actionAdd($Param)
+  public function actionAdd($param)
   {
   }
 
-  public function actionIndex($Params)
+  public function actionIndex($param)
   {
     $this->Tag('modules', $this->_table->GetModules());
   }
   
-  public function actionDelete($Param)
+  public function actionDelete($param)
   {
-    if (parent::actionDelete($Param) == 0) {
+    if (parent::actionDelete($param) == 0) {
       $classNames = array();
-      $classNames[] = $Param->key;
+      $classNames[] = $param->key;
       $isAdminController = substr(strtolower($classNames[0]), 0, 5) == 'admin';
       $classNames[] = $isAdminController ? substr($classNames[0], 5) : 'Admin'.$classNames[0];
       $controller_menu = new controller_menu();
@@ -119,5 +119,3 @@ class AdminMModules extends AdminPanel
   }
 
 }
-
-?>

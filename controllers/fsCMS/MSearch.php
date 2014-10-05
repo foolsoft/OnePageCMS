@@ -3,7 +3,7 @@ class MSearch extends cmsController
 {
   protected $_tableName = 'search';
   
-  public function FormSearch($Param) 
+  public function FormSearch($param) 
   {
     $html = $this->CreateView(array(), $this->_Template('FormSearch'));
     return "<form method='get' action='".$this->_My('Search')."' id='search-form' class='search-form'>".
@@ -12,9 +12,9 @@ class MSearch extends cmsController
   
   }
   
-  public function actionSearch($Param) 
+  public function actionSearch($param) 
   {
-    $data = $this->_table->CreateQuery($Param->text);  
+    $data = $this->_table->CreateQuery($param->text);  
     $results = array();
     foreach ($data as $row) {
       $matches = array();
@@ -44,9 +44,8 @@ class MSearch extends cmsController
       }
     }
     $this->Tag('results', $results);
-    $this->Tag('title', T('XMLcms_search_result').': '.$Param->text);
+    $this->Tag('title', T('XMLcms_search_result').': '.$param->text);
     $this->Tag('meta_keywords', CMSSettings::GetInstance('default_keywords'));
     $this->Tag('meta_description', CMSSettings::GetInstance('default_description'));
   }
 }
-?>

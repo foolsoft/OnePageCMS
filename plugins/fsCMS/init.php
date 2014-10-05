@@ -1,4 +1,7 @@
 <?php 
+/*
+ * Initialize fsCMS plugin
+ */
 define('AUTH', fsSession::Exists('AUTH'));
 define('ADMIN_USER_TYPE', 1);
 define('ALL_TYPES', 1);
@@ -50,4 +53,3 @@ if (AUTH_ADMIN && strpos(strtolower($_REQUEST['controller']), 'admin') !== 0) {
   $_REQUEST['includeHead'] .= '<meta name="generator" content="OnePageCMS" />';
   unset($HL); unset($PA);
 }
-?>

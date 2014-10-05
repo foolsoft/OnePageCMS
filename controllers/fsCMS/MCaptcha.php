@@ -1,9 +1,8 @@
 <?php
 class Captcha extends cmsController
 {
-    public function actionCreate($Param)
+    public function actionCreate($param)
     {
         fsCaptcha::Create();
     }
 }
-?>

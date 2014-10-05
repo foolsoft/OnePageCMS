@@ -44,4 +44,3 @@ class controller_settings extends fsDBTable
   }
   
 }
-?>
