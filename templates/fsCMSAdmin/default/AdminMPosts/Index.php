@@ -23,7 +23,7 @@ $textActivate = T('XMLcms_activate');
 ?>
   <option <?php echo $selcted; ?> value='<?php echo $category['id']; ?>'><?php echo $category['name']; ?></option>
 <?php } ?>
-  <option value='0'><?php _T('XMLcms_text_nocategory'); ?></option>
+  <option value='-1'><?php _T('XMLcms_text_nocategory'); ?></option>
 </select>
 <hr />
 <div id='post-table'>

@@ -1,12 +1,19 @@
 <?php
-//Генерация списка номеров страниц с материалом
-//@ $link основная ссылка
-//@ $param нзвание параметра номера страницы
-//@ $count общее число записей
-//@ $pp число записей на странице
-//@ $current тукущая страница 
+/*
+* Page navigation class.
+* @package fsCMS
+*/
 class Paginator 
 {
+   /*
+   * Get page navigation line.
+   * @param string $link Base url.
+   * @param string $param Page GET parameter.
+   * @param integer $count Total records count.           
+   * @param integer $pp (optional) Records per page. Default <b>20</b>.
+   * @param integer $current (optional) Current page from 1. Default <b>1</b>.   
+   * @param array $htmlAttributes (optional) Url HTML attributes. Default <b>empty array</b>.
+   */
     public static function Get($link, $param, $count, $pp = 20, $current = 1, $htmlAttributes = array())
     {
         $pCount = ($count % $pp == 0) ? (int)($count / $pp) : (int)($count / $pp) + 1;
@@ -36,11 +43,15 @@ class Paginator
 }
 
 /*
- * fsCMS base class
+ * fsCMS base class.
  */
 class cmsController extends fsController 
 {
+  /* var boolean Flag for auto loading controller settings from database. */
   protected $_autoLoadSettings = true;
+  /* var string Action for denied user event. Possible values: <b>REDIRECT</b>, <b>NONE</b>. Default or wrong <b>REDIRECT</b>. */
+  protected $_accessDeniedType = 'REDIRECT';
+  /* var fsStruct Controller settings. */
   public    $settings = null;
   
   protected function _TemplatePath($folder = null)
@@ -93,6 +104,47 @@ class cmsController extends fsController
     return new fsStruct($config);
   }
   
+  public function Init($request)
+  {
+      $allow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : GUEST, 'type_allow'), true);
+      $disallow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : GUEST, 'type_disallow'), true);
+      $denied = false;
+      
+      foreach($disallow as $d) {
+        if($d == '*' || preg_match('/^'.$request->controller.'\/\*$/', $d) 
+            || preg_match('/^'.$request->controller.'\/'.$request->method.'$/', $d) 
+            || preg_match('/^\*\/'.$request->method.'$/', $d)) {
+            $denied = true;
+            break;
+        }
+      }
+      if($denied) {
+        foreach($allow as $a) {
+            if($d == '*' || preg_match('/^'.$request->controller.'\/\*$/', $a) 
+                || preg_match('/^'.$request->controller.'\/'.$request->method.'$/', $a) 
+                || preg_match('/^\*\/'.$request->method.'$/', $a)) {
+                $denied = false;
+                break;
+            }
+        }
+      }
+      
+      if($denied) {
+        $this->_accessDenied = true;
+        $this->Message(T('XMLcms_denied'));
+        switch(strtoupper($this->_accessDeniedType)) {
+            case 'NONE':
+                break;
+            case 'REDIRECT':
+            default:            
+                $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')));
+                break;
+        }
+      }
+      
+      parent::Init($request);
+  }
+  
   public function __construct()
   {
     parent::__construct();
@@ -119,14 +171,16 @@ class cmsController extends fsController
   }
 }
 
+/*
+ * fsCMS base class with auth.
+ */
 class cmsNeedAuthController extends cmsController
 {
-    public function Init($param)
+    public function Init($request)
     {
         if (!AUTH) {
-            $this->Redirect(fsHtml::Url(URL_ROOT.'MAuth/Auth'));
-            return;
+            return $this->Redirect(fsHtml::Url(URL_ROOT.'MAuth/Auth'));
         }
-        parent::Init($param);
+        parent::Init($request);
     }
 }

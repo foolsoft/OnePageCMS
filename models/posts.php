@@ -9,7 +9,7 @@ class posts extends fsDBTableExtension
 	public function GetCountByCategory($idOrAlt = ALL_TYPES, $activeOnly = true)
   {
     $sql = '';
-    if ($idOrAlt == 0) {
+    if ($idOrAlt == -1) { //No category
       $sql = fsFunctions::StringFormat(
         "SELECT COUNT(`{0}`.`id`) as `c`
          FROM `{0}` LEFT JOIN `{1}` ON `{0}`.`id` = `{1}`.`id_post`
@@ -47,7 +47,7 @@ class posts extends fsDBTableExtension
 	public function GetByCategory($idOrAlt = ALL_TYPES, $start = 0, $count = 15, $activeOnly = true)
 	{
     $sql = '';
-    if ($idOrAlt == 0) { //Без категории
+    if ($idOrAlt == -1) { //No category
       $sql = fsFunctions::StringFormat(
         "SELECT `{0}`.*
          FROM `{0}` LEFT JOIN `{1}` ON `{0}`.`id` = `{1}`.`id_post`

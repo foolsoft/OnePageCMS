@@ -53,10 +53,11 @@ fsFunctions::IncludeFiles(array(
     PATH_ROOT.'kernel/fsRoute.php',
     PATH_ROOT.'kernel/fsCache.php',
     PATH_ROOT.'kernel/fsInclude.php',
+    PATH_ROOT.'kernel/fsCaptcha.php',
 ));
 fsRoute::Request();
+fsFunctions::IncludeFolder(PATH_ROOT.'models', false, array('php'));
 fsFunctions::IncludeFile(PATH_PLUGINS.'init.php');
 fsFunctions::IncludeFile(PATH_ROOT.'controllers/init.php');
 fsFunctions::IncludeFolder(PATH_CACHE, false, array('php'));
 fsFunctions::IncludeFolder(PATH_CACHE_DB, false, array('php'));
-fsFunctions::IncludeFolder(PATH_ROOT.'models/', false, array('php'));

@@ -70,12 +70,12 @@ $selectedParent = '0';
             <option value='<?php echo URL_ROOT.'page/'.$link['alt']; ?>'><?php echo $link['title']; ?></option>  
           <?php } ?>    
         </optgroup>
-        <optgroup label="<?php echo T('XMLcms_text_posts'); ?>">
+        <optgroup label="<?php _T('XMLcms_text_posts'); ?>">
           <?php foreach ($tag->linksPosts as $link) { ?>
             <option value='<?php echo URL_ROOT.'posts/'.$link['alt']; ?>'><?php echo $link['name']; ?></option>  
           <?php } ?>    
         </optgroup>
-        <optgroup label="<?php echo T('XMLcms_text_modules'); ?>">
+        <optgroup label="<?php _T('XMLcms_text_modules'); ?>">
           <?php foreach ($tag->linksControllers as $link) { ?>
             <option value='<?php echo URL_ROOT.$link['href']; ?>'><?php echo $link['title']; ?></option>  
           <?php } ?>    

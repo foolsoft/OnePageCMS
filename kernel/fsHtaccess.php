@@ -42,10 +42,11 @@ class fsHtaccess
       $domain = explode('.', $domain[2]);
       $firstIndex = $domain[0] == 'www' ? 1 : 0;
       $domainZone = $domain[count($domain) - 1];
+      $subDomain = false;
       if(count($domain) == 2) {
         $domain = $domain[0];
       } else {
-        $temp = '';
+        $temp = ''; $subDomain = true;
         for($i = $firstIndex; $i < count($domain) - 1; ++$i) {
           $temp .= (empty($temp) ? '' : '.').$domain[$i];  
         }
@@ -94,8 +95,8 @@ class fsHtaccess
     RewriteEngine On
 
     #Redirect to domain with www	
-    RewriteCond %{HTTP_HOST} ^{0}$ [NC]
-    RewriteRule ^(.*)$ {2}/$1 [R=301,L]
+    {13}RewriteCond %{HTTP_HOST} ^{0}$ [NC]
+    {13}RewriteRule ^(.*)$ {2}/$1 [R=301,L]
 
     #Redirect to domain without www	
     #RewriteCond %{HTTP_HOST} ^www\.{0}$ [NC]
@@ -105,7 +106,7 @@ class fsHtaccess
 
     #MPages
     RewriteRule ^{11}404{1}$ /index.php?{7}controller=MPages&method=View&page=?404 [L]
-    RewriteRule ^{12}?$ /index.php?{6}&method=StartPage [L]
+    RewriteRule ^{12}?$ /index.php?{6}method=StartPage [L]
     RewriteCond %{QUERY_STRING} (.*)
     RewriteRule ^{5}page/([0-9a-zA-Z_\-]+){1}$ /index.php?{6}controller=MPages&method=View&page=${9}&%1 [L]
     RewriteRule ^template/([0-9a-zA-Z_\-]+)$ /index.php?controller=MTemplate&method=Change&name=$1 [L]
@@ -146,6 +147,7 @@ class fsHtaccess
         $multilang === true ? 3 : 2,
         $multilang === true ? '(([A-Za-z\-]+)/)?' : '',
         $multilang === true ? '([A-Za-z\-]+)/' : '/',
+        $subDomain === true ? '#' : '',
       ));
       $f->Close();  
     }

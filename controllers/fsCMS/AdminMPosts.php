@@ -13,6 +13,7 @@ class AdminMPosts extends AdminPanel
     if ($param->Exists('call')) {
       $param->Delete('call');
     }
+    $param->auth = $param->Exists('auth') ? 1 : 0;
     return true;
   }
   
@@ -29,6 +30,7 @@ class AdminMPosts extends AdminPanel
     }
     $Param->alt = strtolower(fsFunctions::Chpu($Param->alt));
     $Param->active = $Param->Exists('active') ? 1 : 0;
+    $Param->auth = $Param->Exists('auth') ? 1 : 0;
     if ($Param->time == '') {
       $Param->time = date('H:i:s');
     }

@@ -5,7 +5,7 @@
     <?php 
     fsFunctions::IncludeFile(PATH_TPL.'shared.php');
     fsInclude::AddJs(array(URL_JS.'fsCMSAdmin/admin.js'));
-    fsInclude::AddCss(array(URL_CSS.'jqui/jqui-datepicker.css', URL_ATHEME_CSS.'admin.css'));
+    fsInclude::AddCss(array(URL_PLUGINS.'jqueryui/jquery-ui.min.css', URL_ATHEME_CSS.'admin.css'));
     echo fsInclude::Generate(array('ico')).fsInclude::GenerateCache(array('css'), 'admin');
     if (file_exists(PATH_ATHEME_JS.$_REQUEST['controller'].'.js')) {
         fsInclude::AttachJs(URL_ATHEME_JS.$_REQUEST['controller'].'.js');
@@ -39,7 +39,7 @@
     </div>
     <?php 
     echo fsInclude::GenerateCache(array('js'), 'admin'); 
-    fsInclude::AttachJs(array(URL_PLUGINS.'ace/ace.js', URL_PLUGINS.'ckeditor/ckeditor.js', URL_JS.'jqui/jqui-datepicker.js'));
+    fsInclude::AttachJs(array(URL_PLUGINS.'ace/ace.js', URL_PLUGINS.'ckeditor/ckeditor.js', URL_PLUGINS.'jqueryui/jquery-ui.min.js'));
     ?>
 </body>
 </html>

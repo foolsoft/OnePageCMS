@@ -139,7 +139,7 @@ class fsKernel extends fsController
       }
       $class->Finnaly();
       $html = $class->Html();
-      if (empty($html) && !$class->response->empty) {
+      if ($html !== '' && !$class->response->empty) {
         $html = $class->CreateView();
       }
       $html = preg_replace("/<\s*\/\s*body\s*>/", $_REQUEST['includeBody'].'</body>', $html);

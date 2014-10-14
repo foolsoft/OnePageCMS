@@ -11,6 +11,7 @@ $textActivate = T('XMLcms_activate');
   echo fsHtml::Link($myLink.'Config', T('XMLcms_settings'), false, array('class' => 'fsCMS-btn admin-btn-config float-left')); 
   echo fsHtml::Link($myLink.'Add', T('XMLcms_text_add_user'), false, array('class' => 'fsCMS-btn admin-btn-add float-left')); 
   echo fsHtml::Link($myLink.'Fields', T('XMLcms_text_user_fields'), false, array('class' => 'fsCMS-btn float-left'));
+  echo fsHtml::Link($myLink.'Groups', T('XMLcms_groups'), false, array('class' => 'fsCMS-btn float-left'));
   ?>
   <div class='clr'></div>
 </div>

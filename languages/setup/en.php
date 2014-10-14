@@ -6,6 +6,7 @@
 'text_dblog' => 'Developer blog', 
 'text_a' => 'Mamatov Andrey',
 'text_all' => 'All',
+'text_guest' => "Guest",
 'text_words' => 'Dictionaries',
 'text_all_category' => "All categories",
 'text_no_admin' => "Admin name is empty!",

@@ -76,6 +76,10 @@ $postDate = $postDate[0];
     <?php _T('XMLcms_text_is_active'); ?>:
     <input <?php echo $tag->post->active == 1 ? 'checked' : ''; ?> type='checkbox' name='active' />
   </p>
+  <p class='title'>
+    <?php _T('XMLcms_text_auth_needed'); ?>: 
+    <input type='checkbox' name='auth' <?php echo $tag->post->auth == 1 ? 'checked' : ''; ?> />
+  </p>
   <hr /> 
   <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_save'); ?>' />   
 </form>

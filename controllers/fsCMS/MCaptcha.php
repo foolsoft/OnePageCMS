@@ -1,5 +1,5 @@
 <?php
-class Captcha extends cmsController
+class MCaptcha extends cmsController
 {
     public function actionCreate($param)
     {

@@ -13,6 +13,7 @@ class AdminMPages extends AdminPanel
     $param->alt = strtolower(fsFunctions::Chpu($param->alt));
     $param->in_menu = $param->Exists('in_menu') ? 1 : 0;
     $param->active = $param->Exists('active') ? 1 : 0;
+    $param->auth = $param->Exists('auth') ? 1 : 0;
     return true;
   }
                
@@ -66,6 +67,14 @@ class AdminMPages extends AdminPanel
     $templates = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPages/', true, false, false, array('php'));
     $this->Tag('templates', $templates['NAMES']);
     $this->Tag('page', $this->_table->result);
+  }
+
+  public function actionDelete($param)
+  {
+    if(!$param->Exists('key', true) || $param->key < 1) {
+        return $this->HttpNotFound();
+    }
+    parent::actionDelete($param);
   }
 
 }

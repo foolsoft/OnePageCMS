@@ -20,6 +20,20 @@ class fsController
   /** @var fsDBTableExtension|object|null Instance of MySQL table as controller model or fsDBTableExtension object or null if $_tableName is empty */
   protected $_table     = null; 
   
+  /* var boolean Flag for denied action. Default <b>false</b>. */
+  protected $_accessDenied = false;
+  
+  /**
+  * Get controller denied status.   
+  * @api
+  * @since 1.0.0
+  * @return boolean Controller status.      
+  */
+  public function IsDenied()
+  {
+    return $this->_accessDenied;
+  }
+  
   /**
   * Getting Url for method of controller.   
   * @api
@@ -51,7 +65,6 @@ class fsController
     if (is_string($url)) {
       fsFunctions::Redirect($url);
     }
-    exit;
   }
   
   /**

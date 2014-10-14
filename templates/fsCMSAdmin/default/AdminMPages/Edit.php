@@ -8,10 +8,14 @@
     <?php _T('XMLcms_text_title'); ?>:<br />
     <input value='<?php echo $tag->page->title; ?>' class='input-100' maxlength='100' type='text' name='title' />
   </p>
+  <?php if($tag->page->id > 0) { ?>
   <p class='title'>
     <?php _T('XMLcms_text_link'); ?>:<br />
     <input value='<?php echo $tag->page->alt; ?>' id='alt' onkeyup="fsCMS.Chpu(this.value, this.id);" class='input-100' maxlength='100' type='text' name='alt' />
   </p>
+  <?php } else { ?>
+    <input value='<?php echo $tag->page->alt; ?>' type='hidden' name='alt' />
+  <?php } ?>
   <p>
     META - <?php _T('XMLcms_text_description'); ?>:<br />
     <input value='<?php echo $tag->page->description; ?>' class='input-100' maxlength='500' type='text' name='description' />
@@ -27,15 +31,11 @@
   <p>
     <?php _T('XMLcms_text_template'); ?>:
     <select name='tpl'>
-    <?php
-    foreach ($tag->templates as $template) {
-      $selected = $tag->page->tpl == $template ? 'selected' : '';
-    ?>
-      
-      <option <?php echo $selected; ?> value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php
-    }
-    ?>
+        <?php foreach ($tag->templates as $template) {
+            $selected = $tag->page->tpl == $template ? 'selected' : '';
+        ?>
+        <option <?php echo $selected; ?> value='<?php echo $template; ?>'><?php echo $template; ?></option>
+        <?php } ?>
     </select>
   </p>
   <p>
@@ -44,6 +44,9 @@
     <span class='space'></span>
     <?php _T('XMLcms_text_is_active'); ?>: 
     <input type='checkbox' name='active' <?php echo $tag->page->active == 1 ? 'checked' : ''; ?> />
+    <br />
+    <?php _T('XMLcms_text_auth_needed'); ?>: 
+    <input type='checkbox' name='auth' <?php echo $tag->page->auth == 1 ? 'checked' : ''; ?> />
   </p>
   <hr /> 
   <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_save'); ?>' />

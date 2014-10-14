@@ -13,6 +13,12 @@ class AdminMUsers extends AdminPanel
     return true;
   }
   
+  private function _CheckParamGroup($param)
+  {
+    $param->table = 'types_users';
+    return $this->_CheckParamField($param);
+  }
+  
   private function _CheckParam($param, $checkPasswordEmpty = true)
   {
     if ($param->password == '' && $checkPasswordEmpty) {
@@ -53,13 +59,24 @@ class AdminMUsers extends AdminPanel
   {
   }
 
+  public function actionAddGroup($param)
+  {
+  }
+
+  public function actionDoAddGroup($param)
+  {
+    if(!$this->_CheckParamGroup($param)) {
+        return;
+    }
+    parent::actionDoAdd($param);
+  }
+
   public function actionEditField($param)
   {
     $user_fields = new user_fields();
     $user_fields->current = $param->key;
     if ($user_fields->id != $param->key) {
-      $this->_Referer();
-      return;
+      return $this->_Referer();
     }
     $this->Tag('field', $user_fields->result);
   }
@@ -71,6 +88,24 @@ class AdminMUsers extends AdminPanel
     }
     if (!$this->_CheckUnique($param->name, 'name', $param->key, 'id', 'user_fields')) {
       return;
+    }
+    parent::actionDoEdit($param);
+  }
+
+  public function actionEditGroup($param)
+  {
+    $types_users = new types_users();
+    $type = $types_users->Get($param->key);
+    if($type == null) {
+        return $this->_Referer();
+    }
+    $this->Tag('type', $type);
+  }
+
+  public function actionDoEditGroup($param)
+  {
+    if(!$this->_CheckParamGroup($param)) {
+        return;
     }
     parent::actionDoEdit($param);
   }
@@ -128,6 +163,12 @@ class AdminMUsers extends AdminPanel
     $this->Tag('users', $this->_table->GetAll(true, true));
   }
   
+  public function actionGroups($param)
+  {
+    $types_users = new types_users();
+    $this->Tag('types', $types_users->Get());
+  }
+  
   public function actionDoEdit($param)
   {
   	if (!$this->_CheckParam($param, false)) {
@@ -160,8 +201,7 @@ class AdminMUsers extends AdminPanel
   {
     $this->_table->current = $param->key;
     if ($this->_table->result->id != $param->key) {
-      $this->_Referer();
-      return;
+      return $this->_Referer();
     }
     $types_users = new types_users();
     $this->Tag('fields', $this->_GetUserFields($param->key));
@@ -172,12 +212,27 @@ class AdminMUsers extends AdminPanel
   
   public function actionDelete($param)
   {
+    if($param->table == 'types_users' && $param->key < 2) {
+        return $this->HttpNotFound();
+    }
     if (parent::actionDelete($param) == 0) {
       $user_info = new user_info();
-      if (!$param->Exists('table')) {
-        $user_info->DeleteBy($param->key, 'id_user');
-      } else {
-        $user_info->DeleteBy($param->key, 'id_field');
+      switch($param->table) {
+        case 'user_fields':
+            $user_info->DeleteBy($param->key, 'id_field');
+            break;
+        case 'types_users':
+            $users = new users();
+            $usersArray = $users->Get($param->key);
+            foreach($usersArray as $user) {
+                $user_info->DeleteBy($user['id'], 'id_user');
+            }
+            $users->DeleteBy($param->key, 'type');
+            break;
+        case 'users':
+        default:
+            $user_info->DeleteBy($param->key, 'id_user');
+            break;
       }
     }
   }

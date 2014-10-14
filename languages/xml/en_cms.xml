@@ -15,14 +15,38 @@
   <text name='cms_text_start_page'>
     <en>Start page</en>
   </text>
+  <text name='cms_guest'>
+    <en>Guest</en>
+  </text>
+  <text name='cms_denied'>
+    <en>Access denied</en>
+  </text>
+  <text name='cms_text_auth_needed'>
+    <en>Only for authorized users</en>
+  </text>
+  <text name='cms_text_url_auth_need'>
+    <en>Url of error page "only for authorized users"</en>
+  </text>
   <text name='cms_html_attr_name'>
     <en>Name of HTML tag</en>
   </text>
   <text name='cms_send'>
     <en>Send</en>
   </text>
+  <text name='cms_disallow_actions'>
+    <en>Disallowed actions</en>
+  </text>
+  <text name='cms_allow_actions'>
+    <en>Allowed actions</en>
+  </text>
   <text name='cms_lighter'>
     <en>Lights</en>
+  </text>
+  <text name='cms_groups'>
+    <en>Groups</en>
+  </text>
+  <text name='cms_text_add_group'>
+    <en>Add group</en>
   </text>
   <text name='cms_sorting'>
     <en>Sort</en>

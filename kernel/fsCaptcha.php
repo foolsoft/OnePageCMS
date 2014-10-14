@@ -9,11 +9,11 @@ class fsCaptcha
     private static $_settings = array(
         'width' => 100,
         'height' => 25,
-        'alph' => 'qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPLKJHGFDSAZXCVBNM',
+        'alph' => 'qwerty123klzxcLKJvbnm4567890QWERTYUIOPHGFDSAuiopasdfghjZXCVBNM',
         'length' => 4,
         'linesCount' => 2,
         'textColor' => array(255, 255, 255),
-        'lineColor' => array(150, 150, 150) 
+        'lineColor' => array(255, 255, 255) 
     );
 
     /**
@@ -39,29 +39,25 @@ class fsCaptcha
     {
         header("Content-Type: image/jpeg");
         
-        $w = isset($settings['width']) ? $settings['width'] : self::$_settings['width'];
-        $h = isset($settings['height']) ? $settings['height'] : self::$_settings['height'];
-        $l = isset($settings['length']) ? $settings['length'] : self::$_settings['length'];
-        $a = isset($settings['alph']) ? $settings['alph'] : self::$_settings['alph']; 
-        $ac = strlen($a);
-        $tc = isset($settings['textColor']) ? $settings['textColor'] : self::$_settings['textColor'];
-        $lc = isset($settings['lineColor']) ? $settings['lineColor'] : self::$_settings['lineColor'];
-        $lsc = isset($settings['linesCount']) ? $settings['linesCount'] : self::$_settings['linesCount'];
-        $img = imagecreatetruecolor($w, $h);
-        $textColor = imagecolorallocate($img , $tc[0], $tc[1], $tc[2]);
-        $lineColor = imagecolorallocate($img , $lc[0], $lc[1], $lc[2]);
+        $settings = array_merge(self::$_settings, $settings);
+        
+        $ac = strlen($settings['alph']);
+        
+        $img = imagecreatetruecolor($settings['width'], $settings['height']);
+        $textColor = imagecolorallocate($img , $settings['textColor'][0], $settings['textColor'][1], $settings['textColor'][2]);
+        $lineColor = imagecolorallocate($img , $settings['lineColor'][0], $settings['lineColor'][1], $settings['lineColor'][2]);
         $_SESSION['fsCaptcha'] = '';
-        for ($i = 0; $i < $l; ++$i) {
-            $_SESSION['fsCaptcha'] .= $a[rand(0, $ac)];
+        for ($i = 0; $i < $settings['length']; ++$i) {
+            $_SESSION['fsCaptcha'] .= $settings['alph'][rand(0, $ac)];
         }
-        for ($i = 0; $i < $lsc; ++$i) {
-            $x1 = rand(0, $w / 2);
-            $x2 = rand($w / 2, $w);
-            $y1 = rand(0, $h / 2);
-            $y2 = rand($h / 2, $h);
+        for ($i = 0; $i < $settings['linesCount']; ++$i) {
+            $x1 = rand(0, $settings['width'] / 2);
+            $x2 = rand($settings['width'] / 2, $settings['width']);
+            $y1 = rand(0, $settings['height'] / 2);
+            $y2 = rand($settings['height'] / 2, $settings['height']);
             imageline($img, $x1, $y1, $x2, $y2, $lineColor);
         }                         
-        imagestring($img, rand(5, 12), rand(0, $w/2), rand(0, $h/2), $_SESSION['fsCaptcha'], $textColor);
+        imagestring($img, rand(5, 12), rand(0, $settings['width']/2), rand(0, $settings['height']/2), $_SESSION['fsCaptcha'], $textColor);
         imagejpeg($img);
         exit;
     }

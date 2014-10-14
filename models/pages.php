@@ -14,20 +14,19 @@ class pages extends fsDBTableExtension
                 ->ExecuteToArray();
   }
   
-  public function Load($page, $filter)
+  public function Load($pageId = false, $pageAlt = false)
   {
-    return $this->Select()
-                ->Where(array(
-                              array(
-                                    array('id' => $page, 'logic' => 'OR', 'key' => $filter),
-                                    array('alt' => $page),
-                                    'logic' => 'AND'
-                                   ),
-                              array('active' => 1)
-                             )
-                        )
-                ->Limit(1)
-                ->ExecuteToArray();
+    if(!is_numeric($pageId) && $pageAlt === false) {
+        return array();
+    }
+    $this->Select();
+    $where = array(array('active' => 1));
+    if($pageAlt !== false) {
+        $where[] = array('alt' => $pageAlt);
+    } else {
+        $where[] = array('id' => $pageId);
+    }
+    $this->Where($where);
+    return $this->Limit(1)->ExecuteToArray();
   }
-
 }

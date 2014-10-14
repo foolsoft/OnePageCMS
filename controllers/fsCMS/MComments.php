@@ -6,28 +6,22 @@ class MComments extends cmsController
   public function actionDelete($param)
   {
     if(!$param->Exists('id', true) || $param->id < 1) {
-      $this->Html(T('XMLcms_error_action'));
-      return;
+      return $this->Html(T('XMLcms_error_action'));
     }
     $this->_table->GetOne($param->id);
     if($this->_table->result->id != $param->id) {
-      $this->Html(T('XMLcms_error_action'));
-      return;
+      return $this->Html(T('XMLcms_error_action'));
     }
     if($this->_table->result->author_id != 0
       && ((AUTH && fsSession::GetArrInstance('AUTH', 'id') != $this->_table->result->author_id)
         || !AUTH)) {
-      $this->Html(T('XMLcms_error_action'));
-      return;            
+      return $this->Html(T('XMLcms_error_action'));
     }
     if($this->_table->result->author_id == 0 && $this->_table->result->ip != fsFunctions::GetIp()) {
-      $this->Html(T('XMLcms_error_action'));
-      return;
+      return $this->Html(T('XMLcms_error_action'));
     }
-    if(fsFunctions::AddTime('+'.$this->settings->edit_time.' seconds', $this->_table->result->date)
-      < date('Y-m-d H:i:s')) {
-      $this->Html(T('XMLcms_error_action'));
-      return;  
+    if(fsFunctions::AddTime('+'.$this->settings->edit_time.' seconds', $this->_table->result->date) < date('Y-m-d H:i:s')) {
+      return $this->Html(T('XMLcms_error_action'));
     } 
     $this->_table->Remove($param->id);
     $this->Html(T('XMLcms_record_deleted'));
@@ -131,8 +125,7 @@ class MComments extends cmsController
   public function actionAdd($param)
   {
     if(!$param->Exists('group') || $param->group == '') {
-      $this->Html(json_encode(array('Status' => 1, 'Text' => T('XMLcms_error_action'))));
-      return;
+      return $this->Json(array('Status' => 1, 'Text' => T('XMLcms_error_action')));
     }
     $param->group = str_replace(' ', '-', $param->group);
     $ip = fsFunctions::GetIp();
@@ -148,18 +141,15 @@ class MComments extends cmsController
     }
     if(in_array($ip, $ips) || (!AUTH && $this->settings->allow_guests == '0')
       || in_array($param->author_id, $users) || in_array($param->author_name, $users)) {
-      $this->Html(json_encode(array('Status' => 2, 'Text' => T('XMLcms_error_access'))));
-      return;
+      return $this->Json(array('Status' => 2, 'Text' => T('XMLcms_error_access')));
     }
     
     if($this->settings->max_length != 0 && strlen($param->text) > $this->settings->max_length) {
-      $this->Html(json_encode(array('Status' => 3, 'Text' => T('XMLcms_comments_tolong'))));
-      return;
+      return $this->Json(array('Status' => 3, 'Text' => T('XMLcms_comments_tolong')));
     }
     
     if($this->settings->min_length > strlen($param->text)) {
-      $this->Html(json_encode(array('Status' => 4, 'Text' => T('XMLcms_comments_toshort'))));
-      return;
+      return $this->Json(array('Status' => 4, 'Text' => T('XMLcms_comments_toshort')));
     }
     
     $commentFields = array();
@@ -171,21 +161,18 @@ class MComments extends cmsController
     $fields = $table->GetAll(true, false, array('title', 'name'));
     for($i = 0; $i < count($fields); ++$i) {
       $f = $fields[$i]['name'];
-      $commentFields[$f] = isset($additional[$f])
-        ? strip_tags($additional[$f])
-        : '';
+      $commentFields[$f] = isset($additional[$f]) ? strip_tags($additional[$f]) : '';
       if($fields[$i]['required'] == '1' && $commentFields[$f] === '') {
-        $this->Html(json_encode(array('Status' => 5, 'Text' => T('XMLcms_text_need_all_data'))));
-        return;
+        return $this->Json(array('Status' => 5, 'Text' => T('XMLcms_text_need_all_data')));
       }  
     }
     
     if(0 < $this->_table->Add(
         $param->group, $param->author_id, $param->author_name, $param->text,
         $param->parent, json_encode($commentFields), AUTH ? 1 : 0, $ip)) {
-      $this->Html(json_encode(array('Status' => 0, 'Text' => T('XMLcms_added'))));  
+      $this->Json(array('Status' => 0, 'Text' => T('XMLcms_added')));  
     } else {
-      $this->Html(json_encode(array('Status' => 6, 'Text' => T('XMLcms_error_action'))));
+      $this->Json(array('Status' => 6, 'Text' => T('XMLcms_error_action')));
     }
   }
 }

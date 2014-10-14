@@ -15,7 +15,11 @@ class MPosts extends cmsController
     $posts_category->Get($param->category);
     if ($posts_category->result->id == '') {
       $this->HttpNotFound();
-      return '-';
+      return '';
+    }
+    if($posts_category->result->auth == 1 && !AUTH) {
+      $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')));
+      return '';     
     }
     $param->page = $param->Exists('page', true) ? $param->page : 1;
     $pcount = $param->Exists('count', true) && $param->count > 0 ? $param->count : $this->settings->page_count;  
@@ -63,8 +67,10 @@ class MPosts extends cmsController
   {
     $this->_table->Get($param->post);
     if ($this->_table->result->id == '') {
-      $this->Redirect(URL_ROOT.'404');
-      return;  
+      return $this->HttpNotFound();
+    }
+    if($this->_table->result->auth == 1 && !AUTH) {
+      return $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')));     
     }
     $page = array(
         'title' => $this->_table->result->title,

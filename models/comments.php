@@ -23,6 +23,9 @@ class comments extends fsDBTableExtension
       }
       $main_parent = $this->result->main_parent == '' || $this->result->main_parent == 0 ? $parent : $this->result->main_parent;
     }
+    
+    $text = str_replace(array('{%', '%}'), '', $text);
+    
     $this->additional = $additional;
     $this->author_id = $authorId;
     $this->author_name = strip_tags($authorName);

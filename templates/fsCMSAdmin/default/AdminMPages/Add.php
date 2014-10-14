@@ -27,13 +27,9 @@
   <p>
     <?php _T('XMLcms_text_template'); ?>:
     <select name='tpl'>
-    <?php
-    foreach ($tag->templates as $template) {
-    ?>
+    <?php foreach ($tag->templates as $template) { ?>
       <option value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php
-    }
-    ?>
+    <?php } ?>
     </select>
   </p>
   <p>
@@ -42,6 +38,9 @@
     <span class='space'></span>
     <?php _T('XMLcms_text_is_active'); ?>: 
     <input type='checkbox' name='active' checked />
+    <br />
+    <?php _T('XMLcms_text_auth_needed'); ?>: 
+    <input type='checkbox' name='auth' />
   </p>
   <hr /> 
   <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_add'); ?>' />

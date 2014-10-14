@@ -20,17 +20,16 @@
       <?php if ($page['active'] == 0) { ?>
         <a href='<?php echo $myLink.'Activate/key/'.$page['id'].'/'; ?>'
            title='<?php _T('XMLcms_activate'); ?>'
-           class='admin-btn-small admin-btn-activate'
-        ></a>   
+           class='admin-btn-small admin-btn-activate'></a>   
       <?php } ?>
         <a href='<?php echo $myLink; ?>Edit/key/<?php echo $page['id']; ?>/'
            title='<?php _T('XMLcms_edit'); ?>'
-           class='admin-btn-small admin-btn-edit'
-        ></a>   
+           class='admin-btn-small admin-btn-edit'></a>   
+        <?php if ($page['id'] > 0) { ?>
         <a href='<?php echo $myLink; ?>Delete/key/<?php echo $page['id']; ?>/'
            title='<?php _T('XMLcms_delete'); ?>'
-           class='admin-btn-small admin-btn-delete'
-        ></a>   
+           class='admin-btn-small admin-btn-delete'></a>   
+        <?php } ?>
         <div class='clr'></div>
       </div>
     </td>

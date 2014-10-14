@@ -62,10 +62,14 @@
     </select>    
   </p>
   <p class='title'>
-    <?php echo T('XMLcms_text_is_active'); ?>:
+    <?php _T('XMLcms_text_is_active'); ?>:
     <input checked type='checkbox' name='active' />
   </p>
+  <p class='title'>
+    <?php _T('XMLcms_text_auth_needed'); ?>: 
+    <input type='checkbox' name='auth' />
+  </p>
   <hr /> 
-  <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php echo T('XMLcms_add'); ?>' />   
+  <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_add'); ?>' />   
 </form>
 [endblock-content]

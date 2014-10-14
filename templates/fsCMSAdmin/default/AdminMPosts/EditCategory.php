@@ -68,6 +68,10 @@
     <?php } ?>
     </select> 
   </p>
+  <p class='title'>
+    <?php _T('XMLcms_text_auth_needed'); ?>: 
+    <input type='checkbox' name='auth' <?php echo $tag->category->auth == 1 ? 'checked' : ''; ?> />
+  </p>
   <hr /> 
   <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_save'); ?>' />   
 </form>

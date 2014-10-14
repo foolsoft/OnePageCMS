@@ -24,6 +24,18 @@
   <text name='cms_search_result'>
     <ru>Результаты поиска</ru>
   </text>
+  <text name='cms_guest'>
+    <ru>Гость</ru>
+  </text>
+  <text name='cms_denied'>
+    <ru>Доступ запрещен</ru>
+  </text>
+  <text name='cms_text_url_auth_need'>
+    <ru>Адрес страницы с ошибкой "доступно только авторизированным пользователям"</ru>
+  </text>
+  <text name='cms_text_auth_needed'>
+    <ru>Только для авторизированных пользователей</ru>
+  </text>
   <text name='cms_lighter'>
     <ru>Подсветка</ru>
   </text>
@@ -536,6 +548,12 @@
   <text name='cms_text_author'>
     <ru>Автор</ru>
   </text>
+  <text name='cms_disallow_actions'>
+    <ru>Запрещенные действия</ru>
+  </text>
+  <text name='cms_allow_actions'>
+    <ru>Разрешенные действия</ru>
+  </text>
   <text name='cms_invalid_command'>
     <ru>Неизвестная команда!</ru>
   </text>
@@ -544,6 +562,12 @@
   </text>
   <text name='cms_group'>
     <ru>Группа</ru>
+  </text>
+  <text name='cms_text_add_group'>
+    <ru>Добавить группу</ru>
+  </text>
+  <text name='cms_groups'>
+    <ru>Группы</ru>
   </text>
   <text name='cms_hide'>
     <ru>Спрятать полоску</ru>

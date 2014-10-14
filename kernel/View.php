@@ -110,6 +110,7 @@ class View
           'USER_LANG' => fsSession::GetInstance('Language'),  
           'SYSTEM_LANG' => fsConfig::GetInstance('system_language'),
           'URL_ROOT' => URL_ROOT,
+          'URL_ROOT_CLEAR' => URL_ROOT_CLEAR,
           'URL_SUFFIX' => fsConfig::GetInstance('links_suffix'),
         ));
     }
@@ -182,9 +183,10 @@ class View
         if (class_exists($matches[1][$i])) {
           $class = new $matches[1][$i]();
           if (method_exists($class, $matches[2][$i])) {
+            $denied = false;
             $paramMaches = array();
             $paramMachesCount = preg_match_all("^".$subMatch."^", $matches[4][$i], $paramMaches);
-            $config = array();
+            $config = array('method' => $_REQUEST['method'], 'controller' => $_REQUEST['controller']);
             foreach ($params as $key => $value) {
               $config[$key] = array('Value' => $value);
             }
@@ -195,7 +197,10 @@ class View
             if (method_exists($class, 'Init')) {
               call_user_func(array($class, 'Init'), $request);
             }
-            $actionResult = call_user_func(array($class, $matches[2][$i]), $request);
+            if (method_exists($class, 'IsDenied')) {
+              $denied = call_user_func(array($class, 'IsDenied'));
+            }
+            $actionResult = $denied ? T('XMLcms_denied') : call_user_func(array($class, $matches[2][$i]), $request);
             unset($request);
           }
         }

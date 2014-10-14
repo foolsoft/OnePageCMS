@@ -96,9 +96,7 @@ class fsLanguage implements iSingleton
           if (!$isSDCACHEFILE && count($SYSTEM_DICTIONARY) > 0) {
             fsFunctions::ArrayToFile($SYSTEM_DICTIONARY, 'SYSTEM_DICTIONARY', $SDCACHEFILE);
           }
-          unset($DT);
-          unset($SYSTEM_DICTIONARY);
-          unset($DICTIONARY);
+          unset($DT, $SYSTEM_DICTIONARY, $DICTIONARY);
         }
         if(file_exists($SDCACHEFILE)) {
           include $SDCACHEFILE;
@@ -107,13 +105,7 @@ class fsLanguage implements iSingleton
           include $DCACHEFILE;
         }
         $GLOBALS['DICTIONARY'] = array_merge((array)$SYSTEM_DICTIONARY, (array)$DICTIONARY);        
-        unset($SYSTEM_DICTIONARY);
-        unset($DCACHEFILE);
-        unset($SDCACHEFILE);
-        unset($XDCACHEFILE);
-        unset($isDCACHEFILE);
-        unset($isSDCACHEFILE);
-        unset($isXDCACHEFILE);
+        unset($SYSTEM_DICTIONARY, $DCACHEFILE, $SDCACHEFILE, $XDCACHEFILE, $isDCACHEFILE, $isSDCACHEFILE, $isXDCACHEFILE);
         self::$obj = true;
       }
     }  
