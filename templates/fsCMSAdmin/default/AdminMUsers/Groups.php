@@ -27,7 +27,7 @@ $textEdit = T('XMLcms_edit');
            title='<?php echo $textEdit; ?>'
            class='admin-btn-small admin-btn-edit'></a>   
         <?php if($type['id'] > 1) { ?>
-        <a href='<?php echo $myLink; ?>Delete/key/<?php echo $type['id']; ?>/table/types_users/'
+        <a href='<?php echo $myLink; ?>Delete/key/<?php echo $type['id']; ?>/table/types_users/referer/Groups/'
            title='<?php echo $textDelete; ?>'
            class='admin-btn-small admin-btn-delete'></a>   
         <?php } ?>

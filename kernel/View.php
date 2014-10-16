@@ -182,27 +182,32 @@ class View
         $actionResult = '';
         if (class_exists($matches[1][$i])) {
           $class = new $matches[1][$i]();
-          if (method_exists($class, $matches[2][$i])) {
-            $denied = false;
-            $paramMaches = array();
-            $paramMachesCount = preg_match_all("^".$subMatch."^", $matches[4][$i], $paramMaches);
-            $config = array('method' => $_REQUEST['method'], 'controller' => $_REQUEST['controller']);
-            foreach ($params as $key => $value) {
-              $config[$key] = array('Value' => $value);
-            }
-            for ($j = 0; $j < $paramMachesCount; ++$j) {
-              $config[$paramMaches[1][$j]] = array('Value' => $paramMaches[3][$j]);              
-            }
-            $request = new fsStruct($config, true);
-            if (method_exists($class, 'Init')) {
-              call_user_func(array($class, 'Init'), $request);
-            }
-            if (method_exists($class, 'IsDenied')) {
-              $denied = call_user_func(array($class, 'IsDenied'));
-            }
-            $actionResult = $denied ? T('XMLcms_denied') : call_user_func(array($class, $matches[2][$i]), $request);
-            unset($request);
+          if (!method_exists($class, $matches[2][$i])) {
+            continue;
           }
+          $denied = false; 
+          $deniedResult = T('XMLcms_denied');
+          $paramMaches = array();
+          $paramMachesCount = preg_match_all("^".$subMatch."^", $matches[4][$i], $paramMaches);
+          $config = array('method' => $_REQUEST['method'], 'controller' => $_REQUEST['controller']);
+          foreach ($params as $key => $value) {
+            $config[$key] = array('Value' => $value);
+          }
+          for ($j = 0; $j < $paramMachesCount; ++$j) {
+            $config[$paramMaches[1][$j]] = array('Value' => $paramMaches[3][$j]);              
+          }
+          $request = new fsStruct($config, true);
+          if (method_exists($class, 'Init')) {
+            call_user_func(array($class, 'Init'), $request);
+          }
+          if (method_exists($class, 'IsDenied')) {
+            $denied = call_user_func(array($class, 'IsDenied'));
+          }
+          if ($denied && method_exists($class, 'OnDenied')) {
+            $deniedResult = call_user_func(array($class, 'OnDenied'), $request);
+          }
+          $actionResult = $denied ? $deniedResult : call_user_func(array($class, $matches[2][$i]), $request);
+          unset($request);
         }
         $html = str_replace($matches[0][$i],  $actionResult, $html);
       }

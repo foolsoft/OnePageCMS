@@ -22,7 +22,7 @@ class posts extends fsDBTableExtension
     } else {
       $where = 'WHERE 1';
       if ($idOrAlt != ALL_TYPES) {
-        $where = " AND ((`{1}`.`id` = '{2}' OR `{1}`.`alt` = '{2}') OR (`{1}`.`id` = '{4}'))"; 
+        $where = " AND ((CAST(`{1}`.`id` as CHAR) = '{2}' OR `{1}`.`alt` = '{2}') OR (`{1}`.`id` = '{4}'))"; 
       }
       if ($activeOnly) {
         $where .= ' AND `{0}`.`active` = "1"';
@@ -65,7 +65,7 @@ class posts extends fsDBTableExtension
     } else {
       $where = 'WHERE 1';
       if ($idOrAlt != ALL_TYPES) {
-        $where = " AND ((`{1}`.`id` = '{2}' OR `{1}`.`alt` = '{2}') OR (`{1}`.`id` = '{6}'))"; 
+        $where = " AND ((CAST(`{1}`.`id` as CHAR) = '{2}' OR `{1}`.`alt` = '{2}') OR (`{1}`.`id` = '{6}'))"; 
       }
       if ($activeOnly) {
         $where .= ' AND `{0}`.`active` = "1"';
@@ -98,7 +98,7 @@ class posts extends fsDBTableExtension
   public function Get($idOtAlt)
   {
     $this->Select()
-         ->Where('`id` = "'.$idOtAlt.'" OR `alt` = "'.$idOtAlt.'"')
+         ->Where('CAST(`id` as CHAR) = "'.$idOtAlt.'" OR `alt` = "'.$idOtAlt.'"')
          ->Execute();
   }
 	

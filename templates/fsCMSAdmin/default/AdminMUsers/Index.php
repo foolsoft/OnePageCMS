@@ -28,33 +28,21 @@ $textActivate = T('XMLcms_activate');
     <td><?php echo $user['link_type']; ?></td>
     <td>
       <div class='admin-action-td'>
-      <?php
-      if ($user['active'] == 0) {
-      ?>
+      <?php if ($user['active'] == 0) { ?>
         <a href='<?php echo $myLink.'Activate/key/'.$user['id'].'/'; ?>'
-           title='<?php echo $textActivate; ?>'
-           class='admin-btn-small admin-btn-activate'
-        >
-        </a>   
-      <?php
-      }
-      ?>
+           title='<?php echo $textActivate; ?>' class='admin-btn-small admin-btn-activate'
+        ></a>   
+      <?php } ?>
         <a href='<?php echo $myLink; ?>Edit/key/<?php echo $user['id']; ?>/'
-           title='<?php echo $textEdit; ?>'
-           class='admin-btn-small admin-btn-edit'
-        >
-        </a>   
+           title='<?php echo $textEdit; ?>' class='admin-btn-small admin-btn-edit'
+        ></a>   
       <?php
-      if ($user['login'] != fsConfig::GetInstance('main_admin')) {
+      if ($user['id'] > 0 && $user['login'] != fsConfig::GetInstance('main_admin')) {
       ?>
         <a href='<?php echo $myLink; ?>Delete/key/<?php echo $user['id']; ?>/'
-           title='<?php echo $textDelete; ?>'
-           class='admin-btn-small admin-btn-delete'
-        >
-        </a>   
-      <?php
-      }
-      ?>
+           title='<?php echo $textDelete; ?>' class='admin-btn-small admin-btn-delete'
+        ></a>   
+      <?php } ?>
       <div class='clr'></div>
       </div>
     </td>

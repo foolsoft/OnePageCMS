@@ -29,13 +29,14 @@ class MPages extends cmsController
       } else {    
         $template = $this->_Template($page[0]['tpl']);
       }
-    }                     
+    }      
     $page[0]['meta_keywords'] = fsFunctions::NotEmpty($page[0]['keywords'])
                             ? $page[0]['keywords'] 
                             : CMSSettings::GetInstance('default_keywords'); 
     $page[0]['meta_description'] = fsFunctions::NotEmpty($page[0]['description'])
                             ? $page[0]['description'] 
                             : CMSSettings::GetInstance('default_description'); 
+    
     $this->Html($this->CreateView(array('page' => $page[0], 'htmlTags' => $param->Exists('data') ? $param->data : array()), $template));
   }
 }

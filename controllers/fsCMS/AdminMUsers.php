@@ -21,16 +21,17 @@ class AdminMUsers extends AdminPanel
   
   private function _CheckParam($param, $checkPasswordEmpty = true)
   {
-    if ($param->password == '' && $checkPasswordEmpty) {
+    if($param->login == '') {
+      $this->Message(T('XMLcms_text_need_all_data'));
+    } else if ($param->password == '' && $checkPasswordEmpty) {
       $this->Message(T('XMLcms_text_empty_pwd'));
     } else if ($param->password != $param->rpassword) {
       $this->Message(T('XMLcms_text_bad_pwd_confirm'));
-    } else if (!$this->_table->IsUnique($param->login)) { 
-      if (!$param->Exists('key') ||
-          ($param->Exists('key') && $param->key != $param->login)) {
+    } else if (true !== ($userId = $this->_table->IsUnique($param->login, 'login', 'id'))) { 
+      if (!$param->Exists('key', true) || $param->key != $userId) {
         $this->Message(T('XMLcms_text_login_not_unique'));
       }
-    }
+    } 
     if ($this->Message() != '') {
       $this->_Referer();
       return false;

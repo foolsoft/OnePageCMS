@@ -67,7 +67,7 @@
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_auth_needed'); ?>: 
-    <input type='checkbox' name='auth' />
+    <input type='checkbox' name='auth' id='auth' />
   </p>
   <hr /> 
   <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_add'); ?>' />   

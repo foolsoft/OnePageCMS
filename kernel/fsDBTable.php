@@ -502,14 +502,15 @@ class fsDBTable
   */
   public function IsUnique($value, $key = '', $findedFieldValue = false)
   {
+    $return = false;
     if ($key == '') {
       $key = $this->_struct->key;
     }
     if ($key == '') {
-      return false;
+      return $return;
     }
-    $this->Select()->Where('`'.$key.'` = "'.$value.'"')->Execute();
-    if ($findedFieldValue !== false) {
+    $this->Select()->Where('CAST(`'.$key.'` as CHAR) = "'.$value.'"')->Execute();
+    if ($findedFieldValue !== false && $this->_result->$key != '') {
       $return = $this->_result->$findedFieldValue;
     }
     return ($this->_result->$key == '') ? true : $return;

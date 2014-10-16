@@ -14,6 +14,7 @@ class AdminMPosts extends AdminPanel
       $param->Delete('call');
     }
     $param->auth = $param->Exists('auth') ? 1 : 0;
+    $param->alt = strtolower(fsFunctions::Chpu($param->alt));
     return true;
   }
   
@@ -78,9 +79,8 @@ class AdminMPosts extends AdminPanel
     $posts_category = new posts_category();
     $posts_category = $posts_category->GetAll(true, false, array('name'));
     if (count($posts_category) < 2) {
-      $this->_Referer();
       $this->Message(T('XMLcms_text_no_category_found'));
-      return;
+      return $this->_Referer();
     }                       
     $templates = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'Post', array('php'));
     $templates_short = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'ShortPost', array('php'));
@@ -93,8 +93,7 @@ class AdminMPosts extends AdminPanel
   {
     $this->_table->current = $param->key;
     if ($this->_table->id != $param->key) {
-      $this->_Referer();
-      return;
+      return $this->_Referer();
     }
     $posts_category = new posts_category();
     $post_category = new post_category();
@@ -130,12 +129,16 @@ class AdminMPosts extends AdminPanel
   public function actionAjaxCategoryTemplate($Param)
   {
     if (!$Param->Exists('category', true)) {
-        $this->Html('{}');
-        return;
+        return $this->Json(array());
     }
     $posts_category = new posts_category();
     $posts_category->Get($Param->category);
-    $this->Html('{"short":"'.$posts_category->result->tpl_short.'","full":"'.$posts_category->result->tpl_full.'"}');
+    $result = array(
+        'short' => $posts_category->result->tpl_short, 
+        'full' => $posts_category->result->tpl_full, 
+        'auth' => $posts_category->result->auth, 
+    );
+    $this->Json($result);
   }
   
   public function actionAddCategory($Param)
@@ -153,8 +156,7 @@ class AdminMPosts extends AdminPanel
     $posts_category = new posts_category();
     $posts_category->current = $Param->key;
     if ($Param->key != $posts_category->id) {
-      $this->_Referer();
-      return;
+      return $this->_Referer();
     }   
     $templates = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'Index', array('php'));
     $templates_sp = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'ShortPost', array('php'));
@@ -167,8 +169,7 @@ class AdminMPosts extends AdminPanel
   
   public function actionDoAddPost($Param)
   {
-    if (!$this->_CheckPostData($Param) ||
-        !$this->_CheckUnique($Param->alt, 'alt')) {
+    if (!$this->_CheckPostData($Param) || !$this->_CheckUnique($Param->alt, 'alt')) {
       return -1;
     }
     $postId = parent::actionDoAdd($Param);
@@ -181,8 +182,7 @@ class AdminMPosts extends AdminPanel
   
   public function actionDoEditPost($Param)
   {
-    if (!$this->_CheckPostData($Param) ||
-        !$this->_CheckUnique($Param->alt, 'alt', $Param->key, 'id')) {
+    if (!$this->_CheckPostData($Param) || !$this->_CheckUnique($Param->alt, 'alt', $Param->key, 'id')) {
       return -1;
     }
     $pc = new post_category();
@@ -194,8 +194,7 @@ class AdminMPosts extends AdminPanel
   
   public function actionDoAddCategory($param)
   {
-    if (!$this->_CheckCategoryData($param) ||
-        !$this->_CheckUnique($param->alt, 'alt', false, false, 'posts_category')) {
+    if (!$this->_CheckCategoryData($param) || !$this->_CheckUnique($param->alt, 'alt', false, false, 'posts_category')) {
       return -1;
     }
     return parent::actionDoAdd($param);
@@ -203,8 +202,7 @@ class AdminMPosts extends AdminPanel
   
   public function actionDoEditCategory($Param)
   {
-    if (!$this->_CheckCategoryData($Param) ||
-        !$this->_CheckUnique($Param->alt, 'alt', $Param->key, 'id', 'posts_category')) {
+    if (!$this->_CheckCategoryData($Param) || !$this->_CheckUnique($Param->alt, 'alt', $Param->key, 'id', 'posts_category')) {
       return -1;
     }
     return parent::actionDoEdit($Param);

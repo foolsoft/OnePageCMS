@@ -14,11 +14,11 @@
             <table>
         			<tr>
         				<td align="right"><b><?php _T('XMLcms_text_login'); ?>:</b></td>
-        				<td align="left"><input type="text" name="login" /></td>
+        				<td align="left"><input type="text" name="login" style="width:150px;" /></td>
         			</tr>
         			<tr>
         				<td align="right"><b><?php _T('XMLcms_text_password'); ?>:</b></td>
-        				<td align="left"><input type="password" name="password" /></td>
+        				<td align="left"><input type="password" name="password" style="width:150px;" /></td>
         			</tr>
         			<tr>
         				<td align="right" colspan="2">

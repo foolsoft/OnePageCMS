@@ -29,6 +29,12 @@
     <input class='input-100' type='text' name='auth_need_page' value='<?php echo $tag->settings->auth_need_page; ?>' />
   </p>
   <p class='title'>
+    <?php _T('XMLcms_access_denied_page'); ?>:
+  </p>
+  <p>
+    <input class='input-100' type='text' name='denied_page' value='<?php echo $tag->settings->denied_page; ?>' />
+  </p>
+  <p class='title'>
     <?php _T('XMLcms_text_start_page'); ?>:
     <?php echo fsHtml::Select('start_page', $tag->start_pages, fsConfig::GetInstance('start_page')); ?>
     <?php echo T('XMLcms_or_custom').': '.URL_ROOT; ?>

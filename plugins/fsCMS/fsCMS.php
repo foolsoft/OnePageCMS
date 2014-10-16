@@ -13,6 +13,7 @@ class Paginator
    * @param integer $pp (optional) Records per page. Default <b>20</b>.
    * @param integer $current (optional) Current page from 1. Default <b>1</b>.   
    * @param array $htmlAttributes (optional) Url HTML attributes. Default <b>empty array</b>.
+   * @return string HTML code for page select. 
    */
     public static function Get($link, $param, $count, $pp = 20, $current = 1, $htmlAttributes = array())
     {
@@ -49,10 +50,20 @@ class cmsController extends fsController
 {
   /* var boolean Flag for auto loading controller settings from database. */
   protected $_autoLoadSettings = true;
-  /* var string Action for denied user event. Possible values: <b>REDIRECT</b>, <b>NONE</b>. Default or wrong <b>REDIRECT</b>. */
-  protected $_accessDeniedType = 'REDIRECT';
   /* var fsStruct Controller settings. */
   public    $settings = null;
+  
+  /*
+   * Action when request is denied.
+   * @param fsStruct $request User request.
+   * @return mixed Developer value. 
+   */
+  public function OnDenied($request)
+  {
+    $this->Message(T('XMLcms_denied'));
+    $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('denied_page')));
+    return '';  
+  }
   
   protected function _TemplatePath($folder = null)
   { 
@@ -76,14 +87,14 @@ class cmsController extends fsController
     return parent::CreateView($params, $template, $show, $adminMode);
   }
   
+  
     private function _LoadConstants()
     {
         $constants = new constants();
         $constants = $constants->GetAll();
         $arr = array();
-            foreach ($constants as $const) {
-          $arr[$const['name']] = array('Value' => $const['value'],
-                                      'ReadOnly' => true);
+        foreach ($constants as $const) {
+          $arr[$const['name']] = array('Value' => $const['value'], 'ReadOnly' => true);
         }
         unset($constants);
         $this->Tag('constants', new fsStruct($arr));
@@ -104,71 +115,65 @@ class cmsController extends fsController
     return new fsStruct($config);
   }
   
-  public function Init($request)
-  {
-      $allow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : GUEST, 'type_allow'), true);
-      $disallow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : GUEST, 'type_disallow'), true);
-      $denied = false;
-      
-      foreach($disallow as $d) {
-        if($d == '*' || preg_match('/^'.$request->controller.'\/\*$/', $d) 
-            || preg_match('/^'.$request->controller.'\/'.$request->method.'$/', $d) 
-            || preg_match('/^\*\/'.$request->method.'$/', $d)) {
-            $denied = true;
-            break;
-        }
-      }
-      if($denied) {
-        foreach($allow as $a) {
-            if($d == '*' || preg_match('/^'.$request->controller.'\/\*$/', $a) 
-                || preg_match('/^'.$request->controller.'\/'.$request->method.'$/', $a) 
-                || preg_match('/^\*\/'.$request->method.'$/', $a)) {
-                $denied = false;
+    /*
+    * Action before main conroller action.
+    * @param fsStruct $request User request.
+    * @return void 
+    */
+    public function Init($request)
+    {
+        $allow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : GUEST, 'type_allow'), true);
+        $disallow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : GUEST, 'type_disallow'), true);
+        $denied = false;
+        foreach($disallow as $d) {
+            if($d == '*' || preg_match('/^'.$request->controller.'\/\*$/', $d) 
+                || preg_match('/^'.$request->controller.'\/'.$request->method.'$/', $d) 
+                || preg_match('/^\*\/'.$request->method.'$/', $d)) {
+                $denied = true;
                 break;
             }
         }
-      }
-      
-      if($denied) {
-        $this->_accessDenied = true;
-        $this->Message(T('XMLcms_denied'));
-        switch(strtoupper($this->_accessDeniedType)) {
-            case 'NONE':
-                break;
-            case 'REDIRECT':
-            default:            
-                $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')));
-                break;
+        if($denied) {
+            foreach($allow as $a) {
+                if($d == '*' || preg_match('/^'.$request->controller.'\/\*$/', $a) 
+                  || preg_match('/^'.$request->controller.'\/'.$request->method.'$/', $a) 
+                  || preg_match('/^\*\/'.$request->method.'$/', $a)) {
+                  $denied = false;
+                  break;
+                }
+            }
         }
-      }
-      
-      parent::Init($request);
-  }
+        if($denied) {
+            $this->_accessDenied = true;
+            $this->OnDenied();
+        }
+        parent::Init($request);
+    }
   
-  public function __construct()
-  {
-    parent::__construct();
-    if ($this->_autoLoadSettings) {
-      $this->settings = $this->_LoadSettings();
+    public function __construct()
+    {
+        parent::__construct();
+        if ($this->_autoLoadSettings) {
+          $this->settings = $this->_LoadSettings();
+        }
+        $this->_LoadConstants();
+        CMSSettings::Init($this->_LoadSettings('Panel'));
+        if (!fsSession::Exists('Template')) {
+          fsSession::Create('Template', CMSSettings::GetInstance('template'));
+        }
+        define('URL_ATHEME_CSS', URL_CSS.CMSSettings::GetInstance('template_admin').'/');
+        define('URL_ATHEME_JS',  URL_JS.CMSSettings::GetInstance('template_admin').'/');
+        define('URL_ATHEME_IMG', URL_IMG.CMSSettings::GetInstance('template_admin').'/');
+        define('URL_THEME_CSS',  URL_CSS.fsSession::GetInstance('Template').'/');
+        define('URL_THEME_JS',   URL_JS.fsSession::GetInstance('Template').'/');
+        define('URL_THEME_IMG',  URL_IMG.fsSession::GetInstance('Template').'/');
+        define('PATH_ATHEME_CSS', PATH_CSS.CMSSettings::GetInstance('template_admin').'/');
+        define('PATH_ATHEME_JS',  PATH_JS.CMSSettings::GetInstance('template_admin').'/');
+        define('PATH_ATHEME_IMG', PATH_IMG.CMSSettings::GetInstance('template_admin').'/');
+        define('PATH_THEME_CSS',  PATH_CSS.fsSession::GetInstance('Template').'/');
+        define('PATH_THEME_JS',   PATH_JS.fsSession::GetInstance('Template').'/');
+        define('PATH_THEME_IMG',  PATH_IMG.fsSession::GetInstance('Template').'/');
     }
-    $this->_LoadConstants();
-    CMSSettings::Init($this->_LoadSettings('Panel'));
-    if (!fsSession::Exists('Template')) {
-      fsSession::Create('Template', CMSSettings::GetInstance('template'));
-    }
-    define('URL_ATHEME_CSS', URL_CSS.CMSSettings::GetInstance('template_admin').'/');
-    define('URL_ATHEME_JS',  URL_JS.CMSSettings::GetInstance('template_admin').'/');
-    define('URL_ATHEME_IMG', URL_IMG.CMSSettings::GetInstance('template_admin').'/');
-    define('URL_THEME_CSS',  URL_CSS.fsSession::GetInstance('Template').'/');
-    define('URL_THEME_JS',   URL_JS.fsSession::GetInstance('Template').'/');
-    define('URL_THEME_IMG',  URL_IMG.fsSession::GetInstance('Template').'/');
-    define('PATH_ATHEME_CSS', PATH_CSS.CMSSettings::GetInstance('template_admin').'/');
-    define('PATH_ATHEME_JS',  PATH_JS.CMSSettings::GetInstance('template_admin').'/');
-    define('PATH_ATHEME_IMG', PATH_IMG.CMSSettings::GetInstance('template_admin').'/');
-    define('PATH_THEME_CSS',  PATH_CSS.fsSession::GetInstance('Template').'/');
-    define('PATH_THEME_JS',   PATH_JS.fsSession::GetInstance('Template').'/');
-    define('PATH_THEME_IMG',  PATH_IMG.fsSession::GetInstance('Template').'/');
-  }
 }
 
 /*
@@ -176,6 +181,11 @@ class cmsController extends fsController
  */
 class cmsNeedAuthController extends cmsController
 {
+    /*
+    * Action before main conroller action.
+    * @param fsStruct $request User request.
+    * @return void 
+    */
     public function Init($request)
     {
         if (!AUTH) {

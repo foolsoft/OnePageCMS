@@ -12,6 +12,9 @@
       <a title="Login" href="{0}">this form</a> for entering.
     ]]></en>
   </text>
+  <text name='cms_access_denied_page'>
+    <en>Page for "access denied" error</en>
+  </text>
   <text name='cms_text_start_page'>
     <en>Start page</en>
   </text>
@@ -25,7 +28,7 @@
     <en>Only for authorized users</en>
   </text>
   <text name='cms_text_url_auth_need'>
-    <en>Url of error page "only for authorized users"</en>
+    <en>Page for "only for authorized users" error</en>
   </text>
   <text name='cms_html_attr_name'>
     <en>Name of HTML tag</en>

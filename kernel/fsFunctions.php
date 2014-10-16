@@ -264,9 +264,10 @@ class fsFunctions
     * @param string $searchDir (optional) Flag for folders search. Default <b>true</b>.
     * @param string $prefix (optional) File formats for search. Default <b>empty array</b>.
     * @param array $fileFormats (optional) Prefix mask for search. Default <b>empty string</b>.
+    * @param boolean $topDirectory (optional) Flag for search only in top directory without subdirectories. Default <b>true</b>.
     * @return array Associative array with files and folders names. 
     */
-  public static function DirectoryInfo($path, $searchFile = true, $searchDir = true, $prefix = '', $fileFormats = array())
+  public static function DirectoryInfo($path, $searchFile = true, $searchDir = true, $prefix = '', $fileFormats = array(), $topDirectory = true)
   {
     $arr = array('LENGTH' => 0, 'NAMES' => array());
     if ($searchDir === false && $searchFile === false) {
@@ -311,6 +312,14 @@ class fsFunctions
         if (($searchDir && is_dir($fileName)) || ($searchFile && is_file($fileName))) { 
           $arr['NAMES'][] = $dir;
           ++$arr['LENGTH'];
+        }
+        if(!$topDirectory && is_dir($fileName)) {
+            $fileName = self::Slash($fileName);
+            $temp = self::DirectoryInfo($fileName, $searchFile, $searchDir, $prefix, $fileFormats, $topDirectory);
+            for($i = 0; $i < $temp['LENGTH']; ++$i) {
+                $arr['NAMES'][] = $dir.'/'.$temp['NAMES'][$i];
+                ++$arr['LENGTH'];    
+            }
         }
      }
      closedir($dh); 

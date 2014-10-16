@@ -321,6 +321,7 @@ if ($_POST) {
       ('MComments', 'block_users', ''),
       ('MComments', 'allow_guests', '1'),
       ('MComments', 'comments_on_page', '0'),
+      ('Panel', 'denied_page', '".$page404."'),
       ('Panel', 'start_page_custom', ''),
       ('Panel', 'auth_need_page', '".$page404."'),
       ('Panel', 'robot_email', 'robot@".$url."'),

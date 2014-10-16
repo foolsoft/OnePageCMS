@@ -9,7 +9,7 @@ class posts_category extends fsDBTableExtension
   public function Get($category)
   {
     return $this->Select()
-                 ->Where('`alt` = "'.$category.'" OR `id` = "'.$category.'"')
+                 ->Where('`alt` = "'.$category.'" OR CAST(`id` as CHAR) = "'.$category.'"')
                  ->Execute();
   }
   
@@ -23,5 +23,4 @@ class posts_category extends fsDBTableExtension
     $this->Insert()->Execute();
     return $this->insertedId;
   }
-  
 }

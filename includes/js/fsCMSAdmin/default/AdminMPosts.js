@@ -2,10 +2,7 @@ function LoadPostsTable(category)
 {
   fsCMS.Ajax(
     URL_ROOT + 'AdminMPosts/AjaxPostsTable/category/' + category + '/',
-    'POST',
-    '',
-    'post-table',
-    true 
+    'POST', '', 'post-table', true 
   );
 }
 function PostTemplateLoad(val)
@@ -20,18 +17,17 @@ function PostTemplateLoad(val)
         $('#tpl_short').prop('disabled', false);
         fsCMS.Ajax(
             URL_ROOT + 'AdminMPosts/AjaxCategoryTemplate/category/' + val + '/',
-            'POST',
-            false,
-            false,
-            true,
-            false,
+            'POST', false, false, true, false,
             function(answer) {
                 var data = $.parseJSON(answer);
-                if(data['short'] != '') {
+                if(data['short']) {
                     $('#tpl_short').val(data['short']);
                 }
-                if(data['full'] != '') {
+                if(data['full']) {
                     $('#tpl').val(data['full']);
+                }
+                if(data['auth']) {
+                    $('#auth').prop('checked', data['auth'] == '1');
                 }
             }
         );
