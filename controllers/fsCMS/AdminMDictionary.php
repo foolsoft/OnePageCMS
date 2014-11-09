@@ -92,7 +92,8 @@ class AdminMDictionary extends AdminPanel
         $attr = $newXML->createAttribute('name');
         $attr->value = fsFunctions::Chpu($original);
         foreach($translate[$idx] as $lang => $value) {
-          $tag = $newXML->createElement($lang, trim($value));
+          $tag = $newXML->createElement($lang);
+          $tag->appendChild($newXML->createCDATASection(trim($value)));
           $text->appendChild($tag);  
         }
         $text->appendChild($attr);

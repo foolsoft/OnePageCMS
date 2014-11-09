@@ -31,7 +31,7 @@ $postDate = $postDate[0];
       <?php foreach ($tag->categories as $category) { 
         $selected = in_array($category['id'], $tag->post_categories) ? 'selected' : '';
       ?>
-        <option <?php echo $selected; ?> value='<?php echo $category['id']; ?>'><?php echo $category['name']; ?></option>
+        <option <?php echo $selected; ?> value='<?php echo $category['id']; ?>'><?php echo PostsFunctions::GetFullCategoryName($tag->categories, $category); ?></option>
       <?php } ?>
     </select>
   </p>

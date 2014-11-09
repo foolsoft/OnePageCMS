@@ -65,9 +65,14 @@ class cmsController extends fsController
     return '';  
   }
   
-  protected function _TemplatePath($folder = null)
+  /*
+  * Get full path for template folder.
+  * @param string $folder Needed template folder.
+  * @return string Template path. 
+  */
+  protected function _TemplatePath($folder = '')
   { 
-    if ($folder === null) {
+    if ($folder === '') {
       $folder = get_class($this);
     }
     $path = PATH_TPL.fsSession::GetInstance('Template').'/'.$folder;
@@ -80,12 +85,21 @@ class cmsController extends fsController
     return fsFunctions::Slash($path);
   }
   
-  public function CreateView($params = array(), $template = '', $show = false, $adminMode = false) 
-  {
-    $params['myLink'] = $this->_link;
-    $params['referer'] = $_SERVER['HTTP_REFERER'];
-    return parent::CreateView($params, $template, $show, $adminMode);
-  }
+  
+    /*
+    * Generate page HTML code.
+    * @param array $params (optional) Additional variables. Default <b>empty array</b>.
+    * @param string $template (optional) Template name. If empty get default template using controller and method name. Default <b>empty string</b>.    
+    * @param boolean $show (optional) Flag for auto echo of result. Default <b>false</b>.
+    * @param boolean $adminMode (optional) Flag for skipping some actions. Default <b>false</b>.
+    * @return string Html code of page. 
+    */
+    public function CreateView($params = array(), $template = '', $show = false, $adminMode = false) 
+    {
+      $params['myLink'] = $this->_link;
+      $params['referer'] = $_SERVER['HTTP_REFERER'];
+      return parent::CreateView($params, $template, $show, $adminMode);
+    }
   
   
     private function _LoadConstants()

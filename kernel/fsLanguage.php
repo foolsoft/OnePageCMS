@@ -43,9 +43,6 @@ class fsLanguage implements iSingleton
         if (!$isDCACHEFILE || !$isSDCACHEFILE || !$XDCACHEFILE) {
           $newXML = new DOMDocument('1.0', 'UTF-8');
           $el = $newXML->createElement("dictionary");
-          $newXML->appendChild($el);
-          if (!$isXDCACHEFILE) $newXML->save($XDCACHEFILE);
-          unset($newXML);
           foreach ($DT['NAMES'] as $D) {
             $TD = explode('-', $D);
             if (count($TD) != 3 && $D != 'xml') {
@@ -71,11 +68,10 @@ class fsLanguage implements iSingleton
                   if (!isset($res['@attributes']['name']) || !isset($res[fsSession::GetInstance('Language')])) {
                     continue;
                   }
-                  $xml = simplexml_load_file($XDCACHEFILE);
-                  $xml->addChild('XML'.$res['@attributes']['name'], $res[fsSession::GetInstance('Language')]);
-                  $xml->asXML($XDCACHEFILE);
+                  $tag = $newXML->createElement('XML'.$res['@attributes']['name']);
+                  $tag->appendChild($newXML->createCDATASection(trim($res[fsSession::GetInstance('Language')])));
+                  $el->appendChild($tag);
                 }
-                unset($xml);  
               } 
             }
             if ($SL || $L) {
@@ -89,6 +85,10 @@ class fsLanguage implements iSingleton
                 }  
               }
             }
+          }
+          $newXML->appendChild($el);
+          if (!$isXDCACHEFILE) {
+            $newXML->save($XDCACHEFILE);
           }
           if (!$isDCACHEFILE && count($DICTIONARY) > 0) {
             fsFunctions::ArrayToFile($DICTIONARY, 'DICTIONARY', $DCACHEFILE);

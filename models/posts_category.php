@@ -13,6 +13,13 @@ class posts_category extends fsDBTableExtension
                  ->Execute();
   }
   
+  public function GetByParent($idParent)
+  {
+    return $this->Select()
+                 ->Where('`id_parent` = "'.$idParent.'"')
+                 ->ExecuteToArray();
+  }
+  
   public function Add($name, $alt = '')
   {
     if (empty($alt)) {

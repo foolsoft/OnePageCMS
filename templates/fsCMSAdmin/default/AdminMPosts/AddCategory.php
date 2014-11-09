@@ -14,17 +14,15 @@
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_description'); ?>:<br />
-    <input class='input-100'
-           maxlength='500'
-           type='text'
-           name='meta_description' />
+    <input class='input-100' maxlength='500' type='text' name='meta_description' />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_kw'); ?>:<br />
-    <input class='input-100'
-           maxlength='500'
-           type='text'
-           name='meta_keywords' />
+    <input class='input-100' maxlength='500' type='text' name='meta_keywords' />
+  </p>
+  <p class='title'>
+    <?php _T('XMLcms_parent'); ?>:<br />
+    <?php echo fsHtml::Select('id_parent', $tag->parents, false, array('class' => 'input-100')); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_default_page_template'); ?>:

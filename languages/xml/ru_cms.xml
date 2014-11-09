@@ -317,6 +317,9 @@
   <text name='cms_text_parent_item'>
     <ru>Родительский пункт</ru>
   </text>
+  <text name='cms_parent'>
+    <ru>Родитель</ru>
+  </text>
   <text name='cms_text_template_code'>
     <ru>Код для шаблона</ru>
   </text>

@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dictionary><text name="cms_sample"><en>Sample</en><ru>Пример</ru></text></dictionary>
+<dictionary><text name="cms_sample"><en><![CDATA[Sample]]></en><ru><![CDATA[Пример]]></ru></text></dictionary>

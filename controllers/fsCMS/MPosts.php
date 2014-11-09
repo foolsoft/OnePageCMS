@@ -53,13 +53,12 @@ class MPosts extends cmsController
     $template = $param->Exists('in_template') && file_exists($this->_Template('Inline'.$posts_category->result->tpl))
             ? $this->_Template('Inline'.$posts_category->result->tpl)
             : $this->_Template($posts_category->result->tpl);
-            
+    $this->Tag('childs', $posts_category->GetByParent($posts_category->result->id));
     $html = $this->CreateView(array('page' => $page), $template);
     if($param->Exists('ajax_pages')) {
         $html = '<div id="category-ajax-'.$param->category.'">'.$html.'</div>';
         $this->_AddMyScriptsAndStyles(true, false, URL_THEME_JS);
     }
-    
     return $this->Html($html);
   }
   

@@ -21,10 +21,7 @@ class AdminMPosts extends AdminPanel
   private function _CheckPostData(&$Param)
   {
     $id_category = $Param->id_category;
-    if ($Param->title == '' ||
-        $Param->alt == '' ||
-        !is_array($id_category) ||
-        count($id_category) == 0) {
+    if ($Param->title == '' || $Param->alt == '' || !is_array($id_category) || count($id_category) == 0) {
       $this->Message(T('XMLcms_text_need_all_data'));
       $this->_Referer();
       return false;
@@ -32,6 +29,7 @@ class AdminMPosts extends AdminPanel
     $Param->alt = strtolower(fsFunctions::Chpu($Param->alt));
     $Param->active = $Param->Exists('active') ? 1 : 0;
     $Param->auth = $Param->Exists('auth') ? 1 : 0;
+    $Param->id_user = $Param->Exists('id_user', true) ? $Param->id_user : fsSession::GetArrInstance('AUTH', 'id');
     if ($Param->time == '') {
       $Param->time = date('H:i:s');
     }
@@ -77,7 +75,7 @@ class AdminMPosts extends AdminPanel
   public function actionAddPost($Param)
   {
     $posts_category = new posts_category();
-    $posts_category = $posts_category->GetAll(true, false, array('name'));
+    $posts_category = $posts_category->GetAll(true, false, array('id_parent', 'name'), 'id');
     if (count($posts_category) < 2) {
       $this->Message(T('XMLcms_text_no_category_found'));
       return $this->_Referer();
@@ -101,7 +99,7 @@ class AdminMPosts extends AdminPanel
     $templates_short = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'ShortPost', array('php'));
     $this->Tag('templates', $templates['NAMES']);
     $this->Tag('templates_short', $templates_short['NAMES']);
-    $this->Tag('categories', $posts_category->GetAll(true, false, array('name')));
+    $this->Tag('categories', $posts_category->GetAll(true, false, array('id_parent', 'name'), 'id'));
     $this->Tag('post', $this->_table->result);
     $this->Tag('post_categories', $post_category->GetByPostId($param->key));
   }
@@ -117,13 +115,13 @@ class AdminMPosts extends AdminPanel
   {
     $posts_category = new posts_category();
     $this->Tag('table', $this->_PostsTable($Param));
-    $this->Tag('categories', $posts_category->GetAll(true, false, array('name')));
+    $this->Tag('categories', $posts_category->GetAll(true, false, array('name'), 'id'));
   }
   
   public function actionCategories($Param)
   {
     $posts_category = new posts_category();
-    $this->Tag('categories', $posts_category->GetAll(true, false, array('name')));
+    $this->Tag('categories', $posts_category->GetAll(true, false, array('name'), 'id'));
   }
   
   public function actionAjaxCategoryTemplate($Param)
@@ -141,6 +139,17 @@ class AdminMPosts extends AdminPanel
     $this->Json($result);
   }
   
+  private function _GetCategoriesAsArray()
+  {
+    $c = new posts_category();
+    $all = $c->GetAll(true, false, array('id_parent', 'name'), 'id');
+    $result = array();
+    foreach($all as $c) {
+        $result[$c['id']] = PostsFunctions::GetFullCategoryName($all, $c);
+    }
+    return $result;
+  }
+  
   public function actionAddCategory($Param)
   {
     $templates = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'Index', array('php'));
@@ -149,15 +158,17 @@ class AdminMPosts extends AdminPanel
     $this->Tag('templates', $templates['NAMES']);
     $this->Tag('templates_ps', $templates_sp['NAMES']);
     $this->Tag('templates_pf', $templates_fp['NAMES']);
+    $this->Tag('parents', $this->_GetCategoriesAsArray());
   }
   
-  public function actionEditCategory($Param)
+  public function actionEditCategory($param)
   {
     $posts_category = new posts_category();
-    $posts_category->current = $Param->key;
-    if ($Param->key != $posts_category->id) {
+    $this->Tag('parents', $this->_GetCategoriesAsArray());
+    $posts_category->current = $param->key;
+    if ($param->key != $posts_category->id) {
       return $this->_Referer();
-    }   
+    }                                                                                             
     $templates = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'Index', array('php'));
     $templates_sp = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'ShortPost', array('php'));
     $templates_fp = fsFunctions::DirectoryInfo(PATH_TPL.CMSSettings::GetInstance('template').'/MPosts/', true, false, 'Post', array('php'));

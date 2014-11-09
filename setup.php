@@ -154,6 +154,7 @@ if ($_POST) {
     $connection->Query("
       CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."posts_category` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
+        `id_parent` int(11) NOT NULL DEFAULT '0',
         `name` varchar(255) NOT NULL,
         `alt` varchar(255) NOT NULL,
         `tpl` varchar(50) NOT NULL,
@@ -299,7 +300,7 @@ if ($_POST) {
     ");
     
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."menu` (`title`, `name`, `tpl`) VALUES ('".$L['text_main_menu']."', 'main', 'Menu.php');");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."posts_category` (`id`, `name`, `alt`, `tpl`, `tpl_short`, `tpl_full`, `meta_keywords`, `meta_description`) VALUES ('1', '".$L['text_all_category']."', 'all', 'Index.php', 'ShortPost.php', 'Post.php', '".$L['text_all_category']."', '".$L['text_all_category']."');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."posts_category` (`id`, `id_parent`, `name`, `alt`, `tpl`, `tpl_short`, `tpl_full`, `meta_keywords`, `meta_description`) VALUES ('1', '-1', '".$L['text_all_category']."', 'all', 'Index.php', 'ShortPost.php', 'Post.php', '".$L['text_all_category']."', '".$L['text_all_category']."');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."posts_category` SET `id` = '0' WHERE `id` = '1';");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."menu_items` (`id`, `menu_name`, `title`, `href`, `parent`, `order`) VALUES ('1', 'main', '".$L['text_main']."', '{URL_ROOT}page/index', '0', '0');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."types_users` (`id`, `name`, `allow`) VALUES (1, '".$L['text_admin']."', '*'), (2, '".$L['text_guest']."', '*'), (3, '".$L['text_user']."', '*');");

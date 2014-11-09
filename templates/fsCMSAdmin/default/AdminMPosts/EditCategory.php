@@ -39,6 +39,10 @@
            name='meta_keywords' />
   </p>
   <p class='title'>
+    <?php _T('XMLcms_parent'); ?>:<br />
+    <?php echo fsHtml::Select('id_parent', $tag->parents, $tag->category->id_parent, array('class' => 'input-100')); ?>
+  </p>
+  <p class='title'>
     <?php _T('XMLcms_text_template'); ?>:
     <select name='tpl' class='input-small'>
     <?php foreach ($tag->templates as $template) { 

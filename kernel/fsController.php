@@ -130,12 +130,12 @@ class fsController
   * Get folder path in template directory   
   * @api
   * @since 1.0.0
-  * @param string|null $folder (optional) Folder name in template directory. If <b>null</b> will use controller name. Default <b>null</b>.
+  * @param string $folder (optional) Folder name in template directory. If empty string will use controller name. Default <b>empty string</b>.
   * @return string Full path to needed folder.      
   */
-  protected function _TemplatePath($folder = null)
+  protected function _TemplatePath($folder = '')
   {
-    if ($folder === null) {
+    if ($folder === '') {
       $folder = get_class($this);
     }
     if (is_dir(PATH_TPL.$folder)) {
@@ -149,13 +149,13 @@ class fsController
   * Get path for template file   
   * @api
   * @since 1.0.0
-  * @param string|null $file (optional) File name in template directory. If <b>null</b> will use controller method name. Default <b>null</b>.
-  * @param string|null $folder (optional) Folder name in template directory. If <b>null</b> will use controller name. Default <b>null</b>.
+  * @param string $file (optional) File name in template directory. If empty string will use controller method name. Default <b>empty string</b>.
+  * @param string $folder (optional) Folder name in template directory. If empty string will use controller name. Default <b>empty string</b>.
   * @return string Full path to template file.      
   */
-  protected function _Template($file = null, $folder = null)
+  protected function _Template($file = '', $folder = '')
   {
-    if ($file === null) {
+    if ($file === '') {
       $file = empty($_REQUEST['method']) ? 'Index' : $_REQUEST['method'];
     }
     $file = fsFunctions::Slash($file, EXT_TPL);

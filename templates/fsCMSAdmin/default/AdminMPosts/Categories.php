@@ -19,28 +19,26 @@ $textEdit = T('XMLcms_edit');
     <th><?php _T('XMLcms_text_name'); ?></th>
     <th><?php _T('XMLcms_text_action'); ?></th>
   </tr>
-  <?php foreach ($tag->categories as $category) {
-          if ($category['id'] == ALL_TYPES) {
-            continue;
-          }  
+  <?php 
+  foreach ($tag->categories as $category) {
+    if ($category['id'] == ALL_TYPES) {
+      continue;
+    }
+    $name = PostsFunctions::GetFullCategoryName($tag->categories, $category);  
   ?>
   <tr>
     <td><?php echo $category['id']; ?></td>
     <td>
-      <?php echo fsHtml::Link(URL_ROOT.'posts/'.$category['alt'], $category['name'], $name, array('target' => '_blank')); ?>
+      <?php echo fsHtml::Link(URL_ROOT.'posts/'.$category['alt'], $name, $name, array('target' => '_blank')); ?>
     </td>
     <td>
       <div class='admin-action-td'>
         <a href='<?php echo $myLink; ?>EditCategory/key/<?php echo $category['id']; ?>/'
            title='<?php echo $textEdit; ?>'
-           class='admin-btn-small admin-btn-edit'
-        >
-        </a>   
+           class='admin-btn-small admin-btn-edit'></a>   
         <a href='<?php echo $myLink; ?>Delete/referer/Categories/table/posts_category/key/<?php echo $category['id']; ?>/'
            title='<?php echo $textDelete; ?>'
-           class='admin-btn-small admin-btn-delete'
-        >
-        </a>   
+           class='admin-btn-small admin-btn-delete'></a>   
         <div class='clr'></div>
       </div>
     </td>

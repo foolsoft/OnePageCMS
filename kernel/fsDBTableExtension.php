@@ -12,15 +12,16 @@ class fsDBTableExtension extends fsDBTable
   * @param boolean $asArr (optional) Flag for getting rows as array. Default <b>true</b>.
   * @param boolean $useLinks (optional) Flag for selecting foreign key values. Default <b>false</b>.
   * @param array $order (optional) Fields for order clause.
+  * @param array $arrIndexKey (optional) Fields for array key if result as array. If empty string generate standart numeric array index. Default <b>empty string</b>.  
   * @return array|fsDBTableExtension Result of query.      
   */
-  public function GetAll($asArr = true, $useLinks = false, $order = array())
+  public function GetAll($asArr = true, $useLinks = false, $order = array(), $arrIndexKey = '')
   {
     $this->Select('*', $useLinks)->Order($order);
     if (!$asArr) {
       return $this->Execute('', false);
     } else {
-      return $this->ExecuteToArray();
+      return $this->ExecuteToArray('', $arrIndexKey);
     }
   }
   

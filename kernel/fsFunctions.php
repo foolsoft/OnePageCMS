@@ -5,8 +5,6 @@
 */
 class fsFunctions
 {
-  private static $_slash = '/';
- 
   /**
     * Check that object exists and not empty.    
     * @since 1.0.0
@@ -101,7 +99,7 @@ class fsFunctions
     */
   public static function GetDirectoryFromFullFilePath($filePath)
   {
-    return substr($filePath, 0, strrpos($filePath, self::$_slash, -3) + 1);
+    return substr($filePath, 0, strrpos($filePath, '/', -3) + 1);
   }
   
   /**
@@ -188,14 +186,11 @@ class fsFunctions
     * @since 1.0.0
     * @api    
     * @param string $string String for checking.
-    * @param string $slash (optional) Symbol for check. Default <b>self::$_slash (/)</b>.
+    * @param string $slash (optional) Symbol for check. Default <b>/</b>.
     * @return string  
     */
-  public static function Slash($string, $slash = null)
+  public static function Slash($string, $slash = '/')
   {
-    if ($slash === null) {
-      $slash = self::$_slash;
-    }
     return substr($string, -strlen($slash)) != $slash ? $string.$slash : $string;
   }
   
@@ -253,6 +248,33 @@ class fsFunctions
     }
     $head .= "boundary=\"----------".$un."\"\r\n\r\n";
     return mail($to, $subj, $zag, $head);
+  }
+  
+  
+  /**
+    * Get array of RGB(A) from HEX color string.
+    * @since 1.0.0
+    * @api   
+    * @param string $hexColor HEX color.
+    * @param boolean $allowAlpha (optional) Flag for alpha color. Default <b>false</b>.    
+    * @return array RGB(A) array.  
+    */
+  public static function RgbFromHex($hexColor, $allowAlpha = false) 
+  {
+    $result = array(0, 0, 0);
+    if($allowAlpha) {
+        $result[] = 255;
+    }
+    if(($allowAlpha && strlen($hexColor) != 8) || (!$allowAlpha && strlen($hexColor) != 6)) {
+        return $result;
+    } 
+    $result[0] = hexdec(substr($hexColor, 0, 2)); 
+    $result[1] = hexdec(substr($hexColor, 2, 2)); 
+    $result[2] = hexdec(substr($hexColor, 4, 2));
+    if($allowAlpha) {
+        $result[0] = hexdec(substr($hexColor, 6, 2)); 
+    }
+    return $result;
   }
   
   /**
@@ -674,6 +696,29 @@ class fsFunctions
       }
       return $error;
     }
+
+    /**
+    * Get image object
+    * @since 1.0.0
+    * @api 
+    * @param string $filePath Image path. 
+    * @return object Image object. If any error return null.
+    */
+    public static function LoadImage($filePath)
+    {
+      $type = exif_imagetype($filePath);
+      $allowedTypes = array(1, 2, 3, 6);
+      if (!in_array($type, $allowedTypes)) {
+          return false;
+      }
+      switch ($type) {
+          case 1: return imageCreateFromGif($filePath);
+          case 2: return imageCreateFromJpeg($filePath);
+          case 3: return imageCreateFromPng($filePath);
+          case 6: return imageCreateFromBmp($filePath);
+          default: return null;
+      }   
+    } 
 
     /**
     * Resize image
