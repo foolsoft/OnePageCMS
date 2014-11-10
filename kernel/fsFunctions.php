@@ -625,14 +625,14 @@ class fsFunctions
         return true;
       }
       $fc = count($_FILES[$name]);
-      $uploadfile = Array(); 
+      $uploadfile = array(); 
       $return = true;
       for ($i = 0; $i < $fc && $return; ++$i) {
         $uploadfile[$i] = self::Chpu($_FILES[$name][$i]['name']);
         if ($changeName) {
           $ext = pathinfo(basename($_FILES[$name][$i]['name']), PATHINFO_EXTENSION);
           $uploadfile[$i] = md5(rand().basename($_FILES[$name][$i]['name'])).'.'.$ext;
-          while (file_exists($Path.$uploadfile)) {
+          while (file_exists($path.$uploadfile)) {
             $uploadfile[$i] = md5(rand().basename($_FILES[$name][$i]['name'])).'.'.$ext;
           }
         }
@@ -731,7 +731,6 @@ class fsFunctions
     */ 
     public static function ResizeImage($fileSrc, $size, $fileDesc)
     {
-      $dirDesc = self::Slash($dirDesc);
       $gis = GetImageSize($fileSrc);
       $type = $gis[2];
       switch($type) {
