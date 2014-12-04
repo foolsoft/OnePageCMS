@@ -6,7 +6,7 @@
 <form action="<?php echo $myLink; ?>DoAdd/referer/Index/" method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_name'); ?>:<br />
-    <input id='name' class='input-100' maxlength='100' onkeyup='fsCMS.Chpu(this.value, this.id);' type='text' name='name' />
+    <input id='name' class='input-100' maxlength='100' onkeyup='fsCMS.Chpu(this.value, this.id, "_", ["-"]);' type='text' name='name' />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_value'); ?>:<br />

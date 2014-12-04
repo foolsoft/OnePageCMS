@@ -1,6 +1,7 @@
 body { background: #EEEEE0; }
 p { margin: 0 0 5px 0; } p.title span { font-weight: normal; }
 h3 { margin: 0px; text-decoration: underline; }
+form label:after { content: ':'; }
 .fs-controller-message { background: url('/includes/img/fsCMSAdmin/default/information.png') no-repeat scroll right 7px top 7px #B9D3EE; border: 2px solid #9FB6CD; margin-bottom: 15px; padding: 15px 0; text-align: center; width: 100%; }
 .admin-footer { margin-top: 10px; border-top: 1px dotted #000; margin-bottom: 10px; clear:both; font-size: 12px; width: 98%; text-align:right; padding-top: 10px; padding-right: 2%; }
 .fsCMS-btn { padding: 5px; border: 1px solid #000; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; cursor: pointer; text-align: center; display: block; margin-bottom: 5px; font-size: 15px; text-decoration: none; color: #000; }
@@ -42,5 +43,5 @@ h3 { margin: 0px; text-decoration: underline; }
 .a-menu-item:hover > ul menu-item { text-align: center; }  
 .dictionary-head { width: 80%; background:#eeeee0; padding:5px 0; border-bottom:1px solid #555; }
 .support { width: 600px; min-height: 400px; }
-form label:after { content: ':'; }
 .template-manager { width: 1000px; min-height: 300px;}
+.cke_dialog_ui_html, .cke_dialog_ui_html * { white-space: normal !important; }

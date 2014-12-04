@@ -21,6 +21,7 @@ class AdminMConstants extends AdminPanel
 
   private function _Check($param) 
   {
+    $param->name = fsValidator::TextOnly($param->name, array('_'));
     $return = $param->name != '';
     if(!$return) {
         $this->Message(T('XMLcms_text_need_all_data'));

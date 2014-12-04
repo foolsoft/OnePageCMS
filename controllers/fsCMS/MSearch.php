@@ -39,13 +39,13 @@ class MSearch extends cmsController
         }
         $results[] = array(
           'title' => $title,
-          'link' => URL_ROOT.$link
+          'link' => fsHtml::Url(URL_ROOT.$link)
         );  
       }
     }
     $this->Tag('results', $results);
     $this->Tag('title', T('XMLcms_search_result').': '.$param->text);
-    $this->Tag('meta_keywords', CMSSettings::GetInstance('default_keywords'));
-    $this->Tag('meta_description', CMSSettings::GetInstance('default_description'));
+    $this->Tag('meta_keywords', $param->text.','.CMSSettings::GetInstance('default_keywords'));
+    $this->Tag('meta_description', $param->text.'. '.CMSSettings::GetInstance('default_description'));
   }
 }

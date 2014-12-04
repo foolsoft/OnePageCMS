@@ -9,7 +9,7 @@ echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fs
 <form action="<?php echo $myLink; ?>DoEdit/key/<?php echo $name; ?>/" method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_name'); ?>:<br />
-    <input value='<?php echo $name; ?>' id='name' class='input-100' maxlength='100' onkeyup='fsCMS.Chpu(this.value, this.id);' type='text' name='name' />
+    <input value='<?php echo $name; ?>' id='name' class='input-100' maxlength='100' onkeyup='fsCMS.Chpu(this.value, this.id, "_", ["-"]);' type='text' name='name' />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_value'); ?>:<br />

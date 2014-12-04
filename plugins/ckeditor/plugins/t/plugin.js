@@ -54,8 +54,8 @@ function CKEDITOR_t_LoadDictionary(dialog, callback) {
   dialog.getContentElement('tabXml', 'xml-dictionary').clear();
   CKEDITOR.ajax.load(URL_ROOT + 'AdminPanel/Dictionary' + URL_SUFFIX + '?substr=' + dialog.getContentElement('tabXml', 'xml-search').getValue(), function( data ) {
     var json = JSON.parse(data);
-    for(var i = 0; i < json.length; ++i) {
-      dialog.getContentElement('tabXml', 'xml-dictionary').add(json[i].text, json[i].value);
+    for(var i = 0; i < json.data.length; ++i) {
+      dialog.getContentElement('tabXml', 'xml-dictionary').add(json.data[i].text, json.data[i].value);
     }
     if(typeof(callback) == 'function') {
       callback(data);
@@ -129,7 +129,7 @@ CKEDITOR.dialog.add( 'tDialog', function ( editor )
 
           },
           {
-            type : 'html', id: 'xml-value', label: langT.value, html : '...'
+            type : 'html', id: 'xml-value', label: langT.value, html : '...', style: 'max-width:600px;display:block;'
           }
 				]
 			}

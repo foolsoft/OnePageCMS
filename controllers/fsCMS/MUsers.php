@@ -6,10 +6,9 @@ class MUsers extends cmsController
   public function FormRegistration($param) 
   {
     $html = $this->CreateView(array(), $this->_Template('FormRegistration'));
-    return "<form method='post' action='".$this->_My('DoRegistration')."' id='user_registration_form' class='user_registration_form'>".
+    return "<form method='post' action='".$this->_My('DoRegistration')."' id='user-registration-form' class='user-registration-form'>".
               $html.
            '</form>';
-  
   }
   
   public function actionDoRegistration($param) 
@@ -19,16 +18,13 @@ class MUsers extends cmsController
     }
     $this->_Referer();
     if ($param->login == '' || $param->password == '') {
-        $this->Message(T('XMLcms_text_need_all_data'));
-        return;    
+        return $this->Message(T('XMLcms_text_need_all_data'));
     }
     if ($param->password != $param->repassword) {
-      $this->Message(T('XMLcms_text_bad_pwd_confirm'));
-      return;
+      return $this->Message(T('XMLcms_text_bad_pwd_confirm'));
     }
     if (!$this->_table->CheckLogin($param->login)) {
-      $this->Message(T('XMLcms_text_login_not_unique'));
-      return;
+      return $this->Message(T('XMLcms_text_login_not_unique'));
     } 
     $userId = $this->_table->Add($param->login, $param->password);
     if ($userId > 0) {
@@ -48,10 +44,11 @@ class MUsers extends cmsController
   
   private function _GeneratePage($title, $kw = '', $decription = '')
   {
-    $page = array();
-    $page['title'] = $title;
-    $page['meta_keywords'] = $kw == '' ? $title : $kw;
-    $page['meta_description'] = $decription == '' ? $title : $decription;
+    $page = array(
+        'title' => $title,
+        'meta_keywords' => $kw == '' ? $title : $kw,
+        'meta_description' => $decription == '' ? $title : $decription,
+    );
     $this->Html($this->CreateView(array('page' => $page), $this->_Template('Registration')));
   }
   
@@ -61,8 +58,7 @@ class MUsers extends cmsController
       return $this->HttpNotFound();
     }
     if (AUTH) {
-      $this->Redirect(URL_ROOT);
-      return;
+      return $this->Redirect(URL_ROOT);
     }
     $this->_GeneratePage(T('XMLcms_text_registration'));
   } 

@@ -109,7 +109,7 @@ class AdminMDictionary extends AdminPanel
       foreach($param->original as $idx => $original) {
         $original = trim($original);
         if($original !== '') {
-          $array[$original] = trim($translate[$idx]);
+          $array[$original] = trim(str_replace(array('\'', '"'), '', $translate[$idx]));
         }                 
       }
       fsFunctions::ArrayToFile($array, 'LANG', $this->_php[$param->file]);

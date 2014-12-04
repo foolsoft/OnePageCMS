@@ -65,8 +65,10 @@ var fsCMS = {
         }  
     });
   },
-  Chpu: function(str, id, space) {
+  Chpu: function(str, id, space, disallow) {
+    id = id || false;
     space = space || '-';
+    disallow = disallow || [];
     str = str.replace(/а/g, 'a').replace(/б/g, 'b').replace(/в/g, 'v').replace(/г/g, 'g');
     str = str.replace(/д/g, 'd').replace(/е/g, 'e').replace(/ё/g, 'e').replace(/ж/g, 'j');
     str = str.replace(/з/g, 'z').replace(/и/g, 'i').replace(/й/g, 'i').replace(/к/g, 'k');
@@ -84,7 +86,9 @@ var fsCMS = {
     str = str.replace(/Щ/g,'SH').replace(/Ъ/g,'').replace(/Ы/g,'I').replace(/Ь/g,'').replace(/Э/g,'E').replace(/Ю/g,'U').replace(/Я/g,'YA');
     str = str.replace(/\s/g, space).replace(/\//g, '_');
     str = str.replace(/[\*%&\\№\?#!:;\$\^,\(\)\[\]=\.]/g, '');
-    id = id || false;
+    for(var i = 0; i < disallow.length; ++i) {
+        str = str.replace(new RegExp(disallow[i], 'g'), '');
+    }
     if (id) {
       $('#'+id).val(str);
     }

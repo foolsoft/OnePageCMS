@@ -21,10 +21,18 @@ class users extends fsDBTableExtension
     return $this->Order(array('login'))->ExecuteToArray();
   }
   
+  public static function GeneratePassword($password)
+  {
+    if($password === '') {
+        return '';
+    }
+    return sha1(fsConfig::GetInstance('secret').$password); 
+  }
+  
   public function Add($login, $password, $active = 1, $type = 2) 
   {                    
     $this->login = $login;
-    $this->password = md5($password);
+    $this->password = self::GeneratePassword($password);
     $this->active = $active;
     $this->type = $type;
     $this->Insert()->Execute();
@@ -37,7 +45,7 @@ class users extends fsDBTableExtension
       return false;
     }
     $this->Select()->Where(array(array('login' => $login),
-                                 array('password' => md5($password)),
+                                 array('password' => self::GeneratePassword($password)),
                                  array('active' => 1)))->Limit(1)->Execute();
     if ($this->_result->login == $login) {
       $result = array();

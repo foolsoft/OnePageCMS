@@ -90,6 +90,9 @@ class fsKernel extends fsController
       $referer = $this->_Referer(false);
       if(fsConfig::GetInstance('multi_language')) {
         $referer = str_replace('/'.$lang.'/', '/'.$param->name.'/', $referer);  
+        if($referer == URL_ROOT_CLEAR.$lang) {
+          $referer = str_replace('/'.$lang, '/'.$param->name, $referer);
+        }
       }
       $this->Redirect($referer);
     }

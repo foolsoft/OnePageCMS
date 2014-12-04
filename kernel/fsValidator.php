@@ -28,14 +28,31 @@ class fsValidator
     public static function ClearData($data)
     {
       $data = strip_tags($data);
-      $data = str_replace('"', '&#34;', $data);
-      $data = str_replace("'", "&#39;", $data);
-      $data = str_replace("%", '&#37;', $data);
-      $data = str_replace(";", '&#59;', $data);
-      $data = str_replace("--", "-", $data);
-      $data = str_replace("`", "``", $data);
-      $data = str_replace("_", "&#95;", $data);
+      $data = str_replace(
+        array('"', "'", '%', ';', '--', '`', '_', '#', '$'), 
+        array('&#34;', "&#39;", '&#37;', '&#59;', '-', '``', '&#95;', '&#35;', '&#36;'),
+        $data
+      );
       return $data;
+    }
+  
+    /**
+    * Delete special chars from string.    
+    * @since 1.0.0
+    * @api   
+    * @param string $data Source text.  
+    * @param array $allow (optional) Allowed symbols. Default <b>empty array</b>.
+    * @return string Clear text.  
+    */              
+    public static function TextOnly($data, $allow = array())
+    {
+      $disallow = array(
+        ' ', '-', '#', '$', '%', '"', "'", '@', '*', '/', '\\', '|',
+        '!', '_', '^', '&', '(', ')', '=', '+', '?', '~', '>', '<',
+        "\t", "\r", "\n", '`', '[', ']', '{', '}', ':', ';'       
+      );
+      $chars = array_diff($disallow, $allow);
+      return str_replace($chars, '', $data);
     }
   
     /**

@@ -135,7 +135,7 @@ class AdminMUsers extends AdminPanel
       return;
     }
     $param->active =  $param->Exists('active') ? 1 : 0;
-    $param->password = md5($param->password);
+    $param->password = users::GeneratePassword($param->password);
     $userId = parent::actionDoAdd($param);
     if ($userId > 0 && $param->Exists('user_field')) {
       $user_info = new user_info();
@@ -184,7 +184,7 @@ class AdminMUsers extends AdminPanel
       $param->active = 1;
     }
     if ($param->password != '') {
-      $param->password = md5($param->password);
+      $param->password = users::GeneratePassword($param->password);
     } else {
       $param->Delete('password');
     }

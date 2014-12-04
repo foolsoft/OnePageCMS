@@ -1,8 +1,6 @@
 <?php header("Content-type: text/html; charset=utf-8");
 $ALLOW_DBCHARSET = false;
-$path = 'settings/';
-$error = '';
-$lang = 'ru';
+$path = 'settings/'; $error = ''; $lang = 'ru';
 include 'kernel/fsFunctions.php';
 include 'kernel/fsFileWorker.php';
 @session_start();
@@ -60,6 +58,7 @@ if ($_POST) {
       $error = "'".$_POST['db_name']."' - ".$L['text_base_not_found'];
       break;
     }
+    fsFunctions::RequestGet('http://onepagecms.net/MInstall/Tell', array('server' => $_SERVER["SERVER_NAME"]));
     $f = new fsFileWorker($path.'dbSettings.php', 'w+');
     $f->WriteLine('<?php');
     $f->WriteLine('class DBsettings');
@@ -305,7 +304,7 @@ if ($_POST) {
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."menu_items` (`id`, `menu_name`, `title`, `href`, `parent`, `order`) VALUES ('1', 'main', '".$L['text_main']."', '{URL_ROOT}page/index', '0', '0');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."types_users` (`id`, `name`, `allow`) VALUES (1, '".$L['text_admin']."', '*'), (2, '".$L['text_guest']."', '*'), (3, '".$L['text_user']."', '*');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."types_users` SET `id` = '0' WHERE `id` = '2';");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."users` (`id`, `login`, `password`, `active`, `type`) VALUES ('1', '".$_POST["admin_login"]."', '".md5($_POST["admin_password"])."', '1', '1');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."users` (`id`, `login`, `password`, `active`, `type`) VALUES ('1', '".$_POST["admin_login"]."', '".sha1($secret.$_POST["admin_password"])."', '1', '1');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."users` (`id`, `login`, `password`, `active`, `type`) VALUES ('2', '".$L["text_guest"]."', '*', '1', '0');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."users` SET `id` = '0' WHERE `id` = '2';");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `title`, `alt`, `html`, `in_menu`, `active`, `tpl`) VALUES (1, '".$L['text_main']."', 'index', '".fsFunctions::StringFormat($L['text'], array('{URL_ROOT}AdminPanel/Hello{URL_SUFFIX}'))."', '1', '1', 'Index.php');");
