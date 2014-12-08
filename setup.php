@@ -109,6 +109,7 @@ if ($_POST) {
       `text` varchar(50) NOT NULL,
       `order` tinyint(4) NOT NULL DEFAULT '0',
       `parent` varchar(50) NOT NULL,
+      `in_panel` enum('0','1') NOT NULL DEFAULT '1',
        PRIMARY KEY (`name`)
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
     ");
@@ -308,7 +309,7 @@ if ($_POST) {
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."users` (`id`, `login`, `password`, `active`, `type`) VALUES ('2', '".$L["text_guest"]."', '*', '1', '0');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."users` SET `id` = '0' WHERE `id` = '2';");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `title`, `alt`, `html`, `in_menu`, `active`, `tpl`) VALUES (1, '".$L['text_main']."', 'index', '".fsFunctions::StringFormat($L['text'], array('{URL_ROOT}AdminPanel/Hello{URL_SUFFIX}'))."', '1', '1', 'Index.php');");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `title`, `alt`, `html`, `in_menu`, `active`, `tpl`) VALUES (2, '".$L['text_closed']."', 'closed', '<h4 style=\"text-align: center;\"><span style=\"color:#808080;\"><span style=\"font-family: tahoma,geneva,sans-serif;\"><strong>".$L['text_soon']."</strong></span></span></h4><h5 style=\"text-align: center;\"><u><span style=\"font-family:tahoma,geneva,sans-serif;\"><span style=\"color: rgb(128, 128, 128);\">2013 (c) </span><a alt=\"".$L['text_dblog']."\" href=\"http://foolsoft.ru/\" target=\"_blank\" title=\"".$L['text_dblog']."\"><span style=\"color: rgb(128, 128, 128);\">".$L['text_a']."</span></a></span></u></h5>', '0', '1', 'IndexClosed.php');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `title`, `alt`, `html`, `in_menu`, `active`, `tpl`) VALUES (2, '".$L['text_closed']."', 'closed', '<h4 style=\"text-align: center;\"><span style=\"color:#808080;\"><span style=\"font-family: tahoma,geneva,sans-serif;\"><strong>".$L['text_soon']."</strong></span></span></h4><h5 style=\"text-align: center;\"><u><span style=\"font-family:tahoma,geneva,sans-serif;\"><span style=\"color: rgb(128, 128, 128);\">2013 (c) </span><a href=\"http://foolsoft.ru/\" target=\"_blank\" title=\"".$L['text_dblog']."\"><span style=\"color: rgb(128, 128, 128);\">".$L['text_a']."</span></a></span></u></h5>', '0', '1', 'IndexClosed.php');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."pages` SET `id` = '0' WHERE `id` = '2';");
                                                                                                                                                           
     $url = substr($_SERVER["SERVER_NAME"], 0, 4) == 'www.' ? substr($_SERVER["SERVER_NAME"], 4) : $_SERVER["SERVER_NAME"];

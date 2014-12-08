@@ -24,8 +24,7 @@ class AdminMModules extends AdminPanel
     );
     $this->Redirect($this->_My('Add'));
     if($error) {
-      $this->Message(T('XMLcms_text_bad_file_format'));
-      return;
+      return $this->Message(T('XMLcms_text_bad_file_format'));
     }
     $newFile = '';
     if (fsFunctions::UploadFiles('userfile', $this->_pathZip, $newFile)) {
@@ -40,11 +39,10 @@ class AdminMModules extends AdminPanel
               if (!isset($MADMIN_START)) {
                 $MADMIN_START = '';
               }
-              $MAdminName = 'Admin'.$MNAME.'/'.$MADMIN_START;
               if (!isset($MTEXT)) {
                 $MTEXT = $MNAME;
               }
-              $this->_table->AddModule($MAdminName, $MTEXT);
+              $this->_table->AddModule($MNAME, $MADMIN_START, $MTEXT);
               if (isset($SETTINGS) && is_array($SETTINGS)) {
                 $controller_settings = new controller_settings();
                 foreach ($SETTINGS as $name => $value) {
@@ -55,7 +53,7 @@ class AdminMModules extends AdminPanel
               if (isset($MENU) && is_array($MENU)) {
                 $controller_menu = new controller_menu();
                 foreach ($MENU as $title => $href) {
-                  $controller_menu->Add($MAdminName, $title, $href);
+                  $controller_menu->Add($MNAME, $title, $href);
                 }
                 unset($controller_menu);  
               } 
@@ -71,7 +69,6 @@ class AdminMModules extends AdminPanel
          fsCache::Clear();
         } else {
           $this->Message(T('XMLcms_text_unzip_error'));
-          return;
         }
     } else {
         $this->Message(T('XMLcms_text_file_upload_error'));

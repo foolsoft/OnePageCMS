@@ -76,7 +76,9 @@ class MPosts extends cmsController
         'meta_keywords' => $this->_table->result->meta_keywords,
         'meta_description' => $this->_table->result->meta_description
     );
+    $post_category = new post_category();
     $this->Tag('post', $this->_table->result);
+    $this->Tag('categories', $post_category->GetByPostId($this->_table->result->id));
     $this->Html($this->CreateView(array('page' => $page), $this->_Template($this->_table->result->tpl)));
   } 
 }

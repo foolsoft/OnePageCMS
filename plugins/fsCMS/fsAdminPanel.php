@@ -70,7 +70,7 @@ class AdminPanel extends cmsController
   
     private function _Sidebar()
     {
-        $menu = MenuGenerator::Get(URL_ROOT, 'admin_menu', 'parent', 'a-menu', 'name', 'name', 'text',  array('order'), '1');
+        $menu = MenuGenerator::Get(URL_ROOT, 'admin_menu', 'parent', 'a-menu', 'name', 'name', 'text',  array('order'), '`in_panel` = "1"');
         return $this->CreateView(array('menu' => $menu), $this->_Template('Sidebar', 'AdminPanel'));
     }
     

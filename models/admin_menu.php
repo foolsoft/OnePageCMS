@@ -16,12 +16,13 @@ class admin_menu extends fsDBTableExtension
                  ->ExecuteToArray();
   }
   
-  public function AddModule($name, $text, $order = 0)
+  public function AddModule($contoller, $startPage, $text, $order = 0)
   {
-    $this->name = $name;
+    $this->name = 'Admin'.$contoller.'/'.$startPage;
     $this->text = $text;
     $this->order = $order;
     $this->parent = $this->_parent;
+    $this->in_panel = $startPage != '' ? 1 : 0;
     return $this->Insert()->Execute();
   }
 }

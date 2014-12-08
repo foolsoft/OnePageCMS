@@ -497,10 +497,10 @@ class fsDBTable
   * @since 1.0.0
   * @param string $value Value for checking.
   * @param string $key (optional) Table key for SELECT query. If empty uses table primary key column. Default empty string.
-  * @param string|boolean $findedFieldValue (optional) Field value for returning if $value not unique. If <b>false</b> and $value not unique function will return find row. Default <b>false</b> 
+  * @param string $findedFieldValue (optional) Field value for returning if $value not unique. If <b>empty string</b> and $value not unique function will return find row. Default <b>empty string</b>
   * @return mixed Result of checking.      
   */
-  public function IsUnique($value, $key = '', $findedFieldValue = false)
+  public function IsUnique($value, $key = '', $findedFieldValue = '')
   {
     $return = false;
     if ($key == '') {
@@ -510,7 +510,7 @@ class fsDBTable
       return $return;
     }
     $this->Select()->Where('CAST(`'.$key.'` as CHAR) = "'.$value.'"')->Execute();
-    if ($findedFieldValue !== false && $this->_result->$key != '') {
+    if ($findedFieldValue !== '' && $this->_result->$key != '') {
       $return = $this->_result->$findedFieldValue;
     }
     return ($this->_result->$key == '') ? true : $return;

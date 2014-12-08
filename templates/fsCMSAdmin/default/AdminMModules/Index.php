@@ -13,7 +13,7 @@
   ?>
   <tr class='admin-row-active-1'>
     <td>
-      <?php echo fsHtml::Link(URL_ROOT.$module['name'], $name, T('XMLcms_edit')); ?>
+      <?php echo $module['in_panel'] == 0 ? $name : fsHtml::Link(URL_ROOT.$module['name'], $name, T('XMLcms_edit')); ?>
     </td>
     <td>
       <div class='admin-action-td'>

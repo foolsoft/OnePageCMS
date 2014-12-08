@@ -196,24 +196,24 @@ class fsController
   * @since 1.0.0
   * @example _CheckUnique($newValueForUniqueField, 'uniqueField') or _CheckUnique($userLogin, 'login', $userId, 'id')
   * @param string $valueToCheck Value to be checked.
-  * @param string|boolean $fieldDb (optional) MySQL table key fow where clause. If <b>false</b> will use primary key of table. Default <b>false</b>.
-  * @param string|boolean $valueToCheckResult (optional) Additional value for checking. If <b>false</b> will use $valueToCheck value. Default <b>false</b>.
-  * @param string|boolean $findedFieldValue (optional) Additional table key for checking. If <b>false</b> will use $fieldDb value. Default <b>false</b>.
-  * @param string|boolean $tableName (optional) MySQL table for request. If <b>false</b> will use controller table. Default <b>false</b>.
+  * @param string $fieldDb (optional) MySQL table key fow where clause. If <b>empty string</b> will use primary key of table. Default <b>empty string</b>.
+  * @param string $valueToCheckResult (optional) Additional value for checking. If <b>empty string</b> will use $valueToCheck value. Default <b>empty string</b>.
+  * @param string $findedFieldValue (optional) Additional table key for checking. If <b>empty string</b> will use $fieldDb value. Default <b>empty string</b>.
+  * @param string $tableName (optional) MySQL table for request. If <b>empty string</b> will use controller table. Default <b>empty string</b>.
   * @return boolean Result of checking. If <b>true</b> value is unique.      
   */ 
-  protected function _CheckUnique($valueToCheck, $fieldDb = false, $valueToCheckResult = false, $findedFieldValue = false, $tableName = false)
+  protected function _CheckUnique($valueToCheck, $fieldDb = '', $valueToCheckResult = '', $findedFieldValue = '', $tableName = '')
   {
-    $obj = $tableName ? new fsDBTable($tableName) : $this->_table;
+    $obj = $tableName !== '' ? new fsDBTable($tableName) : $this->_table;
     if ($obj == null) {
       $this->Message(T('XMLcms_text_no_dbtable'));
     } else { 
-      if (!$valueToCheckResult) {
+      if ($valueToCheckResult === '') {
         $valueToCheckResult = $valueToCheck; 
       }
       $result = $obj->IsUnique($valueToCheck, $fieldDb, $findedFieldValue);
-      if ($result !== true) { 
-        if ($result === false || (!empty($valueToCheckResult) && $valueToCheckResult != $result)) {
+      if ($result !== true) {
+        if ($result === false || ('' !== $valueToCheckResult && $valueToCheckResult != $result)) {
           $this->Message(T('XMLcms_unique_data_error'));
         } 
       }
