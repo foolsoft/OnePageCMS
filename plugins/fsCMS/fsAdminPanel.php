@@ -324,15 +324,44 @@ class AdminPanel extends cmsController
     /*
     * Default activate action.
     * @param fsStruct $param User request.
-    * @return void 
+    * @return boolean Result of action 
     */
     public function actionActivate($param)
     {
-        $this->_SetRedirect($param->referer);
-        if ($param->Exists('key')) {
-          if ($param->field == '') {
+        if($param->field == '') {
             $param->field = 'active';
-          }
+        }
+        if($param->value == '') {
+            $param->value = '1';
+        }
+        return $this->actionUpdateField($param);
+    }
+    
+    /*
+    * Default deactivate action.
+    * @param fsStruct $param User request.
+    * @return boolean Result of action
+    */
+    public function actionDeActivate($param)
+    {
+        if($param->field == '') {
+            $param->field = 'active';
+        }
+        if($param->value == '') {
+            $param->value = '0';
+        }
+        return $this->actionUpdateField($param);
+    }
+    
+    /*
+    * Default table one field change action.
+    * @param fsStruct $param User request.
+    * @return boolean Result of action 
+    */
+    public function actionUpdateField($param)
+    {
+        $this->_SetRedirect($param->referer);
+        if ($param->key != '' && $param->field != '') {
           $table_key = $param->table_key;
           $obj = $param->table == '' ?  $this->_table : new fsDBTable($param->table); 
           if ($param->table_key == '') {
@@ -340,7 +369,7 @@ class AdminPanel extends cmsController
           }
           if ($obj == null) {
             $this->Message(T('XMLcms_bme_activate'));
-            return -1;
+            return false;
           } else {
             $key = $param->key;
             $where = "`".$param->table_key."`";
@@ -354,37 +383,34 @@ class AdminPanel extends cmsController
             } else {
               $where .= " = '".$param->key."'";
             }
-            $obj->Update(array($param->field), array('1'))->Where($where)->Execute();
-            return 0;
+            return $obj->Update(array($param->field), array($param->value))->Where($where)->Execute();
           }
         }
-        return -1;
+        return false;
     }
   
     /*
     * Default multiple action.
     * @param fsStruct $param User request.
-    * @return void 
+    * @return boolean Result of action 
     */
     public function actionMultiAction($param)
     {
         $this->_SetRedirect($param->referer);
-        if (!$param->Exists('type') || !$param->Exists('keys')) {
-          return -1;
+        if (!$param->Exists('type') || !$param->Exists('keys') || !is_array($param->keys)) {
+          return false;
         }
-        $keys = $param->keys;
-        if (!is_array($keys)) {
-          return -1;
-        }
-        $param->key = $keys;
+        $param->key = $param->keys;
         $param->Delete('keys');
         switch($param->type) {
+          case 'deactivate':  
+              return $this->actionDeActivate($param);
           case 'activate':  
               return $this->actionActivate($param);
           case 'delete': 
               return $this->actionDelete($param);
           default: 
-              return 404;
+              return false;
         }
     }
  
@@ -457,7 +483,7 @@ class AdminPanel extends cmsController
     /*
     * Default add action.
     * @param fsStruct $param User request.
-    * @return void 
+    * @return integer Last inserted id. 
     */
     public function actionDoAdd($param)
     { 
@@ -488,7 +514,7 @@ class AdminPanel extends cmsController
     /*
     * Default edit action.
     * @param fsStruct $param User request.
-    * @return void 
+    * @return integer Action status 
     */
     public function actionDoEdit($param)
     { 
@@ -535,6 +561,11 @@ class AdminPanel extends cmsController
         return $return;
     }
 
+    /*
+    * Get html options list of templates.
+    * @param fsStruct $param User request.
+    * @return void 
+    */
     public function actionAjaxTemplateFiles($param)
     {
         $this->_response->empty = true;

@@ -18,6 +18,9 @@
   <text name='cms_clear'>
     <ru>Очистить</ru>
   </text>
+  <text name='cms_invalid_login'>
+    <ru>Логин содержит недопустимые символы</ru>
+  </text>
   <text name='cms_register_success'>
     <ru><![CDATA[
       Вы успешно зарегистрированы! Можете воспользоваться 

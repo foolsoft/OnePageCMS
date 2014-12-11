@@ -7,3 +7,4 @@ includes/js/initFsCMS.js
 .htaccess
 settings/Settings.php
 settings/dbSettings.php
+temp/

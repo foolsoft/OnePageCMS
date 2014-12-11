@@ -13,7 +13,7 @@ class fsDBTableExtension extends fsDBTable
   * @param boolean $useLinks (optional) Flag for selecting foreign key values. Default <b>false</b>.
   * @param array $order (optional) Fields for order clause.
   * @param array $arrIndexKey (optional) Fields for array key if result as array. If empty string generate standart numeric array index. Default <b>empty string</b>.  
-  * @return array|fsDBTableExtension Result of query.      
+  * @return array|boolean Result of query.      
   */
   public function GetAll($asArr = true, $useLinks = false, $order = array(), $arrIndexKey = '')
   {
@@ -32,7 +32,7 @@ class fsDBTableExtension extends fsDBTable
   * @param string $keyValue Value for selecting.
   * @param boolean $asArr (optional) Flag for getting result as array. Default <b>true</b>.
   * @param string $keyField (optional) Column name for $keyValue. If empty uses table primary key. Default empty string.
-  * @return array|fsDBTableExtension Result of query.      
+  * @return array|boolean Result of query.      
   */
   public function GetOne($keyValue, $asArr = true, $keyField = '')
   {
@@ -51,13 +51,13 @@ class fsDBTableExtension extends fsDBTable
   * Select COUNT of rows.   
   * @api
   * @since 1.0.0
-  * @param string|boolean $where (optional) Where clause as string. If <b>false</b> get total row count. Default <b>false</b>.
+  * @param string $where (optional) Where clause as string. If <b>empty string</b> get total row count. Default <b>empty string</b>.
   * @return integer Count of rows.      
   */
   public function GetCount($where = false)
   {
     $this->Execute('SELECT COUNT(*) as `c` FROM `'.$this->_struct->name.'`'.
-                  ($where === false
+                  ($where === ''
                    ? ''
                    : ' WHERE '.$where));
     return $this->_result->mysqlRow['c'];
@@ -69,8 +69,8 @@ class fsDBTableExtension extends fsDBTable
   * @since 1.0.0
   * @param string|array $field Table column name for value selecting.
   * @param string $keyValue Value for filtering.
-  * @param string $key (optional) Column name for $keyValue. If empty uses table primary key. Default empty string.
-  * @return string|array Count of rows.      
+  * @param string $key (optional) Column name for $keyValue. If <b>empty string</b> uses table primary key. Default <b>empty string</b>.
+  * @return string|fsDBTableExtension Count of rows.      
   */
   public function GetField($field, $keyValue, $key = '')
   {
@@ -78,10 +78,10 @@ class fsDBTableExtension extends fsDBTable
       $key = $this->_struct->key;
     }
     if (empty($key)) {
-      return false;
+      return null;
     }
-    $fields = is_array($field) ? $field : array($field); 
-    $result = $this->Select($fields)->Where('`'.$key.'` = "'.$keyValue.'"')->Execute();
+    $result = $this->Select(is_array($field) ? $field : array($field))->
+        Where('`'.$key.'` = "'.$keyValue.'"')->Execute();
     return is_array($field) ? $this : $this->_result->$field;
   }
   
@@ -90,7 +90,7 @@ class fsDBTableExtension extends fsDBTable
   * @api
   * @since 1.0.0
   * @param string $value Value to be delete.
-  * @param string $key (optional) Column name for $value. If empty uses table primary key. Default empty string.
+  * @param string $key (optional) Column name for $value. If <b>empty string</b> uses table primary key. Default <b>empty string</b>.
   * @return boolean Result of deleting.      
   */
   public function DeleteBy($value, $key = '')

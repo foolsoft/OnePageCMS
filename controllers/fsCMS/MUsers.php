@@ -2,11 +2,12 @@
 class MUsers extends cmsController 
 {
   protected $_tableName = 'users';
-  
+  protected $_loginRegex = '/^[a-zA-Z0-9_\-]+$/';
+
   public function FormRegistration($param) 
   {
     $html = $this->CreateView(array(), $this->_Template('FormRegistration'));
-    return "<form method='post' action='".$this->_My('DoRegistration')."' id='user-registration-form' class='user-registration-form'>".
+    return "<form method=\"post\" action=\"".$this->_My('DoRegistration')."\" id=\"user-registration-form\" class=\"user-registration-form\">".
               $html.
            '</form>';
   }
@@ -19,6 +20,9 @@ class MUsers extends cmsController
     $this->_Referer();
     if ($param->login == '' || $param->password == '') {
         return $this->Message(T('XMLcms_text_need_all_data'));
+    }
+    if (!fsValidator::Match($param->login, $this->_loginRegex)) {
+      return $this->Message(T('XMLcms_invalid_login'));
     }
     if ($param->password != $param->repassword) {
       return $this->Message(T('XMLcms_text_bad_pwd_confirm'));

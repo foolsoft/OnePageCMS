@@ -1,11 +1,6 @@
 [parent:../AdminPanel/Index.php]
 
 [block-content]
-<?php
-$textDelete = T('XMLcms_delete');
-$textEdit = T('XMLcms_edit');
-$textActivate = T('XMLcms_activate');
-?>
 <div>  
   <?php
     echo fsHtml::Link($myLink.'Config', T('XMLcms_settings'), false, array('class' => 'fsCMS-btn admin-btn-config float-left'));
@@ -16,18 +11,19 @@ $textActivate = T('XMLcms_activate');
   <div class='clr'></div>
 </div>
 <hr />
-Категория: 
-<select name='category' onchange='LoadPostsTable(this.value);'>
-<?php 
-foreach ($tag->categories as $category) {
+<?php _T('XMLcms_text_category'); ?>: 
+<select name="category" onchange="LoadPostsTable(this.value);">
+<?php foreach ($tag->categories as $category) {
   $selcted = ALL_TYPES == $category['id'] ? 'selected' : ''; 
 ?>
-  <option <?php echo $selcted; ?> value='<?php echo $category['id']; ?>'><?php echo PostsFunctions::GetFullCategoryName($tag->categories, $category); ?></option>
+  <option <?php echo $selcted; ?> value="<?php echo $category['id']; ?>">
+    <?php echo PostsFunctions::GetFullCategoryName($tag->categories, $category); ?>
+  </option>
 <?php } ?>
-  <option value='-1'><?php _T('XMLcms_text_nocategory'); ?></option>
+  <option value="-1"><?php _T('XMLcms_text_nocategory'); ?></option>
 </select>
 <hr />
-<div id='post-table'>
+<div id="post-table">
   <?php echo $tag->table; ?>
 </div>
 [endblock-content]

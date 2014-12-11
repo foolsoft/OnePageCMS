@@ -1,3 +1,8 @@
+<?php
+$textDelete = T('XMLcms_delete');
+$textEdit = T('XMLcms_edit');
+$textActivate = T('XMLcms_activate');
+?>
 <table class="list-table">
   <tr>
     <th>№</th>

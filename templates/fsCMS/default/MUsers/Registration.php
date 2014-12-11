@@ -6,6 +6,6 @@
 <?php echo fsFunctions::StringFormat(T('XMLcms_register_success'), array(fsHtml::Url(URL_ROOT.'user/auth'))); ?>
 </p>
 <?php } else { ?>
-{% MUser/FormRegistration %}
+{% MUsers/FormRegistration %}
 <?php } ?>
 [endblock-content]
