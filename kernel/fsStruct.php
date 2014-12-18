@@ -49,7 +49,7 @@ class fsStruct
       * Clear not 'ReadOnly' inner data.    
       * @since 1.0.0
       * @api  
-      * @param array $filter (optional) Data for exclude from result.   
+      * @param array $filter (optional) Data for exclude from result. Default <b>empty array</b>   
       * @return void.  
       */
     public function Clear($filter = array())
@@ -94,13 +94,13 @@ class fsStruct
       * Delete inner data.    
       * @since 1.0.0
       * @api  
-      * @param string|boolean $field (optional) Name of data to be delete. If <b>false</b> delete all data. Default <b>false</b>.
+      * @param string|array $field (optional) Name (array of names) of data to be delete. If <b>empty string</b> delete all data. Default <b>empty string</b>.
       * @return void.  
       */
-    public function Delete($field = false)
+    public function Delete($field = '')
     {
-      if ($field === false) {
-        $this->fields = Array();
+      if ($field === '') {
+        $this->fields = array();
       } else if (is_array($field)) { 
         foreach ($field as $f) {
           $this->Delete($f);

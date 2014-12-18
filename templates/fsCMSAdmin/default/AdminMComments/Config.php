@@ -10,7 +10,7 @@
   </p>
   <p>
     <?php _T('XMLcms_allow_guests'); ?>:
-    <?php echo fsHtml::Select('allow_guests', array('0' => T('XMLcms_no'), '1' => T('XMLcms_yes')), $tag->settings->allow_guests); ?>
+    <?php echo fsHtml::Select('allow_guests', array('1' => T('XMLcms_yes'), '0' => T('XMLcms_no')), $tag->settings->allow_guests); ?>
   </p>
   <p>
     <?php _T('XMLcms_comments_minlen'); ?>:

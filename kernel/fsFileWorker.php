@@ -47,6 +47,21 @@ class fsFileWorker
   }
   
   /**
+    * Create new file or append new data in existing file.    
+    * @since 1.0.0
+    * @api    
+    * @param string $file File path.
+    * @param string $newContent String to be append.  
+    * @return void.  
+    */
+  public static function AppendFile($file, $newContent)
+  {
+    $f = new fsFileWorker($file, 'a+');
+    $f->Write($newContent);
+    $f->Close(); 
+  }
+  
+  /**
     * Write string to file.    
     * @since 1.0.0
     * @api    

@@ -152,6 +152,12 @@ class MComments extends cmsController
       return $this->Json(array('Status' => 4, 'Text' => T('XMLcms_comments_toshort')));
     }
     
+    $param->author_name = trim(strip_tags($param->author_name));
+
+    if(!AUTH && '' == $param->author_name) {
+      return $this->Json(array('Status' => 8, 'Text' => T('XMLcms_text_need_all_data')));
+    }
+
     $commentFields = array();
     $additional = $param->additional;
     if(!is_array($additional)) {

@@ -58,7 +58,7 @@ if ($_POST) {
       $error = "'".$_POST['db_name']."' - ".$L['text_base_not_found'];
       break;
     }
-    fsFunctions::RequestGet('http://onepagecms.net/MInstall/Tell', array('server' => $_SERVER["SERVER_NAME"]));
+    fsFunctions::RequestGet('http://www.onepagecms.net/new-install', array('server' => $_SERVER["SERVER_NAME"]));
     $f = new fsFileWorker($path.'dbSettings.php', 'w+');
     $f->WriteLine('<?php');
     $f->WriteLine('class DBsettings');

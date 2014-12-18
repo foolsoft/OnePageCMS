@@ -23,14 +23,14 @@ class Response
   */
   public function __construct()
   {
-    $responseConfig = array();
-    $responseConfig['template'] = array('Value' => '');
-    $responseConfig['message'] = array('Value' => '');
-    $responseConfig['html'] = array('Value' => '');
-    $responseConfig['redirect'] = array('Value' => '');
-    $responseConfig['empty'] = array('Value' => false);
     $this->tag = new fsStruct(array(), true);
-    $this->_struct = new fsStruct($responseConfig);
+    $this->_struct = new fsStruct(array(
+        'template' => array('Value' => ''),
+        'message' => array('Value' => ''),
+        'html' => array('Value' => ''),
+        'redirect' => array('Value' => ''),
+        'empty' => array('Value' => false),
+    ));
   }
   
   public function __set($attr, $value)

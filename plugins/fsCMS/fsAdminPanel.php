@@ -490,7 +490,9 @@ class AdminPanel extends cmsController
         $this->_SetRedirect($param->referer);
         $return = -1;
         if ($param->Exists('call') && $param->call != '') {
-          $return = $this->_Do($param, $param->call, 'actionDoAdd');
+          $call = $param->call;
+          $param->Delete('call');
+          $return = $this->_Do($param, $call, 'actionDoAdd');
         } else {
           $obj = !$param->Exists('table') ? $this->_table : new fsDBTable($param->table);
           if ($obj == null) {
@@ -525,7 +527,9 @@ class AdminPanel extends cmsController
           $return = 2;
         } else {
           if ($param->Exists('call') && $param->call != '') {
-            $return = $this->_Do($param, $param->call, 'actionDoEdit');
+            $call = $param->call;
+            $param->Delete('call');
+            $return = $this->_Do($param, $call, 'actionDoEdit');
           } else {
             $obj = !$param->Exists('table') ? $this->_table : new fsDBTable($param->table);
             if ($obj == null) {
@@ -648,7 +652,9 @@ class AdminPanel extends cmsController
     public function actionDoConfig($param)
     {
         if ($param->Exists('call') && $param->call != '') {
-          $this->_Do($param, $param->call, 'doConfig');
+          $call = $param->call;
+          $param->Delete('call');
+          $this->_Do($param, $call, 'actionDoConfig');
         } else {
           $cs = new controller_settings();
           $arr = $this->settings->GetStruct();

@@ -114,7 +114,7 @@ class fsHtaccess
     #MPosts
     RewriteRule ^{5}post/([0-9a-zA-Z_\-]+){1}$ /index.php?{6}controller=MPosts&method=Post&post=${9} [L]
     RewriteCond %{QUERY_STRING} (.*)
-    RewriteRule ^{5}posts(/([0-9a-zA-Z_\-]*){1})?$ /index.php?{6}controller=MPosts&method=Category&category=${10}&%1 [L]
+    RewriteRule ^{5}posts(/([0-9a-zA-Z_\-]*))?{1}$ /index.php?{6}controller=MPosts&method=Category&category=${10}&%1 [L]
     
     #MUsers
     RewriteRule ^{5}user/registration{1}$ /index.php?{6}controller=MUsers&method=Registration [L]
