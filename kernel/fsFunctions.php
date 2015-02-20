@@ -46,6 +46,27 @@ class fsFunctions
   }
   
   /**
+    * Start process of string downloading 
+    * @since 1.0.0
+    * @api    
+    * @param string $string Text for downloading.
+    * @param string $fileName (optional) File name for downloading. Default <b>download.txt</b>.
+    * @return void.  
+    */
+  public static function StartDownloadString($string, $fileName = '') 
+  {
+    if (ob_get_level()) {
+      ob_end_clean();
+    }
+    if($fileName === '') {
+        $fileName = 'download.txt';
+    }
+    header('Content-type: text/plain');
+    header('Content-Disposition: attachment; filename='.$fileName);
+    die($string);
+  }
+  
+  /**
     * Send GET request 
     * @since 1.0.0
     * @api    

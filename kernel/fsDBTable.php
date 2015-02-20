@@ -13,6 +13,9 @@
  */  
 class fsDBTable
 {
+  /** @var boolean Can not have primary key */
+  protected $_noPrimaryKey = false;
+  
   /** @var integer Table columns count */
   protected $_columnsCount = 0;
   
@@ -36,6 +39,17 @@ class fsDBTable
   
   /** @var array Foreign keys */
   private   $_join         = array();
+  
+  
+  /**
+  * Init function for overriding.   
+  * @api
+  * @since 1.1.0
+  * @return void.      
+  */
+  protected function _Init()
+  {
+  }
   
   /**
   * Conver array of where clause to string.   
@@ -710,6 +724,7 @@ class fsDBTable
   */
   public function __construct($tableName = false, $fromCache = true, $createCache = true)
   {
+    $this->_Init();
     $className = fsConfig::GetInstance('db_prefix').(!$tableName ? get_class($this) : $tableName);
     if ($fromCache && class_exists('_struct_'.$className)) {
       $className_ceche = '_struct_'.$className; 
@@ -798,7 +813,9 @@ class fsDBTable
         $this->$inlowercase = false;
     }
     if (!isset($structConfig['key'])) {
-      user_error('Table "PRI" key not found: '.get_class($this));
+      if(!$this->_noPrimaryKey) {
+        user_error('Table "PRI" key not found: '.get_class($this));
+      }
       $structConfig['key'] = array('Value' => '', 'ReadOnly' => true);
     }
     $this->_columnsCount = count($this->_columns);

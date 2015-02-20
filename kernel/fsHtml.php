@@ -29,11 +29,22 @@ class fsHtml
       if(!isset($htmlAttributes['id'])) {
         $htmlAttributes['id'] = $name;
       }
-      return fsFunctions::StringFormat('<input type="{0}"{1} value="{2}"{3}/>', array(
+      $prefix = $suffix = '';
+      if(isset($htmlAttributes['prefix'])) {
+        $prefix = '<label>'.$htmlAttributes['prefix'].'</label>';
+        unset($htmlAttributes['prefix']);
+      }
+      if(isset($htmlAttributes['suffix'])) {
+        $suffix = $htmlAttributes['suffix'];
+        unset($htmlAttributes['suffix']);
+      }
+      return fsFunctions::StringFormat('{4}<input type="{0}"{1} value="{2}"{3}/>{5}', array(
         $type,
         $name === false ? ' ' : ' name="'.$name.'"',
         $value,
-        self::_HtmlAttributesToString($htmlAttributes)     
+        self::_HtmlAttributesToString($htmlAttributes),
+        $prefix,
+        $suffix     
       ));
     }
   
@@ -169,10 +180,21 @@ class fsHtml
       if(!isset($htmlAttributes['id'])) {
         $htmlAttributes['id'] = $name;
       }
-      return fsFunctions::StringFormat('<textarea name="{0}"{2}>{1}</textarea>', array(
+      $prefix = $suffix = '';
+      if(isset($htmlAttributes['prefix'])) {
+        $prefix = '<label>'.$htmlAttributes['prefix'].'</label>';
+        unset($htmlAttributes['prefix']);
+      }
+      if(isset($htmlAttributes['suffix'])) {
+        $suffix = $htmlAttributes['suffix'];
+        unset($htmlAttributes['suffix']);
+      }
+      return fsFunctions::StringFormat('{3}<textarea name="{0}"{2}>{1}</textarea>{4}', array(
         $name,
         $value,
-        self::_HtmlAttributesToString($htmlAttributes)
+        self::_HtmlAttributesToString($htmlAttributes),
+        $prefix,
+        $suffix
       ));
     }
 
@@ -212,10 +234,21 @@ class fsHtml
       if(!isset($htmlAttributes['id'])) {
         $htmlAttributes['id'] = $name;
       }
-      return fsFunctions::StringFormat('<select name="{0}"{2}>{1}</select>', array(
+      $prefix = $suffix = '';
+      if(isset($htmlAttributes['prefix'])) {
+        $prefix = '<label>'.$htmlAttributes['prefix'].'</label>';
+        unset($htmlAttributes['prefix']);
+      }
+      if(isset($htmlAttributes['suffix'])) {
+        $suffix = $htmlAttributes['suffix'];
+        unset($htmlAttributes['suffix']);
+      }
+      return fsFunctions::StringFormat('{3}<select name="{0}"{2}>{1}</select>{4}', array(
         $name,
         $options,
         self::_HtmlAttributesToString($htmlAttributes),
+        $prefix,
+        $suffix
       ));
     }
 

@@ -8,3 +8,4 @@ includes/js/initFsCMS.js
 settings/Settings.php
 settings/dbSettings.php
 temp/
+cache/

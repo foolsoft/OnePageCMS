@@ -60,8 +60,7 @@ if (!file_exists(PATH_JS.'initFsCMS.js')) {
   $fw->Write('URL_IMG="{0}",', array(URL_IMG));
   $fw->Write('URL_JS="{0}",', array(URL_JS));
   $fw->Write('URL_CSS="{0}",', array(URL_CSS));
-  $fw->Write('URL_SUFFIX="{0}",', array(fsConfig::GetInstance('links_suffix')));
-  $fw->Write('LANGUAGE="{0}";', array(fsSession::GetInstance('Language')));
+  $fw->Write('URL_SUFFIX="{0}";', array(fsConfig::GetInstance('links_suffix')));
   $fw->Close();
 }  
   

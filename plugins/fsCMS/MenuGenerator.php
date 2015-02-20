@@ -4,68 +4,69 @@
  */
 class MenuGenerator 
 {
-    private static function _GenerateULMenu($LinkPrefix, $Menu, $Class, $Level = 1)
+    private static function _GenerateULMenu($linkPrefix, $menu, $class, $level = 1)
     {
-      $html = '<ul id="menu-level-'.$Level.'" class="'.$Class.' '.$Class.'-level-'.$Level.'">';
-      foreach ($Menu as $Id => $Array) {
-        $html .= "<li class='".$Class."-item ".$Class."-item-level-".$Level."' >";
-        $html .= fsHtml::Link($LinkPrefix.$Array['href'], T($Array['title']));
-        if (count($Array['child']) > 0)
-          $html .= self::_GenerateULMenu($LinkPrefix, $Array['child'], $Class, $Level + 1);
+      $html = '<ul id="menu-level-'.$level.'" class="'.$class.' '.$class.'-level-'.$level.'">';
+      foreach ($menu as $array) {
+        $html .= "<li class='".$class."-item ".$class."-item-level-".$level."'>";
+        $html .= fsHtml::Link($linkPrefix.$array['href'], T($array['title']));
+        if (count($array['child']) > 0) {
+          $html .= self::_GenerateULMenu($linkPrefix, $array['child'], $class, $level + 1);
+        }
         $html .= '</li>';
       }
       return $html.'</ul>';
     }
 
-    private static function _FindMenuLevel(&$Menu, $row, $IdToFind, $IdToInsert, $Title, $Alt, $additionalFields = array())
+    private static function _FindMenuLevel(&$menu, $row, $idToFind, $idToInsert, $title, $alt, $additionalFields = array())
     {
       $finded = 0;
-      if (isset($Menu[$IdToFind])) {
-        $Menu[$IdToFind]['child'][$IdToInsert] = array('href' => $Alt, 'title' => $Title, 'child' => array());
+      if (isset($menu[$idToFind])) {
+        $menu[$idToFind]['child'][$idToInsert] = array('href' => $alt, 'title' => $title, 'child' => array());
         if(count($additionalFields) > 0) {
-          $Menu[$IdToFind]['child'][$IdToInsert]['additional'] = array();
+          $menu[$idToFind]['child'][$idToInsert]['additional'] = array();
           foreach($additionalFields as $a) {
-              $Menu[$IdToFind]['child'][$IdToInsert]['additional'][$a] = $row->$a;
+              $menu[$idToFind]['child'][$idToInsert]['additional'][$a] = $row->$a;
           }
         }
         ++$finded;
       }
-      foreach ($Menu as $Id => &$Array) {
-        $finded += self::_FindMenuLevel($Array['child'], $row, $IdToFind, $IdToInsert, $Title, $Alt, $additionalFields);
+      foreach ($menu as &$array) {
+        $finded += self::_FindMenuLevel($array['child'], $row, $idToFind, $idToInsert, $title, $alt, $additionalFields);
       }
       return $finded;
     }
 
-    public static function GetArray($LinkPrefix, $Table, $FieldToParent = false, $Class = 'menu', $FieldToKey = 'id', $FieldToLink = 'alt', $FieldToTitle = 'title', $Order = array('order'), $Where = "`in_menu` = '1' AND `active` = '1'", $additionalFields = array()) 
+    public static function GetArray($linkPrefix, $table, $fieldToParent = '', $class = 'menu', $fieldToKey = 'id', $fieldToLink = 'alt', $fieldToTitle = 'title', $order = array('order'), $where = "`in_menu` = '1' AND `active` = '1'", $additionalFields = array()) 
     {
-      $Page = new fsDBTable($Table, false, false);
-      if ($FieldToParent) {
-        array_unshift($Order, $FieldToParent);
+      $page = new fsDBTable($table, false, false);
+      if ($fieldToParent) {
+        array_unshift($order, $fieldToParent);
       } 
-      $Page->Select()->Order($Order)->Where($Where)->Execute('', false);
-      $MenuArray = array();
+      $page->Select()->Order($order)->Where($where)->Execute('', false);
+      $menuArray = array();
       $af = count($additionalFields) > 0;
-      while($Page->Next()) {
+      while($page->Next()) {
         $parent = ''; $finded = 0;
-        if ($FieldToParent) {
-          $Parent = $Page->result->$FieldToParent;
+        if ($fieldToParent != '') {
+          $parent = $page->result->$fieldToParent;
         }
-        if (empty($Parent) || $Parent === 0) {
-          $MenuArray[$Page->result->$FieldToKey] = array('href' => $Page->result->$FieldToLink, 'title' => $Page->result->$FieldToTitle, 'child' => array());
+        if ($parent === '' || $parent === 0) {
+          $menuArray[$page->result->$fieldToKey] = array('href' => $page->result->$fieldToLink, 'title' => $page->result->$fieldToTitle, 'child' => array());
         } else {
-          $finded = self::_FindMenuLevel($MenuArray, $Page->result, $Parent, $Page->result->$FieldToKey, $Page->result->$FieldToTitle, $Page->result->$FieldToLink, $additionalFields);
+          $finded = self::_FindMenuLevel($menuArray, $page->result, $parent, $page->result->$fieldToKey, $page->result->$fieldToTitle, $page->result->$fieldToLink, $additionalFields);
           if ($finded == 0) {
-            $MenuArray[$Page->result->$FieldToKey] = array('href' => $Page->result->$FieldToLink, 'title' => $Page->result->$FieldToTitle, 'child' => array());
+            $menuArray[$page->result->$fieldToKey] = array('href' => $page->result->$fieldToLink, 'title' => $page->result->$fieldToTitle, 'child' => array());
           }
         }
         if($finded == 0) {
-          $MenuArray[$Page->result->$FieldToKey]['additional'] = array();
+          $menuArray[$page->result->$fieldToKey]['additional'] = array();
           foreach($additionalFields as $a) {
-              $MenuArray[$Page->result->$FieldToKey]['additional'][$a] = $Page->result->$a;
+              $menuArray[$page->result->$fieldToKey]['additional'][$a] = $page->result->$a;
           }
         }
       }
-      return $MenuArray;
+      return $menuArray;
     }
 
     public static function Get($linkPrefix,

@@ -54,7 +54,10 @@ class fsHtaccess
       }
       $f = new fsFileWorker(PATH_ROOT.'.htaccess', 'w+');
       $f->Write('
-  php_flag magic_quotes_gpc off 
+  #php_flag magic_quotes_gpc off 
+  #php_flag display_startup_errors on
+  #php_flag display_errors on
+  #php_flag html_errors on
 
   Options All -Indexes
 

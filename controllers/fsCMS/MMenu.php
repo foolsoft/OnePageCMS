@@ -78,8 +78,8 @@ class MMenu extends cmsController
                                    'href',
                                    'title',
                                    array('order'),
-                                   '`menu_name` = "'.$param->name.'" AND `parent` = "'.$this->Tag('parent').'"'
-                                   );
+                                   '`menu_name` = "'.$param->name.'" AND `parent` = "'.$this->Tag('parent').'"',
+                                   array('parent'));
     if (count($arr) == 0) {
       return '';
     }

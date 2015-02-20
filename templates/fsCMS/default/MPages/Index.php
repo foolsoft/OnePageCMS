@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><?php echo isset($page['title']) ? $page['title'] : $tag->title; ?> - <?php echo $tag->constants->title; ?></title>
+  <title><?php echo isset($page['title']) ? $page['title'] : $tag->title; ?> - <?php echo strip_tags($tag->constants->title); ?></title>
   <meta name="keywords" content="<?php echo isset($page['meta_keywords']) ? $page['meta_keywords'] : $tag->meta_keywords; ?>">
   <meta name="description" content="<?php echo isset($page['meta_description']) ? $page['meta_description'] : $tag->meta_description; ?>">
   <?php 
