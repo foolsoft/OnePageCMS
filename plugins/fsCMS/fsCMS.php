@@ -55,10 +55,9 @@ class cmsController extends fsController
   
   /*
    * Action when request is denied.
-   * @param fsStruct $request User request.
-   * @return mixed Developer value. 
+   * @return mixed Developer value.
    */
-  public function OnDenied($request)
+  public function OnDenied()
   {
     $this->Message(T('XMLcms_denied'));
     $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('denied_page')));
