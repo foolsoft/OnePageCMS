@@ -3,6 +3,7 @@
  * Initialize fsKernel 
  */
 header('Content-type: text/html; charset=utf-8');
+session_set_cookie_params(null, null, null, null, true); // httponly
 session_start();
 $_REQUEST['includeBody'] = '';
 $_REQUEST['includeHead'] = ''; 
