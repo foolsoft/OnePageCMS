@@ -18,6 +18,103 @@ class fsFunctions
   }
   
   /**
+    * Return russian string from number.    
+    * @since 1.1.0
+    * @api    
+    * @param float $number Number for convert.
+    * @return string Result of conversion.  
+    */
+  public static function StringFromNumber($number)
+  { 
+      if(!is_numeric($number)) {
+        return $number;
+      }
+      $number = explode('.', str_replace(',', '.', $number));
+      if(count($number) > 2) {
+        return '';
+      }
+      $num = $number[0];
+      $m = array(
+          array('ноль'),
+          array('-','один','два','три','четыре','пять','шесть','семь','восемь','девять'),
+          array('десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'),
+          array('-','-','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'),
+          array('-','сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот'),
+          array('-','одна','две')
+      );
+
+      $r = array(
+          array('...ллион','','а','ов'), 
+          array('тысяч','а','и',''),
+          array('миллион','','а','ов'),
+          array('миллиард','','а','ов'),
+          array('триллион','','а','ов'),
+          array('квадриллион','','а','ов'),
+          array('квинтиллион','','а','ов')
+          // ,array(... список можно продолжить
+      );
+
+      if($num==0) {
+        return $m[0][0];
+      }
+      $o = array(); 
+
+      foreach(array_reverse(str_split(str_pad($num, ceil(strlen($num) / 3) * 3, '0', STR_PAD_LEFT), 3)) as $k => $p) {
+          $o[$k] = array();
+          foreach($n = str_split($p) as $kk => $pp) {
+              if(!$pp) {
+                continue;
+              } else {
+                  switch($kk) {
+                      case 0:
+                        $o[$k][] = $m[4][$pp];
+                        break;
+                        
+                      case 1:
+                        if($pp==1) { 
+                            $o[$k][] = $m[2][$n[2]];
+                            break 2;
+                        } else { 
+                            $o[$k][] = $m[3][$pp];
+                            break;
+                        }
+                        
+                      case 2:
+                        if(($k==1)&&($pp<=2)) {
+                            $o[$k][] = $m[5][$pp];
+                        } else { 
+                            $o[$k][] = $m[1][$pp];
+                        }
+                        break;
+                  }
+                  $p*=1;
+                  if(!$r[$k]) {
+                    $r[$k] = reset($r);
+                  }
+            }
+        }
+
+        if($p && $k) {
+            switch(true) {
+                case preg_match("/^[1]$|^\\d*[0,2-9][1]$/", $p):
+                    $o[$k][] = $r[$k][0].$r[$k][1];
+                    break;
+                    
+                case preg_match("/^[2-4]$|\\d*[0,2-9][2-4]$/",$p):
+                    $o[$k][] = $r[$k][0].$r[$k][2];
+                    break;
+                    
+                default:
+                    $o[$k][] = $r[$k][0].$r[$k][3];
+                    break;
+            }
+        }
+        $o[$k] = implode(' ', $o[$k]);
+    }
+    return implode(' ', array_reverse($o)).(count($number) == 2 ? ' '.$number[1] : '');
+  }
+  
+  /**
     * Start process of file downloading 
     * @since 1.0.0
     * @api    
