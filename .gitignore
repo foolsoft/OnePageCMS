@@ -1,5 +1,4 @@
-includes/img/fsCMS/default/Thumbs.db
-includes/img/fsCMSAdmin/default/Thumbs.db
+**/Thumbs.db
 /nbproject/private/
 nbproject/project.properties
 nbproject/project.xml
