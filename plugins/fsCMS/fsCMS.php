@@ -159,7 +159,7 @@ class cmsController extends fsController
         }
         if($denied) {
             $this->_accessDenied = true;
-            $this->OnDenied();
+            $this->OnDenied($request);
         }
         parent::Init($request);
     }
