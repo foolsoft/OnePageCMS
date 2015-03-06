@@ -20,7 +20,7 @@ class fsController
   /** @var fsDBTableExtension|object|null Instance of MySQL table as controller model or fsDBTableExtension object or null if $_tableName is empty */
   protected $_table     = null; 
   
-  /* var boolean Flag for denied action. Default <b>false</b>. */
+  /** @var boolean Flag for denied action. Default <b>false</b>. */
   protected $_accessDenied = false;
   
   /**

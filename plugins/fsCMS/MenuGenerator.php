@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Class for menu generation
  */
 class MenuGenerator 

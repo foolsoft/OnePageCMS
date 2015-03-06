@@ -1,5 +1,6 @@
 <?php
-/* Translate function
+/**
+ * Translate function
  * @package fsKernel
  * @param string $data Text or XML constant name for translate.
  * @param boolean $show (optional) Flag for auto echo. Default <b>false</b>.
@@ -39,7 +40,8 @@ function T($data, $show = false)
   return $return; 
 }
 
-/* Translate function with auto echo
+/**
+ * Translate function with auto echo
  * @package fsKernel
  * @param string $data Text or XML constant name for translate.
  */
