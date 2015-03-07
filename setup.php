@@ -229,7 +229,9 @@ if ($_POST) {
         `href` varchar(500) NOT NULL,
         `parent` int(11) NOT NULL,
         `order` int(11) NOT NULL,
-        PRIMARY KEY (`id`)
+        PRIMARY KEY (`id`),
+        KEY `parent` (`parent`),
+        KEY `order` (`order`)
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
     ");
     
