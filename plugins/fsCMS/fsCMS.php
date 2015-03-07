@@ -1,11 +1,11 @@
 <?php
-/*
+/**
 * Page navigation class.
 * @package fsCMS
 */
 class Paginator 
 {
-   /*
+   /**
    * Get page navigation line.
    * @param string $link Base url.
    * @param string $param Page GET parameter.
@@ -43,17 +43,17 @@ class Paginator
     }
 }
 
-/*
+/**
  * fsCMS base class.
  */
 class cmsController extends fsController 
 {
-  /* var boolean Flag for auto loading controller settings from database. */
+  /** @var boolean Flag for auto loading controller settings from database. */
   protected $_autoLoadSettings = true;
-  /* var fsStruct Controller settings. */
+  /** @var fsStruct Controller settings. */
   public    $settings = null;
   
-  /*
+  /**
    * Action when request is denied.
    * @param fsStruct $request User request.
    * @return mixed Developer value. 
@@ -65,7 +65,7 @@ class cmsController extends fsController
     return '';  
   }
   
-  /*
+  /**
   * Get full path for template folder.
   * @param string $folder Needed template folder.
   * @return string Template path. 
@@ -86,7 +86,7 @@ class cmsController extends fsController
   }
   
   
-    /*
+    /**
     * Generate page HTML code.
     * @param array $params (optional) Additional variables. Default <b>empty array</b>.
     * @param string $template (optional) Template name. If empty get default template using controller and method name. Default <b>empty string</b>.    
@@ -129,7 +129,7 @@ class cmsController extends fsController
     return new fsStruct($config);
   }
   
-    /*
+    /**
     * Action before main conroller action.
     * @param fsStruct $request User request.
     * @return void 
@@ -190,12 +190,12 @@ class cmsController extends fsController
     }
 }
 
-/*
+/**
  * fsCMS base class with auth.
  */
 class cmsNeedAuthController extends cmsController
 {
-    /*
+    /**
     * Action before main conroller action.
     * @param fsStruct $request User request.
     * @return void 

@@ -440,7 +440,7 @@ class JsMinifier
   */
   protected function lock($js)
   {
-  /* lock things like <code>"asd" + ++x;</code> */
+  /** @lock things like <code>"asd" + ++x;</code> */
   $lock = '"LOCK---' . crc32(time()) . '"';
   $matches = array();
   preg_match('/([+-])(\s+)([+-])/', $js, $matches);

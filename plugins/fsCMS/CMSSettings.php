@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * fsCMS settings structure
  */
 class CMSSettings implements iSingleton

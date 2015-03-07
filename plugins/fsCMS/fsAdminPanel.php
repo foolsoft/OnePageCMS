@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * fsCMS Administrator panel base class
  */
 class AdminPanel extends cmsController
@@ -9,7 +9,7 @@ class AdminPanel extends cmsController
         return parent::CreateView($params, $template, $show, is_null($adminMode) ? true : $adminMode);
     }
 
-    /*
+    /**
     * Get full path for template folder.
     * @param string $folder Needed template folder.
     * @return string Template path. 
@@ -26,7 +26,7 @@ class AdminPanel extends cmsController
         return fsFunctions::Slash($path);
     }
   
-    /*
+    /**
     * Call controller method.
     * @param fsStruct $param Request data.
     * @param string $method Method name for call.
@@ -47,7 +47,7 @@ class AdminPanel extends cmsController
         }
     }
 
-    /*
+    /**
     * Set redirect response.
     * @param string $method (optional) Controller method for redirection. If empty redirect to request referer. Default <b>empty string</b>.
     * @return void 
@@ -74,7 +74,7 @@ class AdminPanel extends cmsController
         return $this->CreateView(array('menu' => $menu), $this->_Template('Sidebar', 'AdminPanel'));
     }
     
-    /*
+    /**
     * Get dictionary data.
     * @param fsStruct $param User request.
     * @return void 
@@ -97,8 +97,8 @@ class AdminPanel extends cmsController
           $this->EmptyResult(true);
         }
     } 
-  
-    /*
+
+    /**
     * Call block of Edit functions.
     * @param fsStruct $param User request.
     * @return void 
@@ -112,7 +112,7 @@ class AdminPanel extends cmsController
         $this->_Do($param, $param->call, 'Edit');
     }
   
-    /*
+    /**
     * Action before main conroller action.
     * @param fsStruct $request User request.
     * @return void 
@@ -150,7 +150,7 @@ class AdminPanel extends cmsController
         parent::Init($request);
     }
  
-    /*
+    /**
     * Template redactor save action.
     * @param fsStruct $param User request.
     * @return void 
@@ -186,7 +186,7 @@ class AdminPanel extends cmsController
         $this->Html(T('XMLcms_updated'));
     }
   
-    /*
+    /**
     * Template redactor action.
     * @param fsStruct $param User request.
     * @return void 
@@ -266,7 +266,7 @@ class AdminPanel extends cmsController
         }
     }
   
-    /*
+    /**
     * Clear cache action.
     * @param fsStruct $param User request.
     * @return void 
@@ -279,7 +279,7 @@ class AdminPanel extends cmsController
         fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');
     }
   
-    /*
+    /**
     * Send message to support.
     * @param fsStruct $param User request.
     * @return void 
@@ -298,7 +298,7 @@ class AdminPanel extends cmsController
         }
     }
   
-    /*
+    /**
     * Lock/Unlock site action.
     * @param fsStruct $param User request.
     * @return void 
@@ -321,7 +321,7 @@ class AdminPanel extends cmsController
             ), true);
     } 
   
-    /*
+    /**
     * Default activate action.
     * @param fsStruct $param User request.
     * @return boolean Result of action 
@@ -337,7 +337,7 @@ class AdminPanel extends cmsController
         return $this->actionUpdateField($param);
     }
     
-    /*
+    /**
     * Default deactivate action.
     * @param fsStruct $param User request.
     * @return boolean Result of action
@@ -353,7 +353,7 @@ class AdminPanel extends cmsController
         return $this->actionUpdateField($param);
     }
     
-    /*
+    /**
     * Default table one field change action.
     * @param fsStruct $param User request.
     * @return boolean Result of action 
@@ -389,7 +389,7 @@ class AdminPanel extends cmsController
         return false;
     }
   
-    /*
+    /**
     * Default multiple action.
     * @param fsStruct $param User request.
     * @return boolean Result of action 
@@ -414,7 +414,7 @@ class AdminPanel extends cmsController
         }
     }
  
-    /*
+    /**
     * Default delete action.
     * @param fsStruct $param User request.
     * @return void 
@@ -480,7 +480,7 @@ class AdminPanel extends cmsController
         return $return;
     }
   
-    /*
+    /**
     * Default add action.
     * @param fsStruct $param User request.
     * @return integer Last inserted id. 
@@ -513,7 +513,7 @@ class AdminPanel extends cmsController
         return $return;
     }
   
-    /*
+    /**
     * Default edit action.
     * @param fsStruct $param User request.
     * @return integer Action status 
@@ -565,7 +565,7 @@ class AdminPanel extends cmsController
         return $return;
     }
 
-    /*
+    /**
     * Get html options list of templates.
     * @param fsStruct $param User request.
     * @return void 
@@ -595,7 +595,7 @@ class AdminPanel extends cmsController
         return $html;
     }
 
-    /*
+    /**
     * Main page.
     * @param fsStruct $param User request.
     * @return void 
@@ -604,7 +604,7 @@ class AdminPanel extends cmsController
     {
     }
 
-    /*
+    /**
     * Config page.
     * @param fsStruct $param User request.
     * @return void 
@@ -644,7 +644,7 @@ class AdminPanel extends cmsController
         $this->Tag('start_pages', $start_pages);
     }
   
-    /*
+    /**
     * Default save config action.
     * @param fsStruct $param User request.
     * @return void 
