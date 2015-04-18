@@ -55,6 +55,36 @@ class fsDBTable
   }
   
   /**
+  * Get table columns
+  * @api
+  * @since 1.1.0
+  * @return array Columns of table.      
+  */
+  public function GetColumns()
+  {
+    return $this->_columns;
+  }
+  
+  /**
+  * Create table row as array
+  * @api
+  * @since 1.1.0
+  * @param $valuesArray (optional) Values of specific columns. Default <b>empty array</b>.
+  * @return array Table row as array.      
+  */
+  public function CreateRow($valuesArray = array())
+  {
+    if(!is_array($valuesArray)) {
+        $valuesArray = array();
+    }
+    $result = array();
+    foreach($this->_columns as $column) {
+        $result[$column] = isset($valuesArray[$column]) ? $valuesArray[$column] : '';
+    }
+    return $result;
+  }
+  
+  /**
   * Add query inside stack
   * @api
   * @since 1.1.0

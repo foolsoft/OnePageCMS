@@ -23,14 +23,10 @@ echo fsHtml::Link($myLink.'Add', T('XMLcms_text_add_conts'), false, array('class
       <div class='admin-action-td'>
         <a href='<?php echo $myLink; ?>Edit/key/<?php echo $name; ?>/'
            title='<?php echo $textEdit; ?>'
-           class='admin-btn-small admin-btn-edit'
-        >
-        </a>   
+           class='admin-btn-small admin-btn-edit'></a>   
         <a href='<?php echo $myLink; ?>Delete/key/<?php echo $name; ?>/'
            title='<?php echo $textDelete; ?>'
-           class='admin-btn-small admin-btn-delete'
-        >
-        </a>   
+           class='admin-btn-small admin-btn-delete'></a>   
         <div class='clr'></div>
       </div>
     </td>
