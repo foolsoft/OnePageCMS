@@ -13,7 +13,7 @@
     <input class='input-100' id='name' type='text' name='name' onkeyup='fsCMS.Chpu(this.value, this.id);' />
   </p>
   <p class='title'>
-    <?php _T('XMLcms_text_default_template'); ?>:
+    <?php _T('XMLcms_text_template'); ?>:
     <select class='select-small' name='tpl'>    
     <?php
     foreach ($tag->templates as $template) {

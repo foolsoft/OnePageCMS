@@ -3,6 +3,12 @@
 [block-content]
 <?php echo fsHtml::Link($myLink.'Add', T('XMLcms_text_add_page'), false, array('class' => 'fsCMS-btn admin-btn-add')); ?>
 <hr />
+<form action="" method="get">
+    <?php _T('XMLcms_text_search'); ?>: 
+    <input type="text" name="title" value="<?php echo $tag->search; ?>" />
+    <input type="submit" value="<?php _T('XMLcms_apply'); ?>" />
+</form>
+<hr />
 <table class="list-table">
   <tr>
     <th>№</th>
@@ -35,5 +41,8 @@
     </td>
   </tr>
   <?php } ?>
-</table>  
+</table> 
+<?php if($tag->pagesNavigation != '') {
+    echo '<hr />'.$tag->pagesNavigation;
+} ?>
 [endblock-content]

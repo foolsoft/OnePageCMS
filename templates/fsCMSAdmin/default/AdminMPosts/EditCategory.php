@@ -3,80 +3,43 @@
 [block-content]
 <?php echo fsHtml::Link($myLink.'Categories', T('XMLcms_back'), false, array('class' => 'fsCMS-btn admin-btn-back')); ?>
 <hr />
-<form action="<?php echo $myLink; ?>DoEdit/key/<?php echo $tag->category->id; ?>/call/Category/table/posts_category/" method='post'>
+<form action="<?php echo $myLink; ?>DoEditCategory/key/<?php echo $category['id']; ?>/table/posts_category/" method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_name'); ?>:<br />
-    <input class='input-100'
-           maxlength='100'
-           type='text'
-           value='<?php echo $tag->category->name; ?>'
-           name='name' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'title', $category['title'], array('maxlength' => 100)); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_link'); ?>:<br />
-    <input onkeyup="fsCMS.Chpu(this.value, this.id);"
-           id='alt'
-           class='input-100'
-           maxlength='100'
-           value='<?php echo $tag->category->alt; ?>'
-           type='text'
-           name='alt' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'alt', $category['alt'], array('onkeyup' => 'fsCMS.Chpu(this.value, this.id);', 'maxlength' => 100)); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_description'); ?>:<br />
-    <input class='input-100'
-           maxlength='500'
-           value='<?php echo $tag->category->meta_description; ?>'
-           type='text'
-           name='meta_description' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_description', $category['meta_description']); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_kw'); ?>:<br />
-    <input class='input-100'
-           maxlength='500'
-           value='<?php echo $tag->category->meta_keywords; ?>'
-           type='text'
-           name='meta_keywords' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords', $category['meta_keywords']); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_parent'); ?>:<br />
-    <?php echo fsHtml::Select('id_parent', $tag->parents, $tag->category->id_parent, array('class' => 'input-100')); ?>
+    <?php echo fsHtml::Select('id_parent', $tag->parents, $category['id_parent'], array('asis' => true, 'class' => 'input-100')); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_template'); ?>:
-    <select name='tpl' class='input-small'>
-    <?php foreach ($tag->templates as $template) { 
-      $selected = $template == $tag->category->tpl ? 'selected' : '';
-    ?>
-      <option <?php echo $selected; ?> value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php } ?>
-    </select> 
+    <?php echo fsHtml::Select('tpl', $tag->templates, $category['tpl']); ?>
   </p>
-  <br />
   <p class='title'>
     <?php _T('XMLcms_text_template_short'); ?>:
-    <select name='tpl_short' class='input-small'>
-    <?php foreach ($tag->templates_ps as $template) { 
-        $selected = $template == $tag->category->tpl_short ? 'selected' : '';            
-    ?>
-      <option <?php echo $selected; ?> value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php } ?>
-    </select> 
+    <?php echo fsHtml::Select('tpl_short', $tag->templates_pf, $category['tpl_short']); ?>
     <span class="space"></span>
     <?php _T('XMLcms_text_template'); ?>:
-    <select name='tpl_full' class='input-small'>
-    <?php foreach ($tag->templates_pf as $template) {
-        $selected = $template == $tag->category->tpl_full ? 'selected' : '';
-    ?>
-      <option <?php echo $selected; ?> value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php } ?>
-    </select> 
+    <?php echo fsHtml::Select('tpl_full', $tag->templates_pf, $category['tpl_full']); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_auth_needed'); ?>: 
-    <input type='checkbox' name='auth' <?php echo $tag->category->auth == 1 ? 'checked' : ''; ?> />
+    <input type='checkbox' name='auth' <?php echo $category['auth'] ? 'checked' : ''; ?> />
   </p>
   <hr /> 
-  <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_save'); ?>' />   
+  <input class="fsCMS-btn admin-btn-save" type="submit" value="<?php _T('XMLcms_save'); ?>" />   
 </form>
 [endblock-content]

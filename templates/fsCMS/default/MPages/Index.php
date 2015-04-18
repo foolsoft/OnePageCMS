@@ -97,6 +97,6 @@
   <div id="footer">
   	<p><?php echo $tag->constants->copy; ?></p>
   </div>
-  <?php echo fsInclude::GenerateCache(array('js')); ?>
+  <?php echo fsInclude::GenerateCache(array('js'), fsSession::GetInstance('Language')); ?>
 </body>
 </html>

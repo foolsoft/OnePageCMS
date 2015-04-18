@@ -8,3 +8,5 @@ settings/Settings.php
 settings/dbSettings.php
 temp/
 cache/
+
+update.php

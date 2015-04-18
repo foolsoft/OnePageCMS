@@ -122,6 +122,8 @@ class fsHtaccess
     #MUsers
     RewriteRule ^{5}user/registration{1}$ /index.php?{6}controller=MUsers&method=Registration [L]
     RewriteRule ^{5}user/auth{1}$ /index.php?{6}controller=MAuth&method=Auth [L]
+	RewriteRule ^{5}user/forgot{1}$ /index.php?{6}controller=MAuth&method=Forgot [L]
+	RewriteRule ^{5}user/account{1}$ /index.php?{6}controller=MUsersAccount&method=Hello [L]
 
     #fsKernel
     RewriteRule ^language/([a-zA-Z\-]+)$ /index.php?method=Language&name=$1 [L]

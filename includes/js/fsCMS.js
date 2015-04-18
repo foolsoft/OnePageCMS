@@ -4,12 +4,12 @@ var fsCMS = {
     var autoId = 'fs-ajax-loader-spinner';
     Width = Width || 64;
     WhereId = WhereId || autoId;
-    if (WhereId == '' || WhereId == true) {
+    if (WhereId === '' || WhereId === true) {
       WhereId = autoId;
     } 
     var o = document.getElementById(WhereId);
-    var newObj = WhereId == autoId;
-    if (o == null) {
+    var newObj = WhereId === autoId;
+    if (o === null) {
       o = document.createElement('div');
       o.setAttribute('id', autoId);
       o.setAttribute('class', autoId);
@@ -25,14 +25,14 @@ var fsCMS = {
     switch (Action.toLowerCase()) {
       case 'on':
         var imgStyle = newObj ? "left:50%;top:50%;position:fixed;margin-left:-"+(Width/2)+"px;margin-top:-"+(Width/2)+"px;" : '';
-        o.innerHTML = "<img style='"+imgStyle+"' src='" + Image + "' alt='...' width='"+Width+"' title='...' border='0' />"
+        o.innerHTML = "<img style='"+imgStyle+"' src='" + Image + "' alt='...' width='"+Width+"' title='...' border='0' />";
         if (newObj) {
           o.style.display = 'block';
         }
         break;
       case 'off':
         o.innerHTML = '';
-        if (WhereId == autoId) {
+        if (WhereId === autoId) {
           o.style.display = 'none';
         }
         break;
@@ -40,26 +40,40 @@ var fsCMS = {
         break;
     }
   },
-  Ajax: function(Url, Method, StrData, ResultId, WaitAnimationId, WaitAnimationWidth, CallBack) {
+  Ajax: function(Url, Method, StrData, ResultId, WaitAnimationId, WaitAnimationWidth, CallBack, CallBackError, CallBackComplete) {
     if (ResultId) {
         ResultId = ResultId.split(',') || false;
     }
     WaitAnimationId = WaitAnimationId || false;
     WaitAnimationWidth = WaitAnimationWidth || false;
     CallBack = CallBack || false;
-    if (WaitAnimationId != false) {
+    CallBackComplete = CallBackComplete || false;
+    CallBackError = CallBackError || false;
+    if (WaitAnimationId !== false) {
       this.WaitAnimation('On', WaitAnimationId, WaitAnimationWidth);
     }
     $.ajax({
       url: Url, type: Method, data: StrData,
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+          if (typeof (CallBackError) === 'function') {
+              CallBackError(XMLHttpRequest, textStatus, errorThrown);
+          }
+      },
+      complete: function (jqXHR, status) {
+          if (typeof (CallBackComplete) === 'function') {
+              CallBackComplete(jqXHR, status);
+          }
+          if (WaitAnimationId !== false && (ResultId === false || ResultId.indexOf(WaitAnimationId) === -1)) {
+              fsCMS.WaitAnimation('Off', WaitAnimationId);
+          }
+      },
       success: function(answer) {
-          fsCMS.WaitAnimation('Off', WaitAnimationId);
           if (ResultId) {
             for(var i = 0; i < ResultId.length; ++i) {
               $("#"+ResultId[i]).html(answer);
             }
           }
-          if (typeof(CallBack) == 'function') {
+          if (typeof(CallBack) === 'function') {
             CallBack(answer);
           }
         }  
@@ -98,7 +112,7 @@ var fsCMS = {
     def = def || 0;
     intOnly = intOnly || false;
     positiveOnly = positiveOnly || false;
-    if (obj.value == '' || (obj.value == '-' && !positiveOnly)) {
+    if (obj.value === '' || (obj.value === '-' && !positiveOnly)) {
       return;
     }
     if (!$.isNumeric(obj.value) ||
@@ -108,14 +122,13 @@ var fsCMS = {
       obj.value = def;  
     }
     var prefix = '';
-    if (obj.value[0] == '-') {
+    if (obj.value[0] === '-') {
       prefix = '-';
       obj.value = obj.value.substr(1);
     }
-    while (obj.value.length > 1 && obj.value[0] == '0') {
+    while (obj.value.length > 1 && obj.value[0] === '0') {
       obj.value = obj.value.substr(1);  
     }    
     obj.value = prefix + obj.value;
   } 
-   
-}
+};

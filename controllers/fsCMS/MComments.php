@@ -127,11 +127,10 @@ class MComments extends cmsController
     if(!$param->Exists('group') || $param->group == '') {
       return $this->Json(array('Status' => 1, 'Text' => T('XMLcms_error_action')));
     }
-    $param->group = str_replace(' ', '-', $param->group);
+    
     $ip = fsFunctions::GetIp();
     $ips = fsFunctions::Explode("\n", $this->settings->block_ip, '');
     $users = fsFunctions::Explode("\n", $this->settings->block_users, '');
-    $param->text = strip_tags($param->text);
     
     if(AUTH) {
       $param->author_id = fsSession::GetArrInstance('AUTH', 'id');
@@ -152,8 +151,6 @@ class MComments extends cmsController
       return $this->Json(array('Status' => 4, 'Text' => T('XMLcms_comments_toshort')));
     }
     
-    $param->author_name = trim(strip_tags($param->author_name));
-
     if(!AUTH && '' == $param->author_name) {
       return $this->Json(array('Status' => 8, 'Text' => T('XMLcms_text_need_all_data')));
     }
@@ -175,7 +172,7 @@ class MComments extends cmsController
     
     if(0 < $this->_table->Add(
         $param->group, $param->author_id, $param->author_name, $param->text,
-        $param->parent, json_encode($commentFields), AUTH ? 1 : 0, $ip)) {
+        $param->parent, $commentFields, AUTH ? 1 : 0, $ip)) {
       $this->Json(array('Status' => 0, 'Text' => T('XMLcms_added')));  
     } else {
       $this->Json(array('Status' => 6, 'Text' => T('XMLcms_error_action')));

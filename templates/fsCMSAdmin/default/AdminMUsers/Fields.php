@@ -15,12 +15,14 @@ $textEdit = T('XMLcms_edit');
 <hr />
 <table class="list-table">
   <tr>
+    <th>Id</th>
     <th><?php _T('XMLcms_text_title'); ?></th>
     <th><?php _T('XMLcms_text_name'); ?></th>
     <th><?php _T('XMLcms_text_action'); ?></th>
   </tr>
   <?php foreach ($tag->fields as $field) { ?>
   <tr class='admin-row-active-1'>
+    <td><?php echo $field['id']; ?></td>
     <td><?php echo $field['title']; ?></td>
     <td>user_field[<?php echo $field['name']; ?>]</td>
     <td>
@@ -28,13 +30,10 @@ $textEdit = T('XMLcms_edit');
         <a href='<?php echo $myLink; ?>EditField/table/user_fields/key/<?php echo $field['id']; ?>/'
            title='<?php echo $textEdit; ?>'
            class='admin-btn-small admin-btn-edit'
-        >
-        </a>   
+        ></a>   
         <a href='<?php echo $myLink; ?>Delete/referer/Fields/table/user_fields/key/<?php echo $field['id']; ?>/'
            title='<?php echo $textDelete; ?>'
-           class='admin-btn-small admin-btn-delete'
-        >
-        </a>   
+           class='admin-btn-small admin-btn-delete'></a>   
       <div class='clr'></div>
       </div>
     </td>

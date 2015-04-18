@@ -174,7 +174,6 @@ class fsInclude implements iSingleton
     {
         self::GetInstance();
         $js = ''; $css = ''; $string = ''; 
-        $fileSuffix = empty($fileSuffix) ? '' : '_'.$fileSuffix;
         $minCssFile = '_minify'.$fileSuffix.'.css'; $minJsFile = '_minify'.$fileSuffix.'.js'; 
         if(count($types) == 0) {
             $types = array_keys(self::$obj);

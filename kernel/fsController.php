@@ -212,11 +212,9 @@ class fsController
         $valueToCheckResult = $valueToCheck; 
       }
       $result = $obj->IsUnique($valueToCheck, $fieldDb, $findedFieldValue);
-      if ($result !== true) {
-        if ($result === false || ('' !== $valueToCheckResult && $valueToCheckResult != $result)) {
+      if ($result !== true && ($result === false || ('' !== $valueToCheckResult && $valueToCheckResult != $result))) {
           $this->Message(T('XMLcms_unique_data_error'));
-        } 
-      }
+      } 
     }
     if ($this->Message() != '') {
       $this->_Referer();
@@ -378,9 +376,7 @@ class fsController
     if ($attr == 'response') {
       return $this->_response;
     }
-    throw new fsControllerException('Controller invalid field "'.$attr.'"');
+    throw new Exception('Controller invalid field "'.$attr.'"');
   }
   
 }
-
-class fsControllerException extends Exception {}

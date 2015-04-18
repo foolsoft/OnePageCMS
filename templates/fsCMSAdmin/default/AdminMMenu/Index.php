@@ -27,14 +27,14 @@ echo fsHtml::Link($myLink.'EditItems', T('XMLcms_text_menu_editor'), false, arra
   <div class='clr'>
 </h3>     
 <?php
-  echo MenuGenerator::Get('',
+  echo fsMenuGenerator::Get('',
                           'menu_items',
                           'parent',
                           'sample-menu',
                           'id',
                           'href',
                           'title',
-                          array('order'),
+                          array('position'),
                           '`menu_name` = "'.$menu['name'].'"'
       );
 ?>

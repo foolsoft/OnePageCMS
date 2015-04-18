@@ -21,18 +21,24 @@ class fsLanguage implements iSingleton
     {
       if (self::$obj == null) {
         $SYSTEM_LANGUAGE = fsConfig::GetInstance('system_language'); 
-        if(empty($SYSTEM_LANGUAGE)) {
-          return;
+        if($SYSTEM_LANGUAGE == '') {
+            return;
         }
+        $languages = new fsDBTableExtension('languages');
         if (!fsSession::Exists('Language')) {
-          fsSession::Create('Language', $SYSTEM_LANGUAGE);
+            fsSession::Create('Language', $SYSTEM_LANGUAGE);
+            fsSession::Create('LanguageId', $languages->GetField('id', $SYSTEM_LANGUAGE, 'name'));
         }
-        if(!empty($_REQUEST['language']) && $_REQUEST['language'] != fsSession::GetInstance('Language')) {
-          fsSession::Set('Language', $_REQUEST['language']);
-          fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');
+        if(isset($_REQUEST['language']) && $_REQUEST['language'] != '' && $_REQUEST['language'] != fsSession::GetInstance('Language')) {
+            $lang = $languages->GetOne($_REQUEST['language'], true, 'name'); 
+            if(count($lang) == 1 && $lang[0]['active'] == 1) {
+                fsSession::Set('Language', $_REQUEST['language']);
+                fsSession::Set('LanguageId', $lang[0]['id']);
+            }
         }
+        unset($languages);
         $DICTIONARY = array();
-        $DT = fsFunctions::DirectoryInfo(PATH_LANG, false, true, false);
+        $DT = fsFunctions::DirectoryInfo(PATH_LANG, false, true);
         $SYSTEM_DICTIONARY = array();
         $DCACHEFILE = PATH_CACHE.'_dictionary_'.$SYSTEM_LANGUAGE.'_'.fsSession::GetInstance('Language').'.php';
         $SDCACHEFILE = PATH_CACHE.'_dictionary_'.$SYSTEM_LANGUAGE.'.php';
@@ -56,7 +62,7 @@ class fsLanguage implements iSingleton
                  && $TD[2] == fsSession::GetInstance('Language');
             $XL = !$isXDCACHEFILE && $D == 'xml';
             if ($XL) { 
-              $arr = fsFunctions::DirectoryInfo($LP, true, false, false, array('xml'));
+              $arr = fsFunctions::DirectoryInfo($LP, true, false, array(), array('xml'));
               foreach ($arr['NAMES'] as $A) {
                 $xml = simplexml_load_file($LP.$A);   
                 $result = $xml->xpath('/dictionary/text');
@@ -75,7 +81,7 @@ class fsLanguage implements iSingleton
               } 
             }
             if ($SL || $L) {
-              $arr = fsFunctions::DirectoryInfo($LP, true, false, false, array('php'));
+              $arr = fsFunctions::DirectoryInfo($LP, true, false, array(), array('php'));
               foreach ($arr['NAMES'] as $A) {
                 include $LP.$A; 
                 if ($SL) {

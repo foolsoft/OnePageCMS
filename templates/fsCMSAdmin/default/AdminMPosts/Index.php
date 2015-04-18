@@ -11,13 +11,13 @@
   <div class='clr'></div>
 </div>
 <hr />
-<?php _T('XMLcms_text_category'); ?>: 
+<?php _T('XMLcms_text_category'); ?>:
 <select name="category" onchange="LoadPostsTable(this.value);">
 <?php foreach ($tag->categories as $category) {
   $selcted = ALL_TYPES == $category['id'] ? 'selected' : ''; 
 ?>
   <option <?php echo $selcted; ?> value="<?php echo $category['id']; ?>">
-    <?php echo PostsFunctions::GetFullCategoryName($tag->categories, $category); ?>
+    <?php echo FunctionsPosts::GetFullCategoryName($tag->categories, $category); ?>
   </option>
 <?php } ?>
   <option value="-1"><?php _T('XMLcms_text_nocategory'); ?></option>

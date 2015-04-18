@@ -24,7 +24,7 @@ $textEdit = T('XMLcms_edit');
     if ($category['id'] == ALL_TYPES) {
       continue;
     }
-    $name = PostsFunctions::GetFullCategoryName($tag->categories, $category);  
+    $name = FunctionsPosts::GetFullCategoryName($tag->categories, $category);  
   ?>
   <tr>
     <td><?php echo $category['id']; ?></td>

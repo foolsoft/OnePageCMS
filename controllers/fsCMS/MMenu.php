@@ -1,13 +1,12 @@
 <?php
 class MMenu extends cmsController
 {
-  private $_cache_file = '_menu.html'; 
-  protected $_tableName = 'menu';
+    protected $_tableName = 'menu';
 
-  private function _CacheFile($name, $level = 1, $parent = 0)
-  {
-    return '_'.fsSession::GetInstance('Language').'_'.$name.'_'.$parent.$level.$this->_cache_file;
-  }
+    private function _CacheFile($name, $level = 1, $parent = 0)
+    {
+        return FunctionsMenus::$CACHE_PREFIX.'_'.$name.'_'.fsSession::GetInstance('Language').'_'.$parent.$level.'.html';
+    }
 
   private function _TagInit($param)
   {
@@ -70,16 +69,14 @@ class MMenu extends cmsController
     if ($template == '') {
       $template = $this->settings->default_template;
     }
-    $arr = MenuGenerator::GetArray('',
-                                   'menu_items',
+    $arr = fsMenuGenerator::GetArray('menu_items',
                                    'parent',
-                                   'sample-menu',
                                    'id',
                                    'href',
                                    'title',
-                                   array('order'),
+                                   array('position'),
                                    '`menu_name` = "'.$param->name.'" AND `parent` = "'.$this->Tag('parent').'"',
-                                   array('parent'));
+                                   array('parent', 'target'));
     if (count($arr) == 0) {
       return '';
     }

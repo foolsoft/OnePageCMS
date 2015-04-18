@@ -2,28 +2,28 @@
 
 [block-content]
 <?php
-$postDate = explode(' ', $tag->post->date);
+$postDate = explode(' ', $post['date']);
 $postTime = $postDate[1];
 $postDate = $postDate[0];
 ?>
 <?php echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fsCMS-btn admin-btn-back')); ?>
 <hr /> 
-<form action="<?php echo $myLink; ?>DoEdit/key/<?php echo $tag->post->id; ?>/call/Post/" method='post'>
+<form action="<?php echo $myLink; ?>DoEditPost/key/<?php echo $post['id']; ?>/" method="post">
   <p class='title'>
     <?php _T('XMLcms_text_name'); ?>:<br />
-    <input value="<?php echo $tag->post->title; ?>" class='input-100' maxlength='100' type='text' name='title' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'title', $post['title'], array('maxlength' => 100)); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_link'); ?>:<br />
-    <input  value="<?php echo $tag->post->alt; ?>" onkeyup="fsCMS.Chpu(this.value, this.id);" id='alt' class='input-100' maxlength='100' type='text' name='alt' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'alt', $post['alt'], array('onkeyup' => 'fsCMS.Chpu(this.value, this.id);', 'maxlength' => 100)); ?>
   </p>
   <p class='title'>
     META - <?php _T('XMLcms_text_description'); ?>:<br />
-    <input  value="<?php echo $tag->post->meta_description; ?>" class='input-100' maxlength='500' type='text' name='meta_description' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_description', $post['meta_description']); ?>
   </p>
   <p class='title'>
     META - <?php _T('XMLcms_text_kw'); ?>:<br />
-    <input  value="<?php echo $tag->post->meta_keywords; ?>" class='input-100' maxlength='500' type='text' name='meta_keywords' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords', $post['meta_keywords']); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_category'); ?>: <br />
@@ -31,54 +31,42 @@ $postDate = $postDate[0];
       <?php foreach ($tag->categories as $category) { 
         $selected = in_array($category['id'], $tag->post_categories) ? 'selected' : '';
       ?>
-        <option <?php echo $selected; ?> value='<?php echo $category['id']; ?>'><?php echo PostsFunctions::GetFullCategoryName($tag->categories, $category); ?></option>
+        <option <?php echo $selected; ?> value='<?php echo $category['id']; ?>'><?php echo FunctionsPosts::GetFullCategoryName($tag->categories, $category); ?></option>
       <?php } ?>
     </select>
   </p>
   <p class='title'>
     <?php echo T('XMLcms_text_content').' ('.T('XMLcms_text_short').')'; ?>:<br />
-    <textarea name="html_short" class="ckeditor"><?php echo $tag->post->html_short; ?></textarea>
+    <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_short', $post['html_short'], array('class' => 'ckeditor')); ?>
   </p>
   <p class='title'>
     <?php echo T('XMLcms_text_content'); ?>:<br />
-    <textarea name="html_full" class="ckeditor"><?php echo $tag->post->html_full; ?></textarea>
+    <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_full', $post['html_full'], array('class' => 'ckeditor')); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_date'); ?>:
-    <input value='<?php echo $postDate; ?>' id='datepicker' class='input-small' type='text' name='date' value='<?php echo date('Y-m-d'); ?>' />
+    <input value='<?php echo $postDate; ?>' id='datepicker' class='input-small' type='text' name='date' />
     <span class='space'></span>
     <?php _T('XMLcms_text_time'); ?>:
-    <input value='<?php echo $postTime; ?>' class='input-small' type='text' name='time' value='<?php echo date('H:i:s'); ?>' />
-    <span class='space'></span>
-    <?php _T('XMLcms_text_order'); ?>:
-    <input class='input-small' type='text' name='order' value='<?php echo $tag->post->order; ?>' onkeyup="fsCMS.IsNumeric(this, 0, true, true);" />
+    <input value='<?php echo $postTime; ?>' class='input-small' type='text' name='time' />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_template'); ?>:
-    <select name='tpl' id='tpl'>
-    <?php foreach ($tag->templates as $template) { 
-      $selected = $tag->post->tpl == $template ? 'selected' : '';
-    ?>
-      <option <?php echo $selected; ?> value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php } ?>
-    </select>
+    <?php echo fsHtml::Select('tpl', $tag->templates, $post['tpl']); ?>
     <span class='space'></span>
     <?php _T('XMLcms_text_template_short'); ?>:
-    <select name='tpl_short' id='tpl_short'>
-    <?php foreach ($tag->templates_short as $template) { 
-      $selected = $tag->post->tpl_short == $template ? 'selected' : '';
-    ?>
-      <option <?php echo $selected; ?> value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php } ?>
-    </select>    
+    <?php echo fsHtml::Select('tpl_short', $tag->templates_short, $post['tpl_short']); ?>
   </p>
   <p class='title'>
+    <?php _T('XMLcms_text_order'); ?>:
+    <input class='input-position' type='number' name='position' value='<?php echo $post['position']; ?>' />
+    <span class='space'></span>
     <?php _T('XMLcms_text_is_active'); ?>:
-    <input <?php echo $tag->post->active == 1 ? 'checked' : ''; ?> type='checkbox' name='active' />
+    <input <?php echo $post['active'] == 1 ? 'checked' : ''; ?> type='checkbox' name='active' />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_auth_needed'); ?>: 
-    <input type='checkbox' id='auth' name='auth' <?php echo $tag->post->auth == 1 ? 'checked' : ''; ?> />
+    <input type='checkbox' id='auth' name='auth' <?php echo $post['auth'] == 1 ? 'checked' : ''; ?> />
   </p>
   <hr /> 
   <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_save'); ?>' />   

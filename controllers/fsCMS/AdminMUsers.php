@@ -10,6 +10,7 @@ class AdminMUsers extends AdminPanel
       $this->_Referer();
       return false;
     }
+    $param->duty = $param->Exists('duty') ? 1 : 0;
     return true;
   }
   
@@ -39,12 +40,6 @@ class AdminMUsers extends AdminPanel
     return true;
   }
 
-  private function _GetUserFields($userId)
-  {
-    $user_info = new user_info();
-    return $user_info->GetInfo($userId);
-  }
-  
   public function actionConfig($param)
   {
     $this->Tag('settings', $this->settings);
@@ -58,6 +53,7 @@ class AdminMUsers extends AdminPanel
 
   public function actionAddField($param)
   {
+    $this->Tag('types', fsFields::GetTypes());
   }
 
   public function actionAddGroup($param)
@@ -80,6 +76,7 @@ class AdminMUsers extends AdminPanel
       return $this->_Referer();
     }
     $this->Tag('field', $user_fields->result);
+    $this->Tag('types', fsFields::GetTypes());
   }
 
   public function actionDoEditField($param)
@@ -124,7 +121,7 @@ class AdminMUsers extends AdminPanel
       $user_info = new user_info();
       $users = $this->_table->GetAll();
       foreach ($users as $user) {
-        $user_info->Add($user['id'], $fieldId);  
+        $user_info->Change($user['id'], $fieldId);  
       }
     }
   }
@@ -135,28 +132,16 @@ class AdminMUsers extends AdminPanel
       return;
     }
     $param->active =  $param->Exists('active') ? 1 : 0;
-    $param->password = users::GeneratePassword($param->password);
-    $userId = parent::actionDoAdd($param);
-    if ($userId > 0 && $param->Exists('user_field')) {
-      $user_info = new user_info();
-      foreach ($param->user_field as $fieldId => $value) {
-        $user_info->Add($userId, $fieldId, $value);  
-      }
+    $param->password = users::HashPassword($param->password);
+    if (($userId = parent::actionDoAdd($param)) > 0) {
+      $this->_UpdateUserFields($param);
     }
-  }
-
-  public function actionAdd($param)
-  {
-    $types_users = new types_users();
-    $user_fields = new user_fields();
-    $this->Tag('types', $types_users->GetAll(true, false, array('name')));
-    $this->Tag('fields', $user_fields->GetAll(true, false, array('title')));
   }
 
   public function actionFields($param)
   {
     $user_fields = new user_fields();
-    $this->Tag('fields', $user_fields->GetAll(true, false, array('name')));
+    $this->Tag('fields', $user_fields->GetAll(true, false, array('position', 'title')));
   }
 
   public function actionIndex($param)
@@ -184,18 +169,47 @@ class AdminMUsers extends AdminPanel
       $param->active = 1;
     }
     if ($param->password != '') {
-      $param->password = users::GeneratePassword($param->password);
+      $param->password = users::HashPassword($param->password);
     } else {
       $param->Delete('password');
     }
     if (parent::actionDoEdit($param) == 0) {
-      if ($param->Exists('user_field')) {
-        $user_info = new user_info();
-        foreach ($param->user_field as $fieldId => $value) {
-          $user_info->Change($param->key, $fieldId, $value);
-        }
-      }  
+        $this->_UpdateUserFields($param);    
     }
+  }
+  
+  private function _UpdateUserFields($param)
+  {
+    if (!$param->Exists('user_field') || !is_array($param->user_field)) {
+        return;
+    }
+    $user_info = new user_info();
+    $user_fields = new user_fields();
+    $user_fields = $user_fields->GetAssocArray();
+    foreach ($param->user_field as $fieldName => $value) {
+      if(isset($user_fields[$fieldName]) && preg_match('/^'.$user_fields[$fieldName]['regexp'].'$/', $value)) {
+        $user_info->Change($param->key, $fieldName, $value);
+      }
+    }
+  }
+  
+  private function _GetUserFields($userId)
+  {
+    $user_info = new user_info();
+    return $user_info->GetInfo($userId, true);
+  }
+  
+  private function _InitFieldsArray()
+  {
+    $user_fields = new user_fields();
+    $this->Tag('fields', $user_fields->GetAssocArray());
+  }
+  
+  public function actionAdd($param)
+  {
+    $types_users = new types_users();
+    $this->Tag('types', $types_users->Get());
+    $this->_InitFieldsArray();
   }
   
   public function actionEdit($param)
@@ -205,15 +219,16 @@ class AdminMUsers extends AdminPanel
       return $this->_Referer();
     }
     $types_users = new types_users();
-    $this->Tag('fields', $this->_GetUserFields($param->key));
-    $this->Tag('types', $types_users->GetAll());
+    $this->Tag('info', $this->_GetUserFields($param->key));
+    $this->Tag('types', $types_users->Get());
     $this->Tag('user', $this->_table->result);
+    $this->_InitFieldsArray();
   }
   
   
   public function actionDelete($param)
   {
-    if($param->table == 'types_users' && $param->key < 2) {
+    if($param->table == 'types_users' && $param->key < USER_TYPE) {
         return $this->HttpNotFound();
     }
     if (parent::actionDelete($param) == 0) {
@@ -224,11 +239,7 @@ class AdminMUsers extends AdminPanel
             break;
         case 'types_users':
             $users = new users();
-            $usersArray = $users->Get($param->key);
-            foreach($usersArray as $user) {
-                $user_info->DeleteBy($user['id'], 'id_user');
-            }
-            $users->DeleteBy($param->key, 'type');
+            $users->Update(array('type'), array(USER_TYPE))->Where('`type` = "'.$param->key.'"')->Execute();
             break;
         case 'users':
         default:

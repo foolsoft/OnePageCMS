@@ -34,6 +34,9 @@ class fsDBTable
   /** @var array Table columns names */
   protected $_columns      = array();
   
+  /** @var array Array of queries */
+  protected $_queryStack  = array();
+  
   /** @var array Table columns types */
   private   $_columnsType  = array();
   
@@ -49,6 +52,35 @@ class fsDBTable
   */
   protected function _Init()
   {
+  }
+  
+  /**
+  * Add query inside stack
+  * @api
+  * @since 1.1.0
+  * @return void.      
+  */
+  protected function AddStack($query)
+  {
+      if($query !== '' && isset($query[6]) && strtolower(substr($query, 0, 6)) != 'select') {
+        $this->_queryStack[] = $query;
+        return;
+      }
+      throw Exception('Cannot add query inside stack');
+  }
+  
+  /**
+  * Execute queries inside stack
+  * @api
+  * @since 1.1.0
+  * @return void.      
+  */
+  protected function ExecuteStack()
+  {
+      if(count($this->_queryStack) > 0) {
+        $this->Execute(implode(';', $this->_queryStack));
+        $this->_queryStack = array();
+      }
   }
   
   /**
@@ -72,7 +104,7 @@ class fsDBTable
         continue;
       }
       if (!empty($result)) {
-          $result .= " ".$logic." ";
+          $result .= ' '.$logic.' ';
       }
       $str = ''; $logic = 'AND';
       if (isset($arr[$i]['logic']) && fsValidator::Match($arr[$i]['logic'], '(AND|OR)')) {
@@ -91,7 +123,7 @@ class fsDBTable
             break;
           }
         }
-        if (empty($str))
+        if ('' == $str)
           continue;
       }
       $result .= $str;
@@ -140,7 +172,7 @@ class fsDBTable
       for($i = 0; $i < $this->_columnsCount; ++$i) {
         $f = $this->_columns[$i];
         $r = $this->_Validate($f, $this->$f);
-        if (!empty($r))
+        if ($r != '')
           return $f;
       }
       return '';  
@@ -298,8 +330,9 @@ class fsDBTable
     if (is_array($this->_query->group)) {
       $this->_query->sql .= ' GROUP BY ';
       $temp = count($this->_query->group);
-      for ($i = 0; $i < $temp; ++$i)
+      for ($i = 0; $i < $temp; ++$i) {
         $this->_query->sql .= '`'.$this->_query->group[$i].'`'.($i == $temp - 1 ? ' ' : ', ');
+      }
     }
     if (is_array($this->_query->order) && count($this->_query->order) > 0) {
       $this->_query->sql .= ' ORDER BY ';    
@@ -321,13 +354,13 @@ class fsDBTable
   * @api
   * @since 1.0.0
   * @param string|array $fileds (optional) Columns for select. As string value understands only '*' value. Default <b>*</b>.
-  * @param boolean $use_links (optional) <b>True</b> will will join tables by existing foreign keys. Default <b>false</b>.  
+  * @param boolean $useLinks (optional) <b>True</b> will will join tables by existing foreign keys. Default <b>false</b>.  
   * @return fDBTable Current object.      
   */
   public function Select($fileds = '*', $useLinks = false)
   {
     if (!is_array($fileds) && $fileds !== '*') { 
-      throw new fsDBTableException('Bad parameter: select');
+      throw new Exception('Bad parameter: select');
     }
     $this->_query->select = $fileds;
     $this->_query->selectLinks = $useLinks;
@@ -355,13 +388,13 @@ class fsDBTable
   */
   public function Save()
   {
-  	if ($this->_struct->current == false) {
+    if ($this->_struct->current == false) {
       return false;
     }
-  	$values = array();
-  	for ($i = 0; $i < $this->_columnsCount; ++$i) {
+    $values = array();
+    for ($i = 0; $i < $this->_columnsCount; ++$i) {
     	$field = $this->_columns[$i];
-      $values[] = $this->$field;
+        $values[] = $this->$field;
     }
     $this->Update($this->_columns, $values);
     return $this->Execute();
@@ -371,7 +404,7 @@ class fsDBTable
   * Generate UPDATE query.   
   * @api
   * @since 1.0.0
-  * @param array $fileds Columns for update.
+  * @param array $fields Columns for update.
   * @param array $values New values for columns.  
   * @return fDBTable Current object.      
   */
@@ -379,14 +412,14 @@ class fsDBTable
   {
     $arr_len = count($fields);
     if (!is_array($fields) || !is_array($values) || $arr_len != count($values)) { 
-      throw new fsDBTableException('Bad parameter: update');
+      throw new Exception('Bad parameter: update');
     }
     $this->_query->action = 'update';
     $this->_query->update = '';
     for ($i = 0; $i < $arr_len; ++$i) {
       $vr = $this->_Validate($fields[$i], $values[$i]);
       if (!empty($vr)) {
-        throw new fsDBTableException('Update error: '.$vr);
+        throw new Exception('Update error: '.$vr);
       }
       $this->_query->update .= '`'.$this->_struct->name.'`.`'.$fields[$i].'` = "'.
                               $this->_struct->db->Escape($values[$i]).'"'.
@@ -442,7 +475,7 @@ class fsDBTable
   public function Where($clause)
   {
     if ($this->_query->action == 'insert') {
-      throw new fsDBTableException('"WHERE" clause impossible for "Insert" command');
+      throw new Exception('"WHERE" clause impossible for "Insert" command');
     }
     $this->_query->where = $clause;
     return $this;
@@ -452,16 +485,16 @@ class fsDBTable
   * Generate GROUP clause.   
   * @api
   * @since 1.0.0
-  * @param array $fileds Columns for grouping.
+  * @param array $fields Columns for grouping.
   * @return fDBTable Current object.      
   */
   public function Group($fields)
   {
     if (!is_array($fields)) { 
-      throw new fsDBTableException('Bad parameter: group');
+      throw new Exception('Bad parameter: group');
     }
     if ($this->_query->action != 'select') {
-      throw new fsDBTableException('"Select" command is not found');
+      throw new Exception('"Select" command is not found');
     }
     $this->_query->group = $fields;
     return $this;
@@ -471,17 +504,17 @@ class fsDBTable
   * Generate ORDER clause.   
   * @api
   * @since 1.0.0
-  * @param array $fileds Columns for order.
+  * @param array $fields Columns for order.
   * @param array $desc (optional) Order type for each column. Default <b>array()</b>.
   * @return fDBTable Current object.      
   */
   public function Order($fields, $desc = array())
   {
     if (!is_array($fields) || !is_array($desc)) { 
-      throw new fsDBTableException('Bad parameter: order');
+      throw new Exception('Bad parameter: order');
     }
     if ($this->_query->action != 'select') {
-      throw new fsDBTableException('"Select" command is not found');
+      throw new Exception('"Select" command is not found');
     }
     $this->_query->order = $fields;
     $this->_query->order_desc = $desc;
@@ -498,8 +531,8 @@ class fsDBTable
   */
   public function Limit($count, $start = 0)
   {
-    if (!is_numeric($count) || !is_numeric($start)) { 
-      throw new fsDBTableException('Bad parameter: limit');
+    if (!is_numeric($count) || !is_numeric($start) || $count < 0) { 
+      throw new Exception('Bad parameter: limit');
     }
     $this->_query->limit = $start.', '.$count;
     return $this;
@@ -542,10 +575,10 @@ class fsDBTable
   public function Link($field)
   {
     if (!in_array($field, $this->_columns)) {
-      throw new fsDBTableException('Ivalid field: '.$field);
+      throw new Exception('Ivalid field: '.$field);
     }
     if (!isset($this->_result->mysqlRow['link_'.$field])) {
-      throw new fsDBTableException('No link found for field: '.$field);
+      throw new Exception('No link found for field: '.$field);
     }
     return $this->_result->mysqlRow['link_'.$field];
   }
@@ -592,6 +625,7 @@ class fsDBTable
         $res[] = $row;
       } else {
         $res[$row[$arrayKeyField]] = $row;
+        unset($res[$row[$arrayKeyField]][$arrayKeyField]);
       } 
     }
     return $res;
@@ -607,23 +641,23 @@ class fsDBTable
   */
   public function Execute($query = '', $next = true)
   {
-    $query = trim($query);
     if ($this->_query->action == 'insert') { 
       $res = $this->_Validate();
       if (!empty($res)) {
-        throw new fsDBTableException('Invalid query arguments: '.$res.'!');
+        throw new Exception('Invalid query arguments: '.$res.'!');
       }
     }
     $this->GenerateQuery();
-    if (empty($query)) {
+    if ($query === '') {
       $query = $this->_query->sql;
     } else { 
       $this->_query->sql = $query;
     }
     $this->_result->Clear();
     $this->_result->mysqlResult = $this->_struct->db->Query($query);
-	  if (!$this->_result->mysqlResult) { 
-      throw new fsDBTableException('Error in query: '.$this->_query->sql);
+    if (!$this->_result->mysqlResult) { 
+        $this->_struct->db->Close();
+        die('Error in query: '.$this->_query->sql);
     }
     if ($next && 
         ($this->_query->action == 'select' || 
@@ -679,7 +713,7 @@ class fsDBTable
         return $this->_columnsCount;
         
       default: 
-        throw new fsDBTableException('Can\'t get property: '.$field);
+        throw new Exception('Can\'t get property: '.$field);
     }
   }
 
@@ -704,13 +738,12 @@ class fsDBTable
       	break;
       	
       default: 
-        throw new fsDBTableException('Can\'t set property: '.$field);
+        throw new Exception('Can\'t set property: '.$field);
     }
   }
   
   public function __destruct() 
   { 
-    $this->_struct->db->Close(); 
   }
   
   /**
@@ -767,7 +800,7 @@ class fsDBTable
     if (!$result) {
       $result = $db->Query('SHOW FULL COLUMNS FROM `'.fsConfig::GetInstance('db_prefix').$className.'`');
       if (!$result) { 
-        throw new fsDBTableException('Command field: "SHOW COLUMNS" ('.$className.')');
+        throw new Exception('Command field: "SHOW COLUMNS" ('.$className.')');
       }
     }
     $resultConfig['mysqlResult'] = array('Value' => null);
@@ -791,17 +824,12 @@ class fsDBTable
           
         }
       }
-      $type = strtolower($row['Type']);
-      $type = str_replace("'", '', $type);
-      $type = str_replace(')', '', $type);
-      $type = str_replace(',', '|', $type);
-      $type = explode('(', $type);
-      $this->_columnsType[$inlowercase] = array();
-      $this->_columnsType[$inlowercase]['type'] = $type[0];
-      $this->_columnsType[$inlowercase]['attr'] = isset($type[1]) ? $type[1] : '';
-      $this->_columnsType[$inlowercase]['nocheck'] = $row['Extra'] == 'auto_increment' 
-                                                     ? true
-                                                     : false;
+      $type = explode('(', str_replace(array("'", ')', ','), array('', '', '|'), strtolower($row['Type'])));
+      $this->_columnsType[$inlowercase] = array(
+          'type' => $type[0],
+          'attr' => isset($type[1]) ? $type[1] : '',
+          'nocheck' => $row['Extra'] == 'auto_increment' ? true : false
+      );
       if ($row['Key'] == 'PRI') {
         $structConfig['key'] = array('Value' => $inlowercase, 'ReadOnly' => true);
       }
@@ -837,11 +865,11 @@ class fsDBTable
   private function _Cache()
   {
     if (!is_dir(PATH_CACHE_DB)) {
-      mkdir(PATH_CACHE_DB, 0777);
+      mkdir(PATH_CACHE_DB, 0755);
     }
     $new_file = '_struct_'.$this->_struct->name;
-    $file = new fsFileWorker(PATH_CACHE_DB.$new_file.".php", "w+");
-    $file->WriteLine('<?php');
+    $file = new fsFileWorker(PATH_CACHE_DB.$new_file.'.php', 'w+');
+    $file->WriteLine('<'.'?php');
     $file->WriteLineWithTabsAction("class {0} implements iSingleton \n{",
                      array($new_file),
                      1);
@@ -953,5 +981,3 @@ class fsDBTable
     $file->Close();
   }
 }
-
-class fsDBTableException extends Exception {}

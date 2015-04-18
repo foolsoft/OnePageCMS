@@ -47,7 +47,99 @@ class fsHtml
         $suffix     
       ));
     }
-  
+    
+    /** 
+    * Create multi language input field.   
+    * @since 1.1.0
+    * @api    
+    * @param string $type fsHtml type of input.
+    * @param array $languages Language identifiers.
+    * @param string $name Name for input field.
+    * @param array $values (optional) Values for input fields. Default <b>empty array</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    private static function _InputMultiLanguage($type, $languages, $name, $values = array(), $htmlAttributes = array())
+    {
+        $langCount = count($languages);
+        if(!method_exists(get_class(), $type) || $langCount == 0) {
+            return '-';
+        }
+        $typeLowerCase = strtolower($type);
+        $html = '<div class="multilang-wrapper wrapper-'.$typeLowerCase.'">';
+        if(!isset($htmlAttributes['class'])) {
+            $htmlAttributes['class'] = '';
+        }
+        $htmlAttributes['class'] .= ' multilang-input';
+        $alreadyHidden = false;
+        $languagesNames = array();
+        foreach($languages as $languageId => $languageInfo) {
+            $languagesNames[] = $languageInfo['name'];
+            $htmlAttributes['id'] = $name.'-'.$languageInfo['name'];
+            $html .= '<div id="container-'.$htmlAttributes['id'].'" class="tab-'.$name.($alreadyHidden ? ' hidden' : '').'">'. 
+                call_user_func(array('fsHtml', $type), $name.'['.$languageId.']', isset($values[$languageId]) ? $values[$languageId] : '', $htmlAttributes).
+                '</div>';
+            if(!$alreadyHidden) {
+                $alreadyHidden = true;
+            }
+        } 
+        if($langCount > 1 && $type != 'Hidden') {
+            $html .= self::Select($name.'-language-selector', $languagesNames, '', 
+                array(
+                    'class' => 'multilang-selector multilang-selector-'.$name, 
+                    'onchange' => "$('.tab-".$name."').hide();$('#container-".$name."-' + this.value).show();"
+                )
+            );
+        }
+        return $html.'</div>';
+    }
+    
+    /** 
+    * Create multi language text input field.   
+    * @since 1.1.0
+    * @api    
+    * @param array $languages Language identifiers.
+    * @param string $name Name for input field.
+    * @param array $values (optional) Values for input fields. Default <b>empty array</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function EditorMultiLanguage($languages, $name, $values = array(), $htmlAttributes = array())
+    {
+        return self::_InputMultiLanguage('Editor', $languages, $name, $values, $htmlAttributes);
+    }
+    
+    /** 
+    * Create multi language hidden input field.   
+    * @since 1.1.0
+    * @api    
+    * @param array $languages Language identifiers.
+    * @param string $name Name for input field.
+    * @param array $values (optional) Values for input fields. Default <b>empty array</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function HiddenMultiLanguage($languages, $name, $values = array(), $htmlAttributes = array())
+    {
+        return self::_InputMultiLanguage('Hidden', $languages, $name, $values, $htmlAttributes);
+    }
+    
+    /** 
+    * Create multi language textarea input field.   
+    * @since 1.1.0
+    * @api    
+    * @param array $languages Language identifiers.
+    * @param string $name Name for input field.
+    * @param array $values (optional) Values for input fields. Default <b>empty array</b>.
+    * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
+    * @return string Html code.      
+    */
+    public static function TextareaMultiLanguage($languages, $name, $values = array(), $htmlAttributes = array())
+    {
+        return self::_InputMultiLanguage('Textarea', $languages, $name, $values, $htmlAttributes);
+    }
+    
+    
     /** 
     * Create hidden input field.   
     * @since 1.0.0
@@ -95,13 +187,13 @@ class fsHtml
     * @since 1.0.0
     * @api    
     * @param string $name Name for input field.
-    * @param string $value (optional) Value for input field. Default <b>empty string</b>.
+    * @param integer $value (optional) Value for input field. Default <b>0</b>.
     * @param array $htmlAttributes (optional) Array of tag attributes. Default <b>empty array</b>.
     * @return string Html code.      
     */
-    public static function Number($name, $value = '', $htmlAttributes = array())
+    public static function Number($name, $value = 0, $htmlAttributes = array())
     {
-      return self::Input('number', $name, $value, $htmlAttributes);
+      return self::Input('number', $name, is_numeric($value) ? $value : 0, $htmlAttributes);
     }
     
     /** 
@@ -211,12 +303,16 @@ class fsHtml
     public static function Select($name, $values = array(), $selectedValue = false, $htmlAttributes = array())
     {
       $options = '';
-      if(!fsFunctions::IsArrayAssoc($values)) {
+      $asIs = isset($htmlAttributes['asis']);
+      if(!fsFunctions::IsArrayAssoc($values) && !$asIs) {
         $temp = array();
         foreach($values as $value) {
           $temp[$value] = $value;
         }  
         $values = $temp;
+      }
+      if($asIs) {
+        unset($htmlAttributes['asis']);
       }
       $matches = array();
       $patternGroupOpen = '/^\[group=(.+)\]$/i';
@@ -293,7 +389,7 @@ class fsHtml
       return fsFunctions::StringFormat('<a href="{0}" title="{2}"{3}>{1}</a>', array(
         $href,
         $text,
-        empty($title) ? $text : $title,
+        $title === '' ? $text : $title,
         self::_HtmlAttributesToString($htmlAttributes)     
       ));
     }
@@ -311,7 +407,7 @@ class fsHtml
     {
        return fsFunctions::StringFormat('<label{1}{2}>{0}</label>', array(
         $text,
-        !empty($for) ? ' for="'.$for.'"' : '',
+        $for === '' ? '' : ' for="'.$for.'"',
         self::_HtmlAttributesToString($htmlAttributes) 
        ));
     } 

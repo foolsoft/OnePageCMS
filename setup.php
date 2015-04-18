@@ -1,10 +1,9 @@
 <?php header("Content-type: text/html; charset=utf-8");
 $ALLOW_DBCHARSET = false;
 $path = 'settings/'; $error = ''; $lang = 'ru';
-include 'kernel/fsFunctions.php';
-include 'kernel/fsFileWorker.php';
-@session_start();
-@session_destroy();
+define('PATH_ROOT', dirname(__FILE__).'/'); define('PATH_CACHE', PATH_ROOT.'cache/');
+include 'kernel/fsFunctions.php'; include 'kernel/fsFileWorker.php';
+@session_start(); @session_destroy();
 function i($var, $def = '', $show = true) { $res = isset($_POST[$var]) ? $_POST[$var] : $def; if($show === true) echo $res; return $res; }
 fsFunctions::CreateDirectory($path);
 if (file_exists($path.'dbSettings.php') && file_exists($path.'Settings.php')) {
@@ -13,6 +12,7 @@ if (file_exists($path.'dbSettings.php') && file_exists($path.'Settings.php')) {
 $url_suffix = i('suffix', '/', false);
 $L = array();
 fsFunctions::IncludeFolder('languages/setup');
+$LL = $L;
 ////////INSTALL/////////////////////////////////////////////////////////////////
 if ($_GET && isset($_GET['lang'])) {
   if (isset($L[$_GET['lang']])) {
@@ -21,10 +21,11 @@ if ($_GET && isset($_GET['lang'])) {
   if(!$_POST) {
     $L = $L[$lang];
   }
-}
+} 
 if ($_POST && isset($_POST['lang']) && isset($L[$_POST['lang']])) {
   $lang = $_POST['lang'];
 }
+$langId = $lang == 'ru' ? 1 : 2;
 if ($_POST) {
   $L = $L[$lang];
   while (true) {
@@ -107,7 +108,7 @@ if ($_POST) {
        CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."admin_menu` (
       `name` varchar(50) NOT NULL,
       `text` varchar(50) NOT NULL,
-      `order` tinyint(4) NOT NULL DEFAULT '0',
+      `position` tinyint(4) NOT NULL DEFAULT '0',
       `parent` varchar(50) NOT NULL,
       `in_panel` enum('0','1') NOT NULL DEFAULT '1',
        PRIMARY KEY (`name`)
@@ -117,14 +118,8 @@ if ($_POST) {
     $connection->Query("
        CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."posts` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
-        `title` varchar(100) NOT NULL,
-        `alt` varchar(100) NOT NULL,
-        `html_short` text NOT NULL,
-        `html_full` text NOT NULL,
-        `meta_description` varchar(500) NOT NULL,
-        `meta_keywords` varchar(500) NOT NULL,
         `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        `order` smallint(6) NOT NULL DEFAULT '0',
+        `position` smallint(6) NOT NULL DEFAULT '0',
         `tpl` varchar(50) NOT NULL,
         `tpl_short` varchar(50) NOT NULL,
         `active` enum('0','1') NOT NULL DEFAULT '1',
@@ -155,13 +150,9 @@ if ($_POST) {
       CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."posts_category` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `id_parent` int(11) NOT NULL DEFAULT '0',
-        `name` varchar(255) NOT NULL,
-        `alt` varchar(255) NOT NULL,
         `tpl` varchar(50) NOT NULL,
         `tpl_short` varchar(50) NOT NULL,
         `tpl_full` varchar(50) NOT NULL,
-        `meta_description` varchar(500) NOT NULL,
-        `meta_keywords` varchar(500) NOT NULL,
         `auth` enum('0','1') NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`)
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage']." AUTO_INCREMENT=1 ;
@@ -189,8 +180,14 @@ if ($_POST) {
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `name` varchar(50) NOT NULL,
         `title` varchar(50) NOT NULL,
+        `expression` varchar(255) NOT NULL,
+        `position` tinyint(4) NOT NULL DEFAULT 0,
+        `type` varchar(25) NOT NULL DEFAULT 'input',
+        `special_type` int(11) DEFAULT NULL,
+        `duty` enum('0','1') NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`),
-        UNIQUE KEY `name` (`name`)
+        UNIQUE KEY `name` (`name`),
+        UNIQUE KEY `special_type` (`special_type`),
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage']." AUTO_INCREMENT=1;
     ");
     
@@ -228,27 +225,21 @@ if ($_POST) {
         `title` varchar(75) NOT NULL,
         `href` varchar(500) NOT NULL,
         `parent` int(11) NOT NULL,
-        `order` int(11) NOT NULL,
+        `position` int(11) NOT NULL,
         PRIMARY KEY (`id`),
         KEY `parent` (`parent`),
-        KEY `order` (`order`)
+        KEY `position` (`position`)
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
     ");
     
     $connection->Query("
       CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."pages` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
-        `title` varchar(100) NOT NULL,
-        `alt` varchar(100) NOT NULL,
-        `html` text NOT NULL,
         `in_menu` enum('0','1') NOT NULL DEFAULT '1',
         `active` enum('0','1') NOT NULL DEFAULT '1',
         `tpl` varchar(100) NOT NULL,
-        `description` varchar(500) NOT NULL,
-        `keywords` varchar(500) NOT NULL,
         `auth` enum('0','1') NOT NULL DEFAULT '0',
-        PRIMARY KEY (`id`),
-        UNIQUE KEY `alt` (`alt`)
+        PRIMARY KEY (`id`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=".$_POST['db_codepage'].";
     ");
     
@@ -301,18 +292,76 @@ if ($_POST) {
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
     ");
     
+    $connection->Query("
+      CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."languages` (
+        `id` smallint(6) NOT NULL AUTO_INCREMENT,
+        `name` varchar(6) NOT NULL,
+        `active` enum('0','1') NOT NULL DEFAULT '0',
+         PRIMARY KEY (`id`), 
+         UNIQUE KEY `name` (`name`)
+      ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
+    ");
+    
+    $connection->Query("
+      CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."pages_info` (
+        `id_page` int(11) NOT NULL,
+        `id_language` tinyint(4) NOT NULL,
+        `title` varchar(255) NOT NULL,
+        `alt` varchar(255) NOT NULL,
+        `html` text NOT NULL,
+        `keywords` varchar(500) NOT NULL,
+        `description` varchar(500) NOT NULL,
+        UNIQUE KEY `name` (`id_page`, `id_language`)
+      ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
+    ");
+    
+    $connection->Query("
+      CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."posts_category_info` (
+        `id_category` int(11) NOT NULL,
+        `id_language` int(11) NOT NULL,
+        `title` varchar(255) NOT NULL,
+        `alt` varchar(255) NOT NULL,
+        `meta_description` varchar(500) NOT NULL,
+        `meta_keywords` varchar(500) NOT NULL,
+        UNIQUE KEY `id_category` (`id_category`,`id_language`)
+      ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
+    ");
+    
+    $connection->Query("
+      CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."posts_info` (
+        `id_post` int(11) NOT NULL,
+        `id_language` int(11) NOT NULL,
+        `title` varchar(100) NOT NULL,
+        `alt` varchar(100) NOT NULL,
+        `html_short` text NOT NULL,
+        `html_full` text NOT NULL,
+        `meta_description` varchar(500) NOT NULL,
+        `meta_keywords` varchar(500) NOT NULL,
+        UNIQUE KEY `id_post` (`id_post`,`id_language`)
+      ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
+    ");
+    
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."languages` (`id`, `name`, `active`) VALUES (1, 'ru', '".($langId == 1 ? 1 : 0)."'), (2, 'en', '".($langId == 2 ? 1 : 0)."'), (3, 'ua', '0');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."menu` (`title`, `name`, `tpl`) VALUES ('".$L['text_main_menu']."', 'main', 'Menu.php');");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."posts_category` (`id`, `id_parent`, `name`, `alt`, `tpl`, `tpl_short`, `tpl_full`, `meta_keywords`, `meta_description`) VALUES ('1', '-1', '".$L['text_all_category']."', 'all', 'Index.php', 'ShortPost.php', 'Post.php', '".$L['text_all_category']."', '".$L['text_all_category']."');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."posts_category` (`id`, `id_parent`, `tpl`, `tpl_short`, `tpl_full`) VALUES ('1', '-1', 'Index.php', 'ShortPost.php', 'Post.php');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."posts_category` SET `id` = '0' WHERE `id` = '1';");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."menu_items` (`id`, `menu_name`, `title`, `href`, `parent`, `order`) VALUES ('1', 'main', '".$L['text_main']."', '{URL_ROOT}page/index', '0', '0');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."posts_category_info` (`id_category`, `id_language`, `title`, `alt`, `meta_description`, `meta_keywords`) VALUES ('0', '1', '".$LL["ru"]['text_all_category']."', 'all', '".$LL["ru"]['text_all_category']."', '".$LL["ru"]['text_all_category']."');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."posts_category_info` (`id_category`, `id_language`, `title`, `alt`, `meta_description`, `meta_keywords`) VALUES ('0', '2', '".$LL["en"]['text_all_category']."', 'all', '".$LL["en"]['text_all_category']."', '".$LL["en"]['text_all_category']."');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."menu_items` (`id`, `menu_name`, `title`, `href`, `parent`, `position`) VALUES ('1', 'main', '".$L['text_main']."', '{URL_ROOT}page/index', '0', '0');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."types_users` (`id`, `name`, `allow`) VALUES (1, '".$L['text_admin']."', '*'), (2, '".$L['text_guest']."', '*'), (3, '".$L['text_user']."', '*');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."types_users` SET `id` = '0' WHERE `id` = '2';");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."users` (`id`, `login`, `password`, `active`, `type`) VALUES ('1', '".$_POST["admin_login"]."', '".sha1($secret.$_POST["admin_password"])."', '1', '1');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."user_fields` (`name`, `title`, `expression`, `position`, `type`, `special_type`) VALUES ('email', 'Email', '[a-zA-Z\.\-_0-9]+@[a-zA-Z0-9\-]{2,}\.[a-zA-Z]{2,7}', '0', 'input', '1');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."users` (`id`, `login`, `password`, `active`, `type`) VALUES ('2', '".$L["text_guest"]."', '*', '1', '0');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."users` SET `id` = '0' WHERE `id` = '2';");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `title`, `alt`, `html`, `in_menu`, `active`, `tpl`) VALUES (1, '".$L['text_main']."', 'index', '".fsFunctions::StringFormat($L['text'], array('{URL_ROOT}AdminPanel/Hello{URL_SUFFIX}'))."', '1', '1', 'Index.php');");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `title`, `alt`, `html`, `in_menu`, `active`, `tpl`) VALUES (2, '".$L['text_closed']."', 'closed', '<h4 style=\"text-align: center;\"><span style=\"color:#808080;\"><span style=\"font-family: tahoma,geneva,sans-serif;\"><strong>".$L['text_soon']."</strong></span></span></h4><h5 style=\"text-align: center;\"><u><span style=\"font-family:tahoma,geneva,sans-serif;\"><span style=\"color: rgb(128, 128, 128);\">2013 (c) </span><a href=\"http://foolsoft.ru/\" target=\"_blank\" title=\"".$L['text_dblog']."\"><span style=\"color: rgb(128, 128, 128);\">".$L['text_a']."</span></a></span></u></h5>', '0', '1', 'IndexClosed.php');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `in_menu`, `active`, `tpl`) VALUES (1, '1', '1', 'Index.php');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages_info` (`id_page`, `id_language`, `title`, `alt`, `html`) VALUES (1, 1, '".$LL["ru"]['text_main']."', 'index', '".fsFunctions::StringFormat($LL["ru"]['text'], array('{URL_ROOT}AdminPanel/Hello{URL_SUFFIX}'))."');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages_info` (`id_page`, `id_language`, `title`, `alt`, `html`) VALUES (1, 2, '".$LL["en"]['text_main']."', 'index', '".fsFunctions::StringFormat($LL["en"]['text'], array('{URL_ROOT}AdminPanel/Hello{URL_SUFFIX}'))."');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `in_menu`, `active`, `tpl`) VALUES (2, '0', '1', 'IndexClosed.php');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."pages` SET `id` = '0' WHERE `id` = '2';");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages_info` (`id_page`, `id_language`, `title`, `alt`, `html`) VALUES (0, 1, '".$LL["ru"]['text_closed']."', 'closed', '<h4 style=\"text-align: center;\"><span style=\"color:#808080;\"><span style=\"font-family: tahoma,geneva,sans-serif;\"><strong>".$LL["ru"]['text_soon']."</strong></span></span></h4><h5 style=\"text-align: center;\"><u><span style=\"font-family:tahoma,geneva,sans-serif;\"><span style=\"color: rgb(128, 128, 128);\">".date('Y')." (c) </span><a href=\"http://foolsoft.ru/\" target=\"_blank\" title=\"".$LL["ru"]['text_dblog']."\"><span style=\"color: rgb(128, 128, 128);\">".$LL["ru"]['text_a']."</span></a></span></u></h5>');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages_info` (`id_page`, `id_language`, `title`, `alt`, `html`) VALUES (0, 2, '".$LL["en"]['text_closed']."', 'closed', '<h4 style=\"text-align: center;\"><span style=\"color:#808080;\"><span style=\"font-family: tahoma,geneva,sans-serif;\"><strong>".$LL["en"]['text_soon']."</strong></span></span></h4><h5 style=\"text-align: center;\"><u><span style=\"font-family:tahoma,geneva,sans-serif;\"><span style=\"color: rgb(128, 128, 128);\">".date('Y')." (c) </span><a href=\"http://foolsoft.ru/\" target=\"_blank\" title=\"".$LL["en"]['text_dblog']."\"><span style=\"color: rgb(128, 128, 128);\">".$LL["en"]['text_a']."</span></a></span></u></h5>');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."user_fields` (`id`, `name`, `title`, `expression`, `type`, `position`, `special_type`, `duty`) VALUES (1, 'email', 'Email', '[a-zA-Z\\.\\-_0-9]+@[a-zA-Z0-9\\-]{2,}\\.[a-zA-Z]{2,7}', 'input', 0, 1, '0');");
                                                                                                                                                           
     $url = substr($_SERVER["SERVER_NAME"], 0, 4) == 'www.' ? substr($_SERVER["SERVER_NAME"], 4) : $_SERVER["SERVER_NAME"];
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."controller_settings` (`controller`, `name`, `value`) VALUES
@@ -328,7 +377,7 @@ if ($_POST) {
       ('Panel', 'start_page_custom', ''),
       ('Panel', 'auth_need_page', '".$page404."'),
       ('Panel', 'robot_email', 'robot@".$url."'),
-      ('Panel', 'version', '2.1.0.0'),
+      ('Panel', 'version', '2.2.0.0'),
       ('Panel', 'main_template', 'Index.php'),
       ('Panel', 'template', 'fsCMS/default'),
       ('Panel', 'template_admin', 'fsCMSAdmin/default'),
@@ -343,7 +392,7 @@ if ($_POST) {
       ('title', '".$L['text_title']."'),
       ('copy', '2011-".date('Y')." © <a href=\"http://foolsoft.ru\" style=\"text-decoration:none;\" title=\"".$L['text_dblog']."\">".$L['text_a']."</a>');");
     
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."admin_menu` (`name`, `text`, `order`, `parent`) VALUES
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."admin_menu` (`name`, `text`, `position`, `parent`) VALUES
       ('AdminPanel/Hello', '".$L['text_mmain']."', 0, ''),
       ('AdminMPages/Index', '".$L['text_mpages']."', 2, ''),
       ('AdminMPosts/Index', '".$L['text_mposts']."', 2, ''),
@@ -356,8 +405,8 @@ if ($_POST) {
     
     $connection->Query("
       INSERT INTO `".$_POST['db_prefix']."search` (`table_name`, `link`, `title`, `search_fields`) VALUES
-      ('pages', 'page/{alt}', '{title}', 'html,title'),
-      ('posts', 'post/{alt}', '{title}', 'title,html_short,html_full');
+      ('pages_info', 'page/{alt}', '{title}', 'html,title'),
+      ('posts_info', 'post/{alt}', '{title}', 'title,html_short,html_full');
     ");
       
     $connection->Close();
@@ -371,7 +420,7 @@ if ($_POST) {
 <html>
 <head>
   <title><?php echo isset($L['ptitle']) ? $L['ptitle'] : 'Select language'; ?></title>
-  <link rel="icon" type="image/vnd.microsoft.icon" href="<?php echo "http://".$_SERVER["SERVER_NAME"]."/favicon.ico"; ?>">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="http://<?php echo $_SERVER["SERVER_NAME"]; ?>/includes/img/favicon.ico">
 </head>
 <body style='background:#EEEEE0;padding:0;margin:0;'>
   <div style='width:1000px;margin:0 auto;'>

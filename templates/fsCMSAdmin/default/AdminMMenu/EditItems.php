@@ -15,10 +15,7 @@ $selectedParent = '0';
     <?php if($tag->key > 0) {
         echo '<input id="menu_name" type="hidden" value="'.$tag->menu.'" name="menu_name" />';
     } ?>
-    <select name='menu_name'
-            class='input-100'
-            <?php echo $tag->key == 0 ? 'onchange="LoadItemsInMenu(this.value);"' : 'disabled'; ?>
-    >
+    <select name='menu_name' class='input-100' <?php echo $tag->key == 0 ? 'onchange="LoadItemsInMenu(this.value);"' : 'disabled'; ?>>
     <?php foreach ($tag->menus as $menu) { 
       $selected = '';
       if ($tag->last != '') {
@@ -33,11 +30,8 @@ $selectedParent = '0';
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_select_menu_for_redact'); ?>:<br />
-    <select id='redact_name'
-            name='redact_name'
-            class='input-100'
-            onchange="window.location='<?php echo $myLink; ?>EditItems/key/'+this.value + '/';"
-    >
+    <select id='redact_name' name='redact_name' class='input-100'
+            onchange="window.location='<?php echo $myLink; ?>EditItems/key/'+this.value + '/';">
       <option value='0'><?php _T('XMLcms_no'); ?></option>
     <?php 
     foreach ($tag->menu_items as $item) { 
@@ -45,7 +39,7 @@ $selectedParent = '0';
             if($item['id'] == $tag->key) {
               $selected = 'selected';
               $selectedTitle = $item['title'];
-              $selectedOrder = $item['order'];
+              $selectedOrder = $item['position'];
               $selectedParent = $item['parent'];
               $selectedLink = $item['href'];
             } 
@@ -61,7 +55,7 @@ $selectedParent = '0';
   <p class='title'>
     <?php _T('XMLcms_text_full_link'); ?>:<br />
     <input type='text' id='href' name='href' value='<?php echo $selectedLink; ?>' class='input-100' /><br />
-    <span>
+    <span> 
       <?php _T('XMLcms_text_link_from_list'); ?>: 
       <select onchange="GetReadyLink(this);" name='ready_href' id='ready_href' class='input-small'>
         <option value=''><?php _T('XMLcms_text_select'); ?></option>
@@ -72,7 +66,7 @@ $selectedParent = '0';
         </optgroup>
         <optgroup label="<?php _T('XMLcms_text_posts'); ?>">
           <?php foreach ($tag->linksPosts as $link) { ?>
-            <option value='<?php echo URL_ROOT.'posts/'.$link['alt']; ?>'><?php echo $link['name']; ?></option>  
+            <option value='<?php echo URL_ROOT.'posts/'.$link['alt']; ?>'><?php echo $link['title']; ?></option>  
           <?php } ?>    
         </optgroup>
         <optgroup label="<?php _T('XMLcms_text_modules'); ?>">
@@ -96,7 +90,10 @@ $selectedParent = '0';
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_order'); ?>:
-    <input name='order' type='text' value='<?php echo $selectedOrder; ?>' class='input-small' onkeyup='fsCMS.IsNumeric(this, 0, true, true);' />
+    <input name='position' type='number' value='<?php echo $selectedOrder; ?>' class='input-small' />
+    <span class="space"></span>
+    Target:
+    <?php echo fsHtml::Select('target', array('_self', '_blank', '_parent', '_top'), $item['target']); ?>
   </p>
   <hr />
   <div>

@@ -157,9 +157,7 @@ class fsStruct
       } else if (!$exists && $this->allowNull) {
         $this->fields[$field] = array('Value' => $value, 'ReadOnly' => false);
       } else {
-        throw new fsStructException("Can't set property: " . __CLASS__ . "->".$field);
+        throw new Exception("Can't set property: " . __CLASS__ . "->".$field);
       }
     }
 }
-
-class fsStructException extends Exception {}

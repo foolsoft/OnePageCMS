@@ -7,8 +7,11 @@ class comments extends fsDBTableExtension
   }
   
   public function Add($group, $authorId, $authorName, $text, 
-    $parent = 0, $additional = '', $active = '0', $ip = false)
+    $parent = 0, $additional = array(), $active = '0', $ip = false)
   {
+    if(!fsFunctions::IsArrayAssoc($additional)) {
+        $additional = array();
+    }  
     if($ip === false) {
       $ip = fsFunctions::GetIp();
     }
@@ -24,14 +27,12 @@ class comments extends fsDBTableExtension
       $main_parent = $this->result->main_parent == '' || $this->result->main_parent == 0 ? $parent : $this->result->main_parent;
     }
     
-    $text = str_replace(array('{%', '%}'), '', $text);
-    
-    $this->additional = $additional;
+    $this->additional = json_encode($additional);
     $this->author_id = $authorId;
-    $this->author_name = strip_tags($authorName);
+    $this->author_name = $this->_Safe($authorName);
     $this->ip = $ip;
-    $this->text = strip_tags($text);
-    $this->group = strip_tags($group);
+    $this->text = str_replace(array('{', '}'), '', $this->_Safe($text));
+    $this->group = str_replace(' ', '-', $this->_Safe($group));
     $this->active = $active == '1' ? 1 : 0;
     $this->date = date('Y-m-d H:i:s');
     $this->parent = $parent;
@@ -40,9 +41,14 @@ class comments extends fsDBTableExtension
     return  $this->insertedId; 
   }
   
+  private function _Safe($text)
+  {
+      return trim(htmlspecialchars(strip_tags($text)));
+  }
+  
   public function Remove($id)
   {
-    $this->Delete()->Where('`id` = "'.$id.'" OR `main_parent` = "'.$id.'" OR `parent` = "'.$id.'"')->Execute();
+    return $this->Delete()->Where('`id` = "'.$id.'" OR `main_parent` = "'.$id.'" OR `parent` = "'.$id.'"')->Execute();
   }
   
   public function Get($group = false, $active = '1', $asc = false, $limitFrom = false, $limitCount = false, $mainParent = 0)

@@ -6,14 +6,14 @@
 <form action='<?php echo $myLink; ?>DoEdit/key/<?php echo $tag->menu->name; ?>/' method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_title'); ?>:
-    <input value='<?php echo $tag->menu->title; ?>' class='input-100' type='text' name='title' onkeyup='fsCMS.Chpu(this.value, "name");' />
+    <input value='<?php echo $tag->menu->title; ?>' class='input-100' type='text' name='title' />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_marker'); ?>:
     <input value='<?php echo $tag->menu->name; ?>' class='input-100' id='name' type='text' name='name' onkeyup='fsCMS.Chpu(this.value, this.id);' />
   </p>
   <p class='title'>
-    <?php _T('XMLcms_text_default_template'); ?>:
+    <?php _T('XMLcms_text_template'); ?>:
     <select class='select-small' name='tpl'>    
     <?php
     foreach ($tag->templates as $template) {

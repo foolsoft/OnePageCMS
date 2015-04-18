@@ -3,38 +3,38 @@
 [block-content]
 <?php echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fsCMS-btn admin-btn-back')); ?>
 <hr />
-<form action="<?php echo $myLink; ?>DoAdd/referer/Index/call/Post/" method='post'>
+<form action="<?php echo $myLink; ?>DoAddPost/referer/Index/" method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_name'); ?>:<br />
-    <input onkeyup="fsCMS.Chpu(this.value, 'alt');" class='input-100' maxlength='100' type='text' name='title' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'title', array(), array('onkeyup' => 'fsCMS.Chpu(this.value, \'alt-\' + this.getAttribute(\'id\').split(\'-\')[1]);', 'maxlength' => 100)); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_link'); ?>:<br />
-    <input onkeyup="fsCMS.Chpu(this.value, this.id);" id='alt' class='input-100' maxlength='100' type='text' name='alt' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'alt', array(), array('onkeyup' => 'fsCMS.Chpu(this.value, this.id);', 'maxlength' => 100)); ?>
   </p>
   <p class='title'>
     META - <?php _T('XMLcms_text_description'); ?>:<br />
-    <input class='input-100' maxlength='500' type='text' name='meta_decription' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_description'); ?>
   </p>
   <p class='title'>
     META - <?php _T('XMLcms_text_kw'); ?>:<br />
-    <input class='input-100' maxlength='500' type='text' name='meta_keywords' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords'); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_category'); ?>: <br />
     <select onclick="PostTemplateLoad($(this).val());" class='input-100' multiple name='id_category[]' size='10'>
       <?php foreach ($tag->categories as $category) { ?>
-        <option value='<?php echo $category['id']; ?>'><?php echo PostsFunctions::GetFullCategoryName($tag->categories, $category); ?></option>
+        <option value='<?php echo $category['id']; ?>'><?php echo FunctionsPosts::GetFullCategoryName($tag->categories, $category); ?></option>
       <?php } ?>
     </select>
   </p>
   <p class='title'>
     <?php echo T('XMLcms_text_content').' ('.T('XMLcms_text_short').')'; ?>:<br />
-    <textarea name="html_short" class="ckeditor"></textarea>
+    <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_short', array(), array('class' => 'ckeditor')); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_content'); ?>:<br />
-    <textarea name="html_full" class="ckeditor"></textarea>
+    <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_full', array(), array('class' => 'ckeditor')); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_date'); ?>:
@@ -42,26 +42,18 @@
     <span class='space'></span>
     <?php _T('XMLcms_text_time'); ?>:
     <input class='input-small' type='text' name='time' value='<?php echo date('H:i:s'); ?>' />
-    <span class='space'></span>
-    <?php _T('XMLcms_text_order'); ?>:
-    <input class='input-small' type='text' name='order' value='0' onkeyup="fsCMS.IsNumeric(this, 0, true, true);" />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_template'); ?>:
-    <select id="tpl" name='tpl'>
-    <?php foreach ($tag->templates as $template) { ?>
-      <option value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php } ?>
-    </select>
+    <?php echo fsHtml::Select('tpl', $tag->templates); ?>
     <span class='space'></span>
-    <?php echo T('XMLcms_text_template_short'); ?>:
-    <select id="tpl_short" name='tpl_short'>
-    <?php foreach ($tag->templates_short as $template) { ?>
-      <option value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php } ?>
-    </select>    
+    <?php _T('XMLcms_text_template_short'); ?>:
+    <?php echo fsHtml::Select('tpl_short', $tag->templates_short); ?>
   </p>
   <p class='title'>
+    <?php _T('XMLcms_text_order'); ?>:
+    <input class='input-small' type='number' name='position' value='0' />
+    <span class='space'></span>
     <?php _T('XMLcms_text_is_active'); ?>:
     <input checked type='checkbox' name='active' />
   </p>

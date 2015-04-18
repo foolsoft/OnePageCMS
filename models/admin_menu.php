@@ -20,7 +20,7 @@ class admin_menu extends fsDBTableExtension
   {
     $this->name = 'Admin'.$contoller.'/'.$startPage;
     $this->text = $text;
-    $this->order = $order;
+    $this->position = $order;
     $this->parent = $this->_parent;
     $this->in_panel = $startPage != '' ? 1 : 0;
     return $this->Insert()->Execute();

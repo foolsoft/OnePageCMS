@@ -38,7 +38,7 @@
       <?php echo $tag->panelSupport; ?>  
     </div>
     <?php 
-    echo fsInclude::GenerateCache(array('js'), 'admin'); 
+    echo fsInclude::GenerateCache(array('js'), 'admin_'.fsSession::GetInstance('Language')); 
     fsInclude::AttachJs(array(URL_PLUGINS.'ace/ace.js', URL_PLUGINS.'ckeditor/ckeditor.js', URL_PLUGINS.'jqueryui/jquery-ui.min.js'));
     ?>
 </body>

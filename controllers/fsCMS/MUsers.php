@@ -30,15 +30,16 @@ class MUsers extends cmsController
     if (!$this->_table->CheckLogin($param->login)) {
       return $this->Message(T('XMLcms_text_login_not_unique'));
     } 
-    $userId = $this->_table->Add($param->login, $param->password);
-    if ($userId > 0) {
+    $userId = $this->_table->Add($param->login, $param->password, 0);
+    if ($userId > 0 && $param->Exists('user_field')) {
       $user_info = new user_info();
       $user_fields = new user_fields();
       $user_fields = $user_fields->GetAll();
-      $uf = $param->Exists('user_field') ? $param->user_field : array();
+      $uf = $param->user_field;
       foreach ($user_fields as $field) {
-        $value = isset($uf[$field['name']]) ? $uf[$field['name']] : '';
-        $user_info->Add($userId, $field['id'], $value);
+        if(isset($uf[$field['name']]) && preg_match('/^'.$field['regexp'].'$/', $uf[$field['name']])) {
+            $user_info->Change($userId, $field['id'], $uf[$field['name']]);
+        }
       }
     }
     $this->Redirect('');

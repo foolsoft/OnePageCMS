@@ -1,6 +1,3 @@
-<?php
-$textRegistration = T('XMLcms_text_registration');
-?>
 <table width='300'>
   <tr>
     <th align='right'  width='100'>
@@ -30,7 +27,12 @@ $textRegistration = T('XMLcms_text_registration');
   </tr>
   <tr>
     <td align='center' colspan='2'>
-      <?php echo fsHtml::Link(URL_ROOT.'user/registration', $textRegistration); ?>
+      <?php echo fsHtml::Link(URL_ROOT.'user/registration', T('XMLcms_text_registration')); ?>
+    </td>
+  </tr>
+  <tr>
+    <td align='center' colspan='2'>
+      <?php echo fsHtml::Link(URL_ROOT.'user/forgot', T('XMLcms_text_fogot_password')); ?>?
     </td>
   </tr>
 </table>

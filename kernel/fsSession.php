@@ -73,7 +73,7 @@ class fsSession implements iSingleton
         $_SESSION[$attr] = $value;
         self::$obj = null;
       } else {
-        throw new fsSessionException('Invalid session field (Set): '.$attr);
+        throw new Exception('Invalid session field (Set): '.$attr);
       }
     }
 
@@ -102,7 +102,7 @@ class fsSession implements iSingleton
         self::$obj->Delete($attr); 
         unset($_SESSION[$attr]);
       } else {
-        throw new fsSessionException('Invalid session field (Delete): '.$attr);
+        throw new Exception('Invalid session field (Delete): '.$attr);
       }
     }
 
@@ -120,9 +120,7 @@ class fsSession implements iSingleton
         $_SESSION[$attr] = $value;
         self::$obj = null;
       } else {
-        throw new fsSessionException('Session field already exists: '.$attr);
+        throw new Exception('Session field already exists: '.$attr);
       }
     } 
 }
-
-class fsSessionException extends Exception {}

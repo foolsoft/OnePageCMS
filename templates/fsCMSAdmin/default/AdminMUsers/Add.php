@@ -32,7 +32,7 @@ echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fs
   <?php foreach ($tag->fields as $field) { ?>
   <p>
     <?php _T($field['title']); ?>:<br />
-    <input class='input-100' value='' type='text' name='user_field[<?php echo $field['id']; ?>]' />
+    <?php echo fsFields::Create($tag->fields, $field['name'], '', array('class' => 'input-100', 'data-regexp' => $field['regexp']), 'user_field'); ?>
   </p> 
   <?php } ?>
   <hr /> 

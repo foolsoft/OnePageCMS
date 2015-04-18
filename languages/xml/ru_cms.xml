@@ -1,13 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dictionary>
+  <text name='cms_admin_password_in_adminpanel'>
+    <ru>Пароль администратора может быть изменен только в панели администрирования</ru>
+  </text>	
   <text name='cms_controller_message'>
     <ru>Сообщение модуля</ru>
+  </text>
+  <text name='cms_panel_languages'>
+    <ru>Языки сайта</ru>
+  </text>
+  <text name='cms_savebackup'>
+    <ru>Скачать копию сайта</ru>
+  </text> 
+  <text name='cms_start_update'>
+    <ru>Начать обновление</ru>
+  </text> 
+  <text name='cms_recommend_before_update'>
+    <ru>Перед началом процесса обновления мы рекомендуем Вам</ru>
+  </text>
+  <text name='cms_important'>
+    <ru>Важно</ru>
+  </text>
+  <text name='cms_text_duty'>
+    <ru>Служебный</ru>
+  </text>
+  <text name='cms_important_update'>
+    <ru><![CDATA[
+        Процесс автоматического обновления на данном этапе реализации
+        затрагивает все базовые файлы системы OnePageCMS. Если Вы вносили 
+        изменения в базовую сборку, то Вам будет необходимо добавить Ваш
+        функционал заново, например из файлов резерной копии, которые Вы
+        можете скачать по ссылке выше.
+    ]]></ru>
+  </text>
+  <text name='cms_recommend_less_user'>
+    <ru>Убедится что на Вашем сайте не находится большого числа посетителей</ru>
+  </text>
+  <text name='cms_save_db'>
+    <ru>Сохранить резеврную копию таблиц с префиксом '{0}'' в базе '{1}'</ru>
   </text>
   <text name='cms_text_comments'>
     <ru>Комментарии</ru>
   </text>
+  <text name='cms_text_updates'>
+    <ru>Обновления</ru>
+  </text>
+  <text name='cms_auto_updated'>
+      <ru>Система успешно обновлена</ru>
+  </text>
+  <text name='cms_text_doupdate'>
+    <ru>Доступна новая версия {0}</ru>
+  </text>
+  <text name='cms_text_uptodate'>
+    <ru>У вас последняя версия</ru>
+  </text>
+  <text name='cms_text_no_email_users'>
+    <ru>Пользователь с данным адресом Email не найден</ru>
+  </text>
   <text name='cms_search_result_null'>
     <ru>Ничего не найдено</ru>
+  </text>
+  <text name='cms_month_1'>
+    <ru>Январь</ru>
+  </text>
+  <text name='cms_month_2'>
+    <ru>Февраль</ru>
+  </text>
+  <text name='cms_month_3'>
+    <ru>Март</ru>
+  </text>
+  <text name='cms_month_4'>
+    <ru>Апрель</ru>
+  </text>
+  <text name='cms_month_5'>
+    <ru>Май</ru>
+  </text>
+  <text name='cms_month_6'>
+    <ru>Июнь</ru>
+  </text>
+  <text name='cms_month_7'>
+    <ru>Июль</ru>
+  </text>
+  <text name='cms_month_8'>
+    <ru>Август</ru>
+  </text>
+  <text name='cms_month_9'>
+    <ru>Сентябрь</ru>
+  </text>
+  <text name='cms_month_10'>
+    <ru>Октябрь</ru>
+  </text>
+  <text name='cms_month_11'>
+    <ru>Ноябрь</ru>
+  </text>
+  <text name='cms_month_12'>
+    <ru>Декабрь</ru>
+  </text>
+  <text name='cms_plugins_load_config'>
+    <ru>Управление подгрузкой дополнительных PHP библиотек</ru>
   </text>
   <text name='cms_access_denied_page'>
     <ru>Страница с ошибкой "доступ запрещен"</ru>
@@ -18,6 +108,9 @@
   <text name='cms_clear'>
     <ru>Очистить</ru>
   </text>
+  <text name='cms_text_passwordrecover'>
+    <ru>Восстановление пароля</ru>
+  </text>
   <text name='cms_invalid_login'>
     <ru>Логин содержит недопустимые символы</ru>
   </text>
@@ -27,11 +120,20 @@
       <a title="Вход" href="{0}">формой</a> для входа на сайт.
     ]]></ru>
   </text>
+  <text name='cms_text_not_implemented'>
+    <ru>К сожалению данная функция не реализована на данном ресурсе</ru>
+  </text>
   <text name='cms_search_result'>
     <ru>Результаты поиска</ru>
   </text>
   <text name='cms_guest'>
     <ru>Гость</ru>
+  </text>
+  <text name='cms_lk'>
+    <ru>Личный кабинет</ru>
+  </text>
+  <text name='cms_text_fogot_password'>
+    <ru>Забыли пароль</ru>
   </text>
   <text name='cms_denied'>
     <ru>Доступ запрещен</ru>
@@ -158,6 +260,26 @@
   <text name='cms_text_short'>
     <ru>Краткое</ru>
   </text>
+  <text name='cms_request_new_password'>
+    <ru>Запрос на смену пароля</ru>
+  </text>
+  <text name='cms_request_forgot_confirm'>
+    <ru>Вам выслано сообщение с дальнейшими инструкциями</ru>
+  </text>
+  <text name='cms_captcha'>
+    <ru>Код с изображения</ru>
+  </text>
+  <text name='cms_captcha_wrong'>
+    <ru>Неверный проверочный код</ru>
+  </text>
+  <text name='cms_request_forgot_text'>
+    <ru><![CDATA[Добрый день.<br />В {2} с IP адреса {1} поступила заявка на смену
+    пароля Вашего аккаунта на сайте {3}.<br />Для подтверждения процедуры восстановления пароля
+    перейдите по данной ссылке <a href="{0}" title="Сменить пароль">{0}</a>.<br />
+    Если Вы не начинали процедуру восстановления пароля проигнорируйте данное сообщение и
+    свяжитесь с администрацией нашего ресурса.<br />Спасибо. 
+    ]]></ru>
+  </text>
   <text name='cms_text_need_all_data'>
     <ru>Заполните все обязательные поля!</ru>
   </text>
@@ -257,6 +379,9 @@
   <text name='cms_text_login_not_unique'>
     <ru>Логин должен быть уникальным!</ru>
   </text>
+  <text name='cms_text_invalid_password'>
+    <ru>Неверный пароль</ru>
+  </text>
   <text name='cms_text_users'>
     <ru>Пользователи</ru>
   </text>
@@ -268,6 +393,24 @@
   </text>
   <text name='cms_text_repassword'>
     <ru>Пароль еще раз</ru>
+  </text>
+  <text name='cms_error_again'>
+    <ru>Произошла ошибка, попробуйте еще раз</ru>
+  </text>
+  <text name='cms_text_now_password'>
+    <ru>Текущий пароль</ru>
+  </text>
+  <text name='cms_text_new_password'>
+    <ru>Новый пароль</ru>
+  </text>
+  <text name='cms_you_new_password'>
+    <ru>Ваш новый пароль: {0}, OnePageCMS.</ru>
+  </text>
+  <text name='cms_text_look_new_password'>
+    <ru>Вам был отправлен новый пароль.</ru>
+  </text>
+  <text name='cms_text_new_repassword'>
+    <ru>Новый пароль еще раз</ru>
   </text>
   <text name='cms_text_type'>
     <ru>Тип</ru>
@@ -383,8 +526,14 @@
   <text name='cms_edit'>
     <ru>Редактировать</ru>
   </text>
+  <text name='cms_cannot_delete_last'>
+    <ru>Невозможно удалить последнюю активную запись</ru>
+  </text>
   <text name='cms_activate'>
     <ru>Активировать</ru>
+  </text>
+  <text name='cms_deactivate'>
+    <ru>Деактивировать</ru>
   </text>
   <text name='cms_settings'>
     <ru>Настройка</ru>
@@ -532,6 +681,9 @@
   </text>
   <text name='cms_error_action'>
     <ru>Ошибка действия</ru>
+  </text>
+  <text name='cms_text_new_name'>
+    <ru>Новое имя</ru>
   </text>
   <text name='cms_support_mail_title'>
     <ru>OnePageCMS - Поддержка</ru>

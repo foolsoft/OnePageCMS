@@ -3,7 +3,7 @@
 * Cache class
 * @package fsKernel
 */
-class fsCache
+class fsCache        
 {
     /** @var string Path of cache folder */
     private static $_path = PATH_CACHE;
@@ -85,11 +85,20 @@ class fsCache
     /**
     * Delete all cache files  
     * @since 1.0.0
-    * @api    
+    * @api
+    * @param string $prefix (optional) Delete file with this prefix. Default <b>empty string</b>.        
     * @return void.  
     */
-    public static function Clear()
+    public static function Clear($prefix = '')
     {
-        fsFunctions::DeleteDirectory(self::$_path);
+        if($prefix === '') {
+            fsFunctions::DeleteDirectory(self::$_path);
+        } else {
+            $files = fsFunctions::DirectoryInfo(self::$_path, true, true, array($prefix));
+            foreach($files['NAMES'] as $name) {
+                fsFunctions::DeleteFile($name);
+            }
+        }
     }
+    
 }

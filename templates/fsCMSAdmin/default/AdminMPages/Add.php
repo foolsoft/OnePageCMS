@@ -6,31 +6,27 @@
 <form action="<?php echo $myLink; ?>DoAdd/referer/Index/" method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_title'); ?>:<br />
-    <input onkeyup="fsCMS.Chpu(this.value, 'alt');" class='input-100' maxlength='100' type='text' name='title' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'title', array(), array('onkeyup' => 'fsCMS.Chpu(this.value, \'alt-\' + this.getAttribute(\'id\').split(\'-\')[1]);', 'maxlength' => 100)); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_link'); ?>:<br />
-    <input id='alt' onkeyup="fsCMS.Chpu(this.value, this.id);" class='input-100' maxlength='100' type='text' name='alt' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'alt', array(), array('onkeyup' => 'fsCMS.Chpu(this.value, this.id);', 'maxlength' => 100)); ?>
   </p>
   <p>
     META - <?php _T('XMLcms_text_description'); ?>:<br />
-    <input class='input-100' maxlength='500' type='text' name='description' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'description'); ?>
   </p>
   <p>
     META - <?php _T('XMLcms_text_kw'); ?>:<br />
-    <input class='input-100' maxlength='500' type='text' name='keywords' />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'keywords'); ?>
   </p>
   <p>
     <?php _T('XMLcms_text_content'); ?>:<br />
-    <textarea name='html' class='ckeditor'></textarea>
+    <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html', array(), array('class' => 'ckeditor')); ?>
   </p>
   <p>
     <?php _T('XMLcms_text_template'); ?>:
-    <select name='tpl'>
-    <?php foreach ($tag->templates as $template) { ?>
-      <option value='<?php echo $template; ?>'><?php echo $template; ?></option>
-    <?php } ?>
-    </select>
+    <?php echo fsHtml::Select('tpl', $tag->templates); ?>
   </p>
   <p>
     <?php _T('XMLcms_text_as_menu'); ?>: 

@@ -47,7 +47,7 @@ class Response
         if (isset($this->$attr)) {
           return $this->$attr = $value;
         } else {
-          throw new ResponseException('Response invalid field ('.$attr.')');
+          throw new Exception('Response invalid field ('.$attr.')');
         }
     }
   }
@@ -71,5 +71,3 @@ class Response
     }
   }
 }
-
-class ResponseException extends Exception {}

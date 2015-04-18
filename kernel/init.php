@@ -3,7 +3,7 @@
  * Initialize fsKernel 
  */
 header('Content-type: text/html; charset=utf-8');
-session_set_cookie_params(null, null, null, null, true); // httponly
+session_set_cookie_params(null, '/', null, null, true); // httponly
 session_start();
 $_REQUEST['includeBody'] = '';
 $_REQUEST['includeHead'] = ''; 
@@ -18,6 +18,7 @@ define('PATH_TPL', PATH_ROOT.'templates/');
 define('PATH_CSS', PATH_ROOT.'includes/css/');
 define('PATH_JS',  PATH_ROOT.'includes/js/');
 define('PATH_IMG', PATH_ROOT.'includes/img/');
+include PATH_ROOT.'kernel/fsGlobals.php';
 include PATH_ROOT.'kernel/fsFunctions.php';
 fsFunctions::CreateDirectory(PATH_CACHE);
 fsFunctions::RestrucGlobalFILES();
@@ -26,6 +27,11 @@ fsFunctions::IncludeFiles(array(
     PATH_ROOT.'settings/Settings.php',  
     PATH_ROOT.'settings/dbSettings.php',
     PATH_ROOT.'kernel/fsStruct.php',
+    PATH_ROOT.'kernel/fsFileWorker.php',
+    PATH_ROOT.'kernel/fsDBconnection.php',
+    PATH_ROOT.'kernel/fsValidator.php',
+    PATH_ROOT.'kernel/fsDBTable.php',
+    PATH_ROOT.'kernel/fsDBTableExtension.php',
     PATH_ROOT.'kernel/fsSession.php',
     PATH_ROOT.'kernel/fsConfig.php',
     PATH_ROOT.'kernel/fsLanguage.php'
@@ -40,11 +46,6 @@ define('URL_CSS',     URL_ROOT_CLEAR.'includes/css/');
 define('URL_JS',      URL_ROOT_CLEAR.'includes/js/');
 define('URL_IMG',     URL_ROOT_CLEAR.'includes/img/');
 fsFunctions::IncludeFiles(array(
-    PATH_ROOT.'kernel/fsFileWorker.php',
-    PATH_ROOT.'kernel/fsDBconnection.php',
-    PATH_ROOT.'kernel/fsValidator.php',
-    PATH_ROOT.'kernel/fsDBTable.php',
-    PATH_ROOT.'kernel/fsDBTableExtension.php',
     PATH_ROOT.'kernel/fsHtml.php',
     PATH_ROOT.'kernel/fsHtaccess.php',
     PATH_ROOT.'kernel/Response.php',
@@ -55,10 +56,13 @@ fsFunctions::IncludeFiles(array(
     PATH_ROOT.'kernel/fsCache.php',
     PATH_ROOT.'kernel/fsInclude.php',
     PATH_ROOT.'kernel/fsCaptcha.php',
+    PATH_ROOT.'kernel/fsPaginator.php',
+    PATH_ROOT.'kernel/fsMenuGenerator.php',
 ));
 fsRoute::Request();
-fsFunctions::IncludeFolder(PATH_ROOT.'models', false, array('php'));
+define('IS_ADMIN_CONTROLLER', isset($_REQUEST['controller']) && strpos($_REQUEST['controller'], 'Admin') === 0);
+fsFunctions::IncludeFolder(PATH_ROOT.'models', array(), array('php'));
 fsFunctions::IncludeFile(PATH_PLUGINS.'init.php');
 fsFunctions::IncludeFile(PATH_ROOT.'controllers/init.php');
-fsFunctions::IncludeFolder(PATH_CACHE, false, array('php'));
-fsFunctions::IncludeFolder(PATH_CACHE_DB, false, array('php'));
+fsFunctions::IncludeFolder(PATH_CACHE, array(), array('php'));
+fsFunctions::IncludeFolder(PATH_CACHE_DB, array(), array('php'));

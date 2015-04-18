@@ -1,13 +1,13 @@
 <?php
-class PostsFunctions
+class FunctionsPosts
 {
     public static function GetFullCategoryName($categories, $category)
     {
-        $name = $category['name'];
+        $title = $category['title'];
         while($category['id_parent'] != 0 && isset($categories[$category['id_parent']])) {
             $category = $categories[$category['id_parent']];
-            $name = $category['name'].'\\'.$name;
+            $title = $category['title'].'\\'.$title;
         }
-        return $name;
+        return $title;
     }
 }

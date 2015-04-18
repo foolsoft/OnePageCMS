@@ -115,7 +115,7 @@ class fsValidator
             break;
 
           case 'ENUM': //enum
-            if (!isset($attr[$i]) || !self::Match($what, "/^(".$attr[$i].")$/s")) {
+            if (!isset($attr[$i]) || !self::Match($what, '/^('.$attr[$i].')$/s')) {
               return false;
             }
             break;

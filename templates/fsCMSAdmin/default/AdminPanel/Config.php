@@ -41,12 +41,6 @@
     <input type="text" name="start_page_custom" value="<?php echo $tag->settings->start_page_custom; ?>" />
   </p>
   <p class='title'>
-    <?php _T('XMLcms_text_404'); ?>:
-  </p>
-  <p>
-    <textarea class='ckeditor' name='page_not_found'><?php echo $tag->settings->page_not_found ?></textarea>
-  </p>
-  <p class='title'>
     <?php _T('XMLcms_text_template'); ?>:
     <span>
       <select class='select-small' name='template' onchange="fsCMS.Ajax('AjaxTemplateFiles', 'POST', 'theme='+this.value, 'main_template', true);">    
@@ -99,6 +93,18 @@
     </span>
     <br />
     <p class="title" id="war_message"></p>  
+  </p>
+  <p class='title'><?php _T('XMLcms_text_404'); ?>:</p>
+  <p>
+    <textarea class='ckeditor' name='page_not_found'><?php echo $tag->settings->page_not_found ?></textarea>
+  </p>
+  <p class='title'><?php _T('XMLcms_plugins_load_config'); ?>:</p>
+  <p>
+    <?php
+      foreach ($tag->libs as $libName => $isLibActive) {
+        echo $libName.': '.fsHtml::Select('libs['.$libName.']', array('1' => T('XMLcms_yes'), '0' => T('XMLcms_no')), $isLibActive).' ';
+      }
+    ?>
   </p>
   <hr />
   <input class='fsCMS-btn admin-btn-save' type='submit' value='<?php _T('XMLcms_save'); ?>' />     

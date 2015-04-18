@@ -54,7 +54,7 @@ class fsDBTableExtension extends fsDBTable
   * @param string $where (optional) Where clause as string. If <b>empty string</b> get total row count. Default <b>empty string</b>.
   * @return integer Count of rows.      
   */
-  public function GetCount($where = false)
+  public function GetCount($where = '')
   {
     $this->Execute('SELECT COUNT(*) as `c` FROM `'.$this->_struct->name.'`'.
                   ($where === ''
@@ -80,8 +80,8 @@ class fsDBTableExtension extends fsDBTable
     if (empty($key)) {
       return null;
     }
-    $result = $this->Select(is_array($field) ? $field : array($field))->
-        Where('`'.$key.'` = "'.$keyValue.'"')->Execute();
+    $this->Select(is_array($field) ? $field : array($field))
+        ->Where('`'.$key.'` = "'.$keyValue.'"')->Execute();
     return is_array($field) ? $this : $this->_result->$field;
   }
   

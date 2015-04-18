@@ -3,6 +3,11 @@ $(document).ready(function() {
   $('#lang').change(function() { UpdateRedactor(); });  
 });
 
+function ChangeSiteLanguage(id, name) {
+    $('#edit-language').find('input[name=name]').val(name);
+    $('#edit-language').find('input[name=key]').val(id);
+}
+
 function UpdateRedactor() 
 {
   fsCMS.Ajax(URL_ROOT + 'AdminMDictionary/Redactor' + URL_SUFFIX, 'post', 'lang=' + $('#lang').val(), 'dictionary-redactor', 'dictionary-redactor', 16, function(answer) {

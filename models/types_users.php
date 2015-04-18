@@ -23,15 +23,17 @@ class types_users extends fsDBTableExtension
         return false;
     }
     
-    public function Get($id = false)
+    public function Get($id = null)
     {
       $this->Select();
-      if($id !== false) {
-          $this->Where("`id` = '".$id."'");
+      $where = $id == GUEST_USER_TYPE ? array() : array(array('id' => GUEST_USER_TYPE, 'key' => '!='));
+      if(is_numeric($id) && $id >= 0) {
+        $where[] = array('id' => $id);       
       }
+      $this->Where($where);
       $this->Order(array('name'));
       $result = $this->ExecuteToArray();
-      if($id === false) {
+      if($id === null) {
         return $result; 
       }
       return count($result) == 1 ? $result[0] : null;

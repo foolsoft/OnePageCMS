@@ -24,95 +24,91 @@ class fsFunctions
     * @param float $number Number for convert.
     * @return string Result of conversion.  
     */
-  public static function StringFromNumber($number)
-  { 
-      if(!is_numeric($number)) {
-        return $number;
-      }
-      $number = explode('.', str_replace(',', '.', $number));
-      if(count($number) > 2) {
-        return '';
-      }
-      $num = $number[0];
-      $m = array(
-          array('ноль'),
-          array('-','один','два','три','четыре','пять','шесть','семь','восемь','девять'),
-          array('десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'),
-          array('-','-','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'),
-          array('-','сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот'),
-          array('-','одна','две')
-      );
-
-      $r = array(
-          array('...ллион','','а','ов'), 
-          array('тысяч','а','и',''),
-          array('миллион','','а','ов'),
-          array('миллиард','','а','ов'),
-          array('триллион','','а','ов'),
-          array('квадриллион','','а','ов'),
-          array('квинтиллион','','а','ов')
-          // ,array(... список можно продолжить
-      );
-
-      if($num==0) {
-        return $m[0][0];
-      }
-      $o = array(); 
-
-      foreach(array_reverse(str_split(str_pad($num, ceil(strlen($num) / 3) * 3, '0', STR_PAD_LEFT), 3)) as $k => $p) {
-          $o[$k] = array();
-          foreach($n = str_split($p) as $kk => $pp) {
-              if(!$pp) {
-                continue;
-              } else {
-                  switch($kk) {
-                      case 0:
-                        $o[$k][] = $m[4][$pp];
-                        break;
-                        
-                      case 1:
-                        if($pp==1) { 
-                            $o[$k][] = $m[2][$n[2]];
-                            break 2;
-                        } else { 
-                            $o[$k][] = $m[3][$pp];
-                            break;
-                        }
-                        
-                      case 2:
-                        if(($k==1)&&($pp<=2)) {
-                            $o[$k][] = $m[5][$pp];
-                        } else { 
-                            $o[$k][] = $m[1][$pp];
-                        }
-                        break;
-                  }
-                  $p*=1;
-                  if(!$r[$k]) {
-                    $r[$k] = reset($r);
-                  }
-            }
+    public static function StringFromNumber($number)
+    { 
+        if(!is_numeric($number)) {
+          return $number;
         }
-
-        if($p && $k) {
-            switch(true) {
-                case preg_match("/^[1]$|^\\d*[0,2-9][1]$/", $p):
-                    $o[$k][] = $r[$k][0].$r[$k][1];
-                    break;
-                    
-                case preg_match("/^[2-4]$|\\d*[0,2-9][2-4]$/",$p):
-                    $o[$k][] = $r[$k][0].$r[$k][2];
-                    break;
-                    
-                default:
-                    $o[$k][] = $r[$k][0].$r[$k][3];
-                    break;
-            }
+        $number = explode('.', str_replace(',', '.', $number));
+        if(count($number) > 2) {
+          return '';
         }
-        $o[$k] = implode(' ', $o[$k]);
+        $num = $number[0];
+        $m = array(
+            array('ноль'),
+            array('-','один','два','три','четыре','пять','шесть','семь','восемь','девять'),
+            array('десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'),
+            array('-','-','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'),
+            array('-','сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот'),
+            array('-','одна','две')
+        );
+        $r = array(
+            array('...ллион','','а','ов'), 
+            array('тысяч','а','и',''),
+            array('миллион','','а','ов'),
+            array('миллиард','','а','ов'),
+            array('триллион','','а','ов'),
+            array('квадриллион','','а','ов'),
+            array('квинтиллион','','а','ов')
+            // ,array(... список можно продолжить
+        );
+        if($num==0) {
+          return $m[0][0];
+        }
+        $o = array(); 
+        foreach(array_reverse(str_split(str_pad($num, ceil(strlen($num) / 3) * 3, '0', STR_PAD_LEFT), 3)) as $k => $p) {
+            $o[$k] = array();
+            foreach($n = str_split($p) as $kk => $pp) {
+                if(!$pp) {
+                    continue;
+                } 
+                switch($kk) {
+                    case 0:
+                      $o[$k][] = $m[4][$pp];
+                      break;
+
+                    case 1:
+                      if($pp==1) { 
+                          $o[$k][] = $m[2][$n[2]];
+                          break 2;
+                      } else { 
+                          $o[$k][] = $m[3][$pp];
+                          break;
+                      }
+
+                    case 2:
+                      if(($k==1)&&($pp<=2)) {
+                          $o[$k][] = $m[5][$pp];
+                      } else { 
+                          $o[$k][] = $m[1][$pp];
+                      }
+                      break;
+                }
+                $p*=1;
+                if(!$r[$k]) {
+                  $r[$k] = reset($r);
+                }
+            }
+
+            if($p && $k) {
+                switch(true) {
+                    case preg_match("/^[1]$|^\\d*[0,2-9][1]$/", $p):
+                        $o[$k][] = $r[$k][0].$r[$k][1];
+                        break;
+
+                    case preg_match("/^[2-4]$|\\d*[0,2-9][2-4]$/",$p):
+                        $o[$k][] = $r[$k][0].$r[$k][2];
+                        break;
+
+                    default:
+                        $o[$k][] = $r[$k][0].$r[$k][3];
+                        break;
+                }
+            }
+            $o[$k] = implode(' ', $o[$k]);
+        }
+        return implode(' ', array_reverse($o)).(count($number) == 2 ? ' '.$number[1] : '');
     }
-    return implode(' ', array_reverse($o)).(count($number) == 2 ? ' '.$number[1] : '');
-  }
   
   /**
     * Start process of file downloading 
@@ -236,6 +232,46 @@ class fsFunctions
     echo '</pre>';
   }
   
+  private static function _Lower()
+  {
+    return array(
+        'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m',
+        'ё','й','ц','у','к','е','н','г','ш','щ','з','х','ъ','ф','ы','в','а','п','р','о','л','д','ж','э','я','ч','с','м','и','т','ь','б','ю'
+    );  
+  }
+  
+  private static function _Upper()
+  {
+    return array(
+        'Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M',
+        'Ё','Й','Ц','У','К','Е','Н','Г','Ш','Щ','З','Х','Ъ','Ф','Ы','В','А','П','Р','О','Л','Д','Ж','Э','Я','Ч','С','М','И','Т','Ь','Б','Ю'
+    );
+  }
+  
+  /**
+    * Convert string to uppercase.
+    * @since 1.1.0
+    * @api    
+    * @param string $string String for conversion.
+    * @return string Input string in uppercase.  
+    */
+  public static function ToUpper($string)
+  {
+    return str_replace(self::_Lower(), self::_Upper(), $string);   
+  }
+  
+  /**
+    * Convert string to lower case.
+    * @since 1.1.0
+    * @api    
+    * @param string $string String for conversion.
+    * @return string Input string in lowercase.  
+    */
+  public static function ToLower($string)
+  {
+    return str_replace(self::_Upper(), self::_Lower(), $string);   
+  }
+  
   /**
     * Get directory from full file path.
     * @since 1.0.0
@@ -254,14 +290,15 @@ class fsFunctions
     * @api    
     * @param string $stringOfChange Change commad (e.g. '+2 days').
     * @param date $startDate (optional) Base timestamp. Default <b>now</b>.
+    * @param string $returnFormat (optional) Format of returned value. Default <b>Y-m-d H:i:s</b>.
     * @return date Calculated date.  
     */
-  public static function AddTime($stringOfChange, $startDate = null) 
+  public static function AddTime($stringOfChange, $startDate = null, $returnFormat = 'Y-m-d H:i:s') 
   {
     if(null == $startDate || $startDate === false) {
       $startDate = date('Y-m-d H:i:s');
     }
-    return date('Y-m-d H:i:s', strtotime($stringOfChange, strtotime($startDate)));
+    return date($returnFormat, strtotime($stringOfChange, strtotime($startDate)));
   }
   
   /**
@@ -270,13 +307,13 @@ class fsFunctions
     * @api    
     * @param string $delimiter Delimiter.
     * @param string $string String for split.
-    * @param boolean $deleteEmpty (optional) Flag for skipping empty entries. Default <b>false</b>.
+    * @param boolean|string $deleteEmpty (optional) If false return all values. If string skip this value. Default <b>false</b>.
     * @param integer $limit (optional) Msximum result array length. If 0 - no limit. Default <b>0</b>.
     * @return array Splitting string.  
     */
   public static function Explode($delimiter, $string, $deleteEmpty = false, $limit = 0) 
   {
-    $arr = is_numeric($limit) && $limit > 0 ? explode($delimiter, $string) : explode($delimiter, $string, $limit);
+    $arr = is_numeric($limit) && $limit > 0 ? explode($delimiter, $string, $limit) : explode($delimiter, $string);
     if($deleteEmpty !== false) {
       $temp = array();
       foreach($arr as $a) {
@@ -298,7 +335,7 @@ class fsFunctions
     * @param integer $access Permissions.
     * @return void  
     */
-  public static function CreateDirectory($path, $access = 0777)
+  public static function CreateDirectory($path, $access = 0755)
   {
     if (!is_dir($path)) {
       $parts = explode('/', $path);
@@ -380,9 +417,13 @@ class fsFunctions
       }
     }
     $head = "";
-    if (!empty($from)) {
-      $head .= "From: $from\r\n";
-      $head .= "Reply-To: $from\r\n";
+    if ($from != '') {
+      $fromArray = explode('<', $from);
+      if(count($fromArray) == 2) {
+        $from = '=?UTF-8?B?'.base64_encode(trim($fromArray[0])).'?= <'.$fromArray[1];
+      }
+      $head .= "From: ".$from."\r\n";
+      $head .= "Reply-To: ".$from."\r\n";
     }
     $head .= "X-Mailer: PHPMail Tool\r\n";
     $head .= "Mime-Version: 1.0\r\n";
@@ -430,70 +471,71 @@ class fsFunctions
     * @param string $path Directory for search.
     * @param string $searchFile (optional) Flag for files search. Default <b>true</b>.
     * @param string $searchDir (optional) Flag for folders search. Default <b>true</b>.
-    * @param string $prefix (optional) File formats for search. Default <b>empty array</b>.
+    * @param array $prefix (optional) File formats for search. Default <b>empty array</b>.
     * @param array $fileFormats (optional) Prefix mask for search. Default <b>empty string</b>.
     * @param boolean $topDirectory (optional) Flag for search only in top directory without subdirectories. Default <b>true</b>.
     * @return array Associative array with files and folders names. 
     */
-  public static function DirectoryInfo($path, $searchFile = true, $searchDir = true, $prefix = '', $fileFormats = array(), $topDirectory = true)
-  {
-    $arr = array('LENGTH' => 0, 'NAMES' => array());
-    if ($searchDir === false && $searchFile === false) {
-      return $arr;
-    }
-    if (is_dir($path)) {
-      $path = self::Slash($path);
-      $dh = opendir($path);
-      $fileFormatsCount = count($fileFormats);
-      while(false !== ($dir = readdir($dh))) {
-        if ($dir == '.' || $dir == '..') {
-          continue;
+    public static function DirectoryInfo($path, $searchFile = true, $searchDir = true, $prefix = array(), $fileFormats = array(), $topDirectory = true)
+    {
+        $arr = array('LENGTH' => 0, 'NAMES' => array());
+        if (!is_dir($path) || ($searchDir === false && $searchFile === false)) {
+          return $arr;
         }
-        $fileName = $path.$dir;
-        if ($searchFile && is_file($fileName)) {
-          if(!empty($prefix)) {
-            if(!is_array($prefix)) {
-              $prefix = array($prefix);
-            }
-            $next = false;
+        $path = self::Slash($path);
+        $cache = PATH_CACHE.'di_'.md5(implode(',', $fileFormats).implode(',', $prefix).$path.$searchFile.$searchDir.$topDirectory).'.php';
+        if(file_exists($cache)) {
+            return self::IncludeFile($cache);
+        }
+        $dh = opendir($path);
+        $fileFormatsCount = count($fileFormats);
+        $checkPrefix = is_array($prefix) && count($prefix) > 0;
+        while(false !== ($dir = readdir($dh))) {
+          if ($dir == '.' || $dir == '..') {
+            continue;
+          }
+          $fileName = $path.$dir;
+          if($checkPrefix) {
+            $next = true;
             foreach($prefix as $p) {
-              if(strpos($dir, $p) !== 0) {
-                $next = true;
+              if(($p[0] != '!' && strpos($dir, $p) === 0) 
+                || ($p[0] == '!' && strpos($dir, substr($p, 1)) !== 0)) {
+                $next = false;
                 break;
               }
             }
             if($next) {
-              continue;
-            } 
-          }
-          $ext = pathinfo($fileName, PATHINFO_EXTENSION);
-          if ($fileFormatsCount > 0 
-             && (in_array('!'.$ext, $fileFormats) || !in_array($ext, $fileFormats))) {
-            continue;
-          }
-        } 
-        if ($searchDir && is_dir($fileName)) {
-          if(!empty($prefix) && strpos($dir, $prefix) !== 0) {
-            continue;
-          }
-        }
-        if (($searchDir && is_dir($fileName)) || ($searchFile && is_file($fileName))) { 
-          $arr['NAMES'][] = $dir;
-          ++$arr['LENGTH'];
-        }
-        if(!$topDirectory && is_dir($fileName)) {
-            $fileName = self::Slash($fileName);
-            $temp = self::DirectoryInfo($fileName, $searchFile, $searchDir, $prefix, $fileFormats, $topDirectory);
-            for($i = 0; $i < $temp['LENGTH']; ++$i) {
-                $arr['NAMES'][] = $dir.'/'.$temp['NAMES'][$i];
-                ++$arr['LENGTH'];    
+                continue;
             }
-        }
-     }
-     closedir($dh); 
+          }
+          if ($searchFile && is_file($fileName)) {
+            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+            if ($fileFormatsCount > 0 
+               && (in_array('!'.$ext, $fileFormats) || !in_array($ext, $fileFormats))) {
+              continue;
+            }
+            $arr['NAMES'][] = $dir;
+            ++$arr['LENGTH'];
+          } 
+
+          if(is_dir($fileName)) {
+            if($searchDir) {
+                $arr['NAMES'][] = $dir;
+                ++$arr['LENGTH'];
+            }
+            if(!$topDirectory) {
+                $temp = self::DirectoryInfo($fileName, $searchFile, $searchDir, $prefix, $fileFormats, $topDirectory);
+                $arr['LENGTH'] += $temp['LENGTH'];
+                for($i = 0; $i < $temp['LENGTH']; ++$i) {
+                    $arr['NAMES'][] = $dir.'/'.$temp['NAMES'][$i];
+                }
+            }
+          }
+       }
+       closedir($dh); 
+       self::ArrayToFile($arr, '', $cache, true); 
+       return $arr;
     }
-    return $arr;
-  }
   
   /**
     * Get user ip address.
@@ -528,8 +570,7 @@ class fsFunctions
       foreach ($data as $name => $value) {
         $$name = $value;
       }
-      include_once $file;
-      return true;
+      return include $file;
     } 
     return false;    
   }
@@ -554,24 +595,24 @@ class fsFunctions
     * @since 1.0.0
     * @api    
     * @param string $path Path to folder to be include.
-    * @param string $prefix (optional) Prefix for file search. Default <b>empty string</b>.
-    * @param array $format (optional) File format for search. Default <b>empty array</b>.
+    * @param array $prefix (optional) Prefix for file search. Default <b>empty array</b>.
+    * @param array $format (optional) File format for search. Default <b>array('php')</b>.
     * @param array $notInclude (optional) Files for exclude. Default <b>empty array</b>.
     * @return boolean Result of action.
     */ 
-    public static function IncludeFolder($path, $prefix = '', $format = array('php'), $notInclude = array())
+    public static function IncludeFolder($path, $prefix = array(), $format = array('php'), $notInclude = array())
     {
-      $path = self::Slash($path);
-      $arr = self::DirectoryInfo($path, true, false, $prefix, $format);
-      if ($arr['LENGTH'] == 0) {
-        return false;
-      }
-      for ($i = 0; $i < $arr['LENGTH']; ++$i) {
-        if (!in_array($arr['NAMES'][$i], $notInclude)) {
-          self::IncludeFile($path.$arr['NAMES'][$i]);
+        $path = self::Slash($path);
+        $arr = self::DirectoryInfo($path, true, false, $prefix, $format);
+        if ($arr['LENGTH'] == 0) {
+          return false;
         }
-      }
-      return true;
+        for ($i = 0; $i < $arr['LENGTH']; ++$i) {
+          if (!in_array($arr['NAMES'][$i], $notInclude)) {
+            self::IncludeFile($path.$arr['NAMES'][$i]);
+          }
+        }
+        return true;
     }
   
     /**
@@ -583,7 +624,7 @@ class fsFunctions
     */
     public static function IsArrayAssoc($array) 
     {                                     
-      return is_array($array) && count($array) > 0 && array_values($array) !== $array;
+        return is_array($array) && count($array) > 0 && array_values($array) !== $array;
     }
   
     /**
@@ -689,30 +730,72 @@ class fsFunctions
   
     /**
     * Save array to php file.
-    * @since 1.0.0
+    * @since 1.1.0
     * @api 
     * @param array $array Array for saving.    
     * @param string $name Name of file variable. 
     * @param string $file File path. 
+    * @param boolean $asReturn (optional) Flag for return statement in file. Default <b>false</b>.
     * @return boolean Result of action.
     */ 
-    public static function ArrayToFile($array, $name, $file)
+    public static function ArrayToFile($array, $name, $file, $asReturn = false)
     {
-      if (!is_array($array)) {
-        return false;
-      }
       $f = fopen($file, 'w');
       if (!$f) {
         return false;
       }
-      fwrite($f, '<?php $'.$name.' = array(');
-      foreach ($array as $k => $v) {
-        fwrite($f, "'".$k."'=>'".$v."',");
+      $asString = self::ArrayToString($array, $name).';';
+      if($asReturn && $asString !== '') {
+        if($name === '') {
+            $asString = 'return '.$asString;
+        } else {
+            $asString .= 'return $'.$name.';';
+        }
       }
-      fwrite($f, ');');
+      fwrite($f, '<?php '.$asString);
       fclose($f);
       return true;
     }
+
+    /**
+    * Convert array to PHP string.
+    * @since 1.1.0
+    * @api 
+    * @param array $array Array for saving.    
+    * @param string $name Name of file variable. If empty not create variable. 
+    * @return string Array as PHP string.
+    */ 
+    public static function ArrayToString($array, $name = '')
+    {
+      $result = '';
+      $name = trim($name);
+      $nameIsEmpty = $name === ''; 
+      if(is_array($array) && ($nameIsEmpty || preg_match('/^[a-zA-Z_]/', $name))) {
+        $result = ($nameIsEmpty ? '' : '$'.$name.'=').'array(';
+        if(self::IsArrayAssoc($array)) {
+          foreach ($array as $k => $v) {
+            if(is_array($v)) {
+                $result .= "'".$k."'=>".self::ArrayToString($v).",";
+            } else {
+                $ps = is_numeric($v) ? '' : '\'';
+                $result .= "'".$k."'=>".$ps.$v.$ps.",";
+            }
+          }
+        } else {
+          foreach ($array as $v) {
+            if(is_array($v)) {
+                $result .= self::ArrayToString($v).',';
+            } else {
+                $ps = is_numeric($v) ? '' : '\'';
+                $result .= $ps.$v.$ps.',';
+            }
+          }
+        } 
+        $result .= ')'; 
+      }
+      return $result; 
+    }
+
 
     /**
     * Get output of php file.

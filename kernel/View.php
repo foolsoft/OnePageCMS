@@ -95,13 +95,9 @@ class View
     $params['USER_LANG'] = fsSession::GetInstance('Language');
     do {
       $hash = md5($buffer);
-      try {
-        $buffer = $this->_TemplateCompile($tpl_path, $buffer, $params);
-        if ($this->actionsCompile) {
-          $buffer = $this->_ActionsCompile($buffer, $params);
-        }
-      } catch (Exception $e) { 
-        throw new ViewException($e);
+      $buffer = $this->_TemplateCompile($tpl_path, $buffer, $params);
+      if ($this->actionsCompile) {
+        $buffer = $this->_ActionsCompile($buffer, $params);
       }
     } while ($this->_recursionLevel == 0 && ++$try < $this->_compileLoop && $hash != md5($buffer));
     if (!$noHtmlCompile) {
@@ -216,5 +212,3 @@ class View
     return $html;
   }
 }
-
-class ViewException extends Exception { }

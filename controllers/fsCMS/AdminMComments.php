@@ -33,7 +33,7 @@ class AdminMComments extends AdminPanel
     
     $count = $this->_table->GetCount(); 
     $this->Tag('pages', 
-               Paginator::Get(
+               fsPaginator::Get(
                 fsHtml::Url($this->_link.'Index'),
                 'page',
                 $count,

@@ -6,8 +6,20 @@ class users extends fsDBTableExtension
     parent::__destruct();
   }
   
+  public function ChangePassword($login, $newPassword)
+  {
+    $newPassword = users::HashPassword($newPassword);
+    if($newPassword !== '') {
+        return $this->Update(array('password'), array($newPassword))
+            ->Where('`login` = "'.$login.'"')
+            ->Execute();
+    }
+    return false;
+  }
+  
   public function CheckLogin($login) 
   {
+    $login = fsValidator::ClearData($login);
     $this->GetOne($login, false, 'login');
     return $this->result->login != $login;
   }
@@ -21,7 +33,7 @@ class users extends fsDBTableExtension
     return $this->Order(array('login'))->ExecuteToArray();
   }
   
-  public static function GeneratePassword($password)
+  public static function HashPassword($password)
   {
     if($password === '') {
         return '';
@@ -29,10 +41,24 @@ class users extends fsDBTableExtension
     return sha1(fsConfig::GetInstance('secret').$password); 
   }
   
+  public static function GeneratePassword($length = 7)
+  {
+    if($length < 1) {
+        $length = 7;
+    }
+    $result = '';
+    $alph = '0123-zxcv456789bRTGBNHYUJnk$lqwertyuiop!QAZXSWEDCmasdfghjVFMKIOLP';
+    $alphLength = strlen($alph);
+    for($i = 0; $i < $length; ++$i) {
+        $result .= $alph[rand(0, $alphLength)];
+    }
+    return $result; 
+  }
+  
   public function Add($login, $password, $active = 1, $type = 2) 
   {                    
     $this->login = $login;
-    $this->password = self::GeneratePassword($password);
+    $this->password = self::HashPassword($password);
     $this->active = $active;
     $this->type = $type;
     $this->Insert()->Execute();
@@ -41,11 +67,13 @@ class users extends fsDBTableExtension
   
   public function IsUser($login, $password)
   {
+    $login = fsValidator::ClearData($login);
+    $password = fsValidator::ClearData($password);
     if ($login == '') {
       return false;
     }
     $this->Select()->Where(array(array('login' => $login),
-                                 array('password' => self::GeneratePassword($password)),
+                                 array('password' => self::HashPassword($password)),
                                  array('active' => 1)))->Limit(1)->Execute();
     if ($this->_result->login == $login) {
       $result = array();

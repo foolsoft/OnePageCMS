@@ -1,16 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dictionary>
+  <text name='cms_admin_password_in_adminpanel'>
+    <en>Administrator password can only be changed in the administration panel</en>
+  </text>
+  <text name='cms_text_invalid_password'>
+    <en>Invalid password</en>
+  </text>
+  <text name='cms_request_new_password'>
+    <en>Request for password change</en>
+  </text>
+  <text name='cms_start_update'>
+    <en>Start update</en>
+  </text>
+  <text name='cms_auto_updated'>
+    <en>System update successful</en>
+  </text>
+  <text name='cms_panel_languages'>
+    <en>Site languages</en>
+  </text>
+  <text name='cms_recommend_before_update'>
+    <en>Before starting update we recommend do</en>
+  </text>
+  <text name='cms_important'>
+    <en>Important</en>
+  </text>
+  <text name='cms_important_update'>
+    <en><![CDATA[
+        Automatic update process at this stage 
+        affects all basic OnePageCMS files. If you have made
+        changes in the base assembly, then you will need to add your
+        functional again, e.g. from  back up copy of the files that you
+        can download from the link above.    
+    ]]></en>
+  </text>  
+  <text name='cms_recommend_less_user'>
+    <en>Make sure that Your not have large number of visitors online</en>
+  </text>
+  <text name='cms_save_db'>
+    <en>Save database tables with prefix '{0}'' in database '{1}'</en>
+  </text>
+  <text name='cms_savebackup'>
+    <en>Download site backup</en>
+  </text>
+  <text name='cms_text_duty'>
+    <en>Duty</en>
+  </text>
+  <text name='cms_text_updates'>
+    <en>Updates</en>
+  </text>
+  <text name='cms_text_doupdate'>
+    <en>New version {0} available</en>
+  </text>
+  <text name='cms_text_uptodate'>
+    <en>Up to date</en>
+  </text>
+  <text name='cms_request_forgot_confirm'>
+    <en>We sent to you message with instructions</en>
+  </text>
+  <text name='cms_captcha_wrong'>
+    <en>Wrong security code</en>
+  </text>
+  <text name='cms_captcha'>
+    <en>Code from image</en>
+  </text>
+  <text name='cms_request_forgot_text'>
+    <en><![CDATA[Good day.<br />At {2} from IP address {1} we received a request to change
+    password of you account on web site {3}.<br />To confirm the password recovery process
+    open this link <a href="{0}" title="Change password">{0}</a>.<br />
+    If you did not start the password recovery procedure, ignore this message and
+    contact the administrator of our site. <br /> Thank you. 
+    ]]></en>
+  </text>
+  <text name='cms_text_now_password'>
+    <en>Current password</en>
+  </text>
+  <text name='cms_text_new_password'>
+    <en>New password</en>
+  </text>
+  <text name='cms_error_again'>
+    <en>We got error, try again</en>
+  </text>
+  <text name='cms_text_look_new_password'>
+    <en>We sent new password for you.</en>
+  </text>
+  <text name='cms_you_new_password'>
+    <en>Yor new password: {0}, OnePageCMS.</en>
+  </text>
+  <text name='cms_text_no_email_users'>
+    <en>User with this Email not found</en>
+  </text>
+  <text name='cms_text_new_repassword'>
+    <en>New password again</en>
+  </text>
+  <text name='cms_month_1'>
+    <en>January</en>
+  </text>
+  <text name='cms_month_2'>
+    <en>February</en>
+  </text>
+  <text name='cms_month_3'>
+    <en>March</en>
+  </text>
+  <text name='cms_month_4'>
+    <en>April</en>
+  </text>
+  <text name='cms_lk'>
+    <en>My profile</en>
+  </text>
+  <text name='cms_text_fogot_password'>
+    <en>Forgot password</en>
+  </text>
+  <text name='cms_month_5'>
+    <en>May</en>
+  </text>
+  <text name='cms_month_6'>
+    <en>June</en>
+  </text>
+  <text name='cms_month_7'>
+    <en>July</en>
+  </text>
+  <text name='cms_month_8'>
+    <en>August</en>
+  </text>
+  <text name='cms_month_9'>
+    <en>September</en>
+  </text>
+  <text name='cms_month_10'>
+    <en>October</en>
+  </text>
+  <text name='cms_month_11'>
+    <en>November</en>
+  </text>
+  <text name='cms_month_12'>
+    <en>December</en>
+  </text>
   <text name='cms_text_search'>
     <en>Search</en>
   </text>  
+  <text name='cms_text_passwordrecover'>
+    <en>Password recover</en>
+  </text>
   <text name='cms_text_comments'>
     <en>Comments</en>
+  </text>
+  <text name='cms_text_not_implemented'>
+    <en>Unfortunately this feature is not implemented in this resource</en>
   </text>
   <text name='cms_register_success'>
     <en><![CDATA[
       Now you registered! Can use  
       <a title="Login" href="{0}">this form</a> for entering.
     ]]></en>
+  </text>
+  <text name='cms_plugins_load_config'>
+    <en>Configuration of PHP libraries including</en>
   </text>
   <text name='cms_access_denied_page'>
     <en>Page for "access denied" error</en>
@@ -418,6 +561,15 @@
   </text>
   <text name='cms_activate'>
     <en>Activate</en>
+  </text>
+  <text name='cms_cannot_delete_last'>
+    <en>Can not delete last active record</en>
+  </text>
+  <text name='cms_text_new_name'>
+    <en>New name</en>
+  </text>
+  <text name='cms_deactivate'>
+    <en>Deactivate</en>
   </text>
   <text name='cms_settings'>
     <en>Settings</en>

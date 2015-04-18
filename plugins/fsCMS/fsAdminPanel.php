@@ -1,15 +1,18 @@
 <?php
-/**
+/*
  * fsCMS Administrator panel base class
  */
 class AdminPanel extends cmsController
 {
+    private $_updateFileName = 'release.zip';
+    private $_updateFileFlag = 'update.ts';
+    
     public function CreateView($params = array(), $template = '', $show = false, $adminMode = null) 
     {
         return parent::CreateView($params, $template, $show, is_null($adminMode) ? true : $adminMode);
     }
 
-    /**
+    /*
     * Get full path for template folder.
     * @param string $folder Needed template folder.
     * @return string Template path. 
@@ -26,7 +29,7 @@ class AdminPanel extends cmsController
         return fsFunctions::Slash($path);
     }
   
-    /**
+    /*
     * Call controller method.
     * @param fsStruct $param Request data.
     * @param string $method Method name for call.
@@ -47,7 +50,7 @@ class AdminPanel extends cmsController
         }
     }
 
-    /**
+    /*
     * Set redirect response.
     * @param string $method (optional) Controller method for redirection. If empty redirect to request referer. Default <b>empty string</b>.
     * @return void 
@@ -70,11 +73,89 @@ class AdminPanel extends cmsController
   
     private function _Sidebar()
     {
-        $menu = MenuGenerator::Get(URL_ROOT, 'admin_menu', 'parent', 'a-menu', 'name', 'name', 'text',  array('order'), '`in_panel` = "1"');
+        $menu = fsMenuGenerator::Get(URL_ROOT, 'admin_menu', 'parent', 'a-menu', 'name', 'name', 'text',  array('position'), '`in_panel` = "1"');
         return $this->CreateView(array('menu' => $menu), $this->_Template('Sidebar', 'AdminPanel'));
     }
     
-    /**
+    public function actionUpdate($param)
+    {
+        if(!file_exists($this->_updateFileName)) {
+            //return $this->Redirect($this->_My('Hello'));
+        }  
+        $this->Tag('linkDownloadBackUp', fsFunctions::StringFormat('<a href="{0}" title="{1}">{1}</a>', array($this->_My('DownloadBackUp'), T('XMLcms_savebackup'))));
+    }
+    
+    public function actionDoUpdate($param)
+    {
+        $this->Redirect($this->_My('Hello'));
+        if(!file_exists($this->_updateFileFlag) || !file_exists($this->_updateFileName)) {
+            return;
+        }
+        $nextCheck = explode(',', file_get_contents($this->_updateFileFlag));
+        $zip = new ZipArchive();
+        if ($zip->open($this->_updateFileName)) {
+          $zip->extractTo(PATH_ROOT);
+          $zip->close();
+        }
+        if(file_exists(PATH_ROOT.'update.php')) {
+            $db = new fsDBconnection();
+            include PATH_ROOT.'update.php';
+            if(isset($history[$nextCheck[1]])) {
+                foreach($history[$nextCheck[1]] as $query) {
+                    $db->Query($query);
+                }
+            }
+            $db->Close();
+            fsFunctions::DeleteFile(PATH_ROOT.'update.php');
+            fsFunctions::DeleteFile($this->_updateFileFlag);
+            fsFunctions::DeleteFile($this->_updateFileName);
+        }
+        fsCache::Clear();
+        $this->Message(T('XMLcms_auto_updated'));
+    }
+    
+    public function actionDownloadBackUp()
+    {
+        $fileName = PATH_ROOT.'temp/backup_'.date('dmY').'.zip';
+        $createZip = new createDirZip();
+        if(!file_exists($fileName)) {
+          $createZip->getFilesFromFolder(PATH_ROOT, '');
+          $fd = fopen($fileName, 'wb');
+          $out = fwrite($fd, $createZip->getZippedfile());
+          fclose($fd);
+        }
+        $createZip->forceDownload($fileName);         
+    }
+    
+    private function _CheckUpdate()
+    {
+        $url = 'http://release.onepagecms.net';
+        if(!file_exists($this->_updateFileFlag)) {
+            file_put_contents($this->_updateFileFlag, '0,'.$this->settings->version);
+        }
+        $nextCheck = explode(',', file_get_contents($this->_updateFileFlag));
+        $time = time(); 
+        if($nextCheck[0] < $time) {
+            $nextCheck[0] = $time + (2 * 60 * 60);
+            $response = file_get_contents($url);
+            if($json = json_decode($response, true)) {
+                file_put_contents($this->_updateFileFlag, $nextCheck.','.$json['version']);
+                if($json['version'] != $this->settings->version && '' != $json['link']) {
+                    file_put_contents($this->_updateFileName, fopen($json['link'], 'r'));
+                    $nextCheck[1] = $json['version']; 
+                }
+            }
+        }
+        $template = $nextCheck[1] != $this->settings->version
+            ? '<a href="{0}" title="{1}">{1}</a>'
+            : '{1}';
+        $this->Tag('cmsUpdateLink', fsFunctions::StringFormat($template, array(
+            $this->_My('Update'),
+            $nextCheck[1] != $this->settings->version ? fsFunctions::StringFormat(T('XMLcms_text_doupdate'), array($nextCheck[1])) : T('XMLcms_text_uptodate')
+        )));
+    }
+    
+    /*
     * Get dictionary data.
     * @param fsStruct $param User request.
     * @return void 
@@ -97,8 +178,8 @@ class AdminPanel extends cmsController
           $this->EmptyResult(true);
         }
     } 
-
-    /**
+  
+    /*
     * Call block of Edit functions.
     * @param fsStruct $param User request.
     * @return void 
@@ -112,7 +193,7 @@ class AdminPanel extends cmsController
         $this->_Do($param, $param->call, 'Edit');
     }
   
-    /**
+    /*
     * Action before main conroller action.
     * @param fsStruct $request User request.
     * @return void 
@@ -147,10 +228,14 @@ class AdminPanel extends cmsController
         $this->Tag('sidebar', $this->_Sidebar());
         $this->Tag('panelSupport', $this->_PanelSupport());
 
+        $this->_updateFileName = PATH_ROOT.'temp/'.$this->_updateFileName;
+        $this->_updateFileFlag = PATH_ROOT.'temp/'.$this->_updateFileFlag;
+        $this->_CheckUpdate();
+
         parent::Init($request);
     }
  
-    /**
+    /*
     * Template redactor save action.
     * @param fsStruct $param User request.
     * @return void 
@@ -186,7 +271,7 @@ class AdminPanel extends cmsController
         $this->Html(T('XMLcms_updated'));
     }
   
-    /**
+    /*
     * Template redactor action.
     * @param fsStruct $param User request.
     * @return void 
@@ -229,7 +314,7 @@ class AdminPanel extends cmsController
 
         if(count($template) == 2) {
             if(in_array($template[1], array('css', 'js'))) { 
-                $filesIncludes = fsFunctions::DirectoryInfo($pathInclude.$template[1], true, false, '', array($template[1]), false);
+                $filesIncludes = fsFunctions::DirectoryInfo($pathInclude.$template[1], true, false, array(), array($template[1]), false);
                 foreach($filesIncludes['NAMES'] as $include) {
                     $files[] = $include;  
                 }
@@ -239,7 +324,7 @@ class AdminPanel extends cmsController
           $tplFormat = strlen(EXT_TPL) > 0 && substr(EXT_TPL, 0, 1) == '.' ? substr(EXT_TPL, 1) : EXT_TPL;
           foreach($controllers['NAMES'] as $controller) {
             $path = $pathCms.$template[0].'/'.$controller.'/';
-            $templates = fsFunctions::DirectoryInfo($path, true, false, false, array($tplFormat));
+            $templates = fsFunctions::DirectoryInfo($path, true, false, array(), array($tplFormat));
             foreach($templates['NAMES'] as $tpl) {
               $files[] = $controller.'/'.$tpl;  
             }
@@ -266,7 +351,7 @@ class AdminPanel extends cmsController
         }
     }
   
-    /**
+    /*
     * Clear cache action.
     * @param fsStruct $param User request.
     * @return void 
@@ -275,11 +360,16 @@ class AdminPanel extends cmsController
     {
         $this->Html(T('XMLcms_deleted'));
         fsSession::Delete('Language');
+        fsSession::Delete('LanguageId');
+        fsFunctions::DeleteDirectory(PATH_ROOT.'temp');
+        $files = fsFunctions::DirectoryInfo(PATH_JS, true, false, array('initFsCMS'), array('js'));
+        foreach($files['NAMES'] as $file) {
+            fsFunctions::DeleteFile(PATH_JS.$file);
+        }
         fsCache::Clear();
-        fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');
     }
   
-    /**
+    /*
     * Send message to support.
     * @param fsStruct $param User request.
     * @return void 
@@ -298,7 +388,7 @@ class AdminPanel extends cmsController
         }
     }
   
-    /**
+    /*
     * Lock/Unlock site action.
     * @param fsStruct $param User request.
     * @return void 
@@ -321,7 +411,7 @@ class AdminPanel extends cmsController
             ), true);
     } 
   
-    /**
+    /*
     * Default activate action.
     * @param fsStruct $param User request.
     * @return boolean Result of action 
@@ -337,23 +427,20 @@ class AdminPanel extends cmsController
         return $this->actionUpdateField($param);
     }
     
-    /**
+    /*
     * Default deactivate action.
     * @param fsStruct $param User request.
     * @return boolean Result of action
     */
     public function actionDeActivate($param)
     {
-        if($param->field == '') {
-            $param->field = 'active';
-        }
         if($param->value == '') {
             $param->value = '0';
         }
-        return $this->actionUpdateField($param);
+        return $this->actionActivate($param);
     }
     
-    /**
+    /*
     * Default table one field change action.
     * @param fsStruct $param User request.
     * @return boolean Result of action 
@@ -389,7 +476,7 @@ class AdminPanel extends cmsController
         return false;
     }
   
-    /**
+    /*
     * Default multiple action.
     * @param fsStruct $param User request.
     * @return boolean Result of action 
@@ -414,7 +501,7 @@ class AdminPanel extends cmsController
         }
     }
  
-    /**
+    /*
     * Default delete action.
     * @param fsStruct $param User request.
     * @return void 
@@ -480,7 +567,7 @@ class AdminPanel extends cmsController
         return $return;
     }
   
-    /**
+    /*
     * Default add action.
     * @param fsStruct $param User request.
     * @return integer Last inserted id. 
@@ -513,7 +600,7 @@ class AdminPanel extends cmsController
         return $return;
     }
   
-    /**
+    /*
     * Default edit action.
     * @param fsStruct $param User request.
     * @return integer Action status 
@@ -565,7 +652,7 @@ class AdminPanel extends cmsController
         return $return;
     }
 
-    /**
+    /*
     * Get html options list of templates.
     * @param fsStruct $param User request.
     * @return void 
@@ -595,7 +682,7 @@ class AdminPanel extends cmsController
         return $html;
     }
 
-    /**
+    /*
     * Main page.
     * @param fsStruct $param User request.
     * @return void 
@@ -604,7 +691,7 @@ class AdminPanel extends cmsController
     {
     }
 
-    /**
+    /*
     * Config page.
     * @param fsStruct $param User request.
     * @return void 
@@ -613,7 +700,7 @@ class AdminPanel extends cmsController
     {
         $this->Tag('settings', $this->settings);
         $templates = fsFunctions::DirectoryInfo(PATH_TPL.'fsCMS', false, true);
-        $templatesFiles = fsFunctions::DirectoryInfo(PATH_TPL.$this->settings->template.'/MPages/', true, false, 'Index', array('php'));
+        $templatesFiles = fsFunctions::DirectoryInfo(PATH_TPL.$this->settings->template.'/MPages/', true, array(), array('Index'), array('php'));
         $this->Tag('templates', $templates['NAMES']);
         $this->Tag('templatesFiles', $templatesFiles['NAMES']);
         $start_pages = array();
@@ -642,9 +729,18 @@ class AdminPanel extends cmsController
         }
         $start_pages['group_posts_end'] = '[/group='.T('XMLcms_text_posts').']';
         $this->Tag('start_pages', $start_pages);
+        
+        $folders = fsFunctions::DirectoryInfo(PATH_PLUGINS, false, true);
+        $libs = array();
+        foreach ($folders['NAMES'] as $folder) { 
+            if(file_exists(PATH_PLUGINS.$folder.'/'.FILE_OPTIONAL_LIBRARY)) {
+                $libs[$folder] = file_exists(PATH_PLUGINS.$folder.'/init.php') ? 1 : 0;
+            }
+        }
+        $this->Tag('libs', $libs);
     }
   
-    /**
+    /*
     * Default save config action.
     * @param fsStruct $param User request.
     * @return void 
@@ -668,6 +764,16 @@ class AdminPanel extends cmsController
         }
         $settingsFile = PATH_ROOT.'settings/Settings.php';
         $startPage = $param->start_page_custom != '' ? $param->start_page_custom : $param->start_page; 
+        
+        foreach($param->libs as $lib => $shoudBeActive) {
+            $path = PATH_PLUGINS.$lib.'/';
+            if(file_exists($path.'init.php') && $shoudBeActive == '0') {
+                rename($path.'init.php', $path.'_init.php');
+            } else if(file_exists($path.'_init.php') && $shoudBeActive == '1') {
+                rename($path.'_init.php', $path.'init.php');
+            }
+        }
+        
         if($param->controller = 'AdminPanel' && $param->Exists('links_suffix') && file_exists($settingsFile)) {
           $s = file_get_contents($settingsFile);
           $s = preg_replace(
