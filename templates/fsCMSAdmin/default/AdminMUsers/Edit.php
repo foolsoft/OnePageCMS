@@ -14,8 +14,7 @@ echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fs
            maxlength='50'
            type='text'
            name='login'
-           value='<?php echo $tag->user->login; ?>' 
-     />
+           value='<?php echo $tag->user->login; ?>'/>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_password'); ?>:<br />
@@ -38,10 +37,7 @@ echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fs
     </select>
     <span class='space'></span>
     <?php _T('XMLcms_text_he_active'); ?>:
-    <input type='checkbox'
-           name='active'
-           <?php echo $tag->user->active == '1' ? 'checked' : ''; ?>
-     />
+    <input type='checkbox' name='active' <?php echo $tag->user->active == '1' ? 'checked' : ''; ?> />
   </p>
   <?php } ?>
   <?php
@@ -49,7 +45,7 @@ echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fs
   foreach ($tag->fields as $field) { ?>
   <p>
     <?php _T($field['title']); ?>:<br />
-    <?php echo fsFields::Create($tag->fields, $field['name'], isset($info[$field['name']]) ? $info[$field['name']]['value'] : '', array('class' => 'input-100', 'data-regexp' => $field['regexp']), 'user_field'); ?>
+    <?php echo fsFields::Create($tag->fields, $field['name'], isset($info[$field['name']]) ? $info[$field['name']]['value'] : '', array('class' => 'input-100', 'data-regexp' => $field['expression']), 'user_field'); ?>
   </p> 
   <?php } ?>
   <hr /> 

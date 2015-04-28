@@ -14,6 +14,8 @@ class AdminMPages extends AdminPanel
         }
         $alts = $param->alt;
         $titles = $param->title;
+        $metaKw = $param->keywords;
+        $metaDescr = $param->description;
         foreach($this->_languages as $languageId => $languageName) {
             if(!isset($titles[$languageId]) || !isset($alts[$languageId])) {
                 return false;
@@ -23,7 +25,11 @@ class AdminMPages extends AdminPanel
             if($titles[$languageId] == '' || $alts[$languageId] == '') {
                 return false;
             }
+            $metaKw[$languageId] = trim(strip_tags($metaKw[$languageId]));
+            $metaDescr[$languageId] = trim(strip_tags($metaDescr[$languageId]));
         }
+        $param->keywords = $metaKw;
+        $param->description = $metaDescr;
         $param->alt = $alts;
         $param->title = $titles;
         $param->in_menu = $param->Exists('in_menu') ? 1 : 0;

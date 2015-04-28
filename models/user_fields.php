@@ -11,6 +11,11 @@ class user_fields extends fsDBTableExtension
         $this->Select()->Where('`special_type` = "'.$specialId.'"')->Execute();
     }
     
+    private function _IsSelectType($type)
+    {
+        return in_array($type, array('selectlist', 'radiolist'));
+    }
+    
     public function GetAssocArray($arrayKey = 'name', $where = null)
     {
         $fields = array();
@@ -20,8 +25,7 @@ class user_fields extends fsDBTableExtension
         }
         $this->Order(array('position', 'title'))->Execute('', false);
         while($this->Next()) {
-            $isSelect = strpos($this->result->regexp, '||');
-            $values = json_encode($isSelect === false ? array() : fsFunctions::Explode('||', $this->result->regexp));
+            $values = $this->_IsSelectType($this->result->type) ? explode('|', $this->result->expression) : array();
             $fields[$this->result->$arrayKey] = array(
                 'id' => $this->result->id,
                 'name' => $this->result->name,
@@ -29,11 +33,10 @@ class user_fields extends fsDBTableExtension
                 'duty' => $this->result->duty,
                 'title' => $this->result->title,
                 'position' => $this->result->position,
-                'expression' => $this->result->regexp, 
+                'expression' => $this->result->expression, 
                 'values' => $values, 
             );
         }
         return $fields;
     }
-  
 }

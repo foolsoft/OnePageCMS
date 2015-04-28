@@ -8,6 +8,8 @@ class AdminMPosts extends AdminPanel
     {
         $alts = $param->alt;
         $titles = $param->title;
+        $metaKw = $param->meta_keywords;
+        $metaDescr = $param->meta_description;
         foreach($this->_languages as $languageId => $languageName) {
             if(!isset($titles[$languageId]) || !isset($alts[$languageId])) {
                 return false;
@@ -17,7 +19,11 @@ class AdminMPosts extends AdminPanel
             if($titles[$languageId] == '' || $alts[$languageId] == '') {
                 return false;
             }
+            $metaKw[$languageId] = trim(strip_tags($metaKw[$languageId]));
+            $metaDescr[$languageId] = trim(strip_tags($metaDescr[$languageId]));
         }
+        $param->meta_keywords = $metaKw;
+        $param->meta_description = $metaDescr;
         $param->alt = $alts;
         $param->title = $titles;
         return true;

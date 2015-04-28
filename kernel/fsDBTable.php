@@ -673,7 +673,7 @@ class fsDBTable
   {
     if ($this->_query->action == 'insert') { 
       $res = $this->_Validate();
-      if (!empty($res)) {
+      if ($res != '') {
         throw new Exception('Invalid query arguments: '.$res.'!');
       }
     }
@@ -681,7 +681,7 @@ class fsDBTable
     if ($query === '') {
       $query = $this->_query->sql;
     } else { 
-      $this->_query->sql = $query;
+      $this->_query->sql = trim($query);
     }
     $this->_result->Clear();
     $this->_result->mysqlResult = $this->_struct->db->Query($query);
@@ -689,14 +689,12 @@ class fsDBTable
         $this->_struct->db->Close();
         die('Error in query: '.$this->_query->sql);
     }
-    if ($next && 
-        ($this->_query->action == 'select' || 
-         strtolower(substr($this->_query->sql, 0, 6)) == 'select')) {
+    if ($next && ($this->_query->action == 'select' || strtolower(substr($this->_query->sql, 0, 6)) == 'select')) {
       $row = $this->_result->mysqlResult->fetch_assoc();
       $this->_UpdateResult($row);
     }
     $this->_ClearAfterQuery();
-    return true;
+    return $this->_result->mysqlResult;
   }
 
 

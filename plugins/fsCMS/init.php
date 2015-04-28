@@ -23,7 +23,7 @@ if (!file_exists(PATH_ROOT.'settings/dbSettings.php') || !file_exists(PATH_ROOT.
   fsFunctions::Redirect(URL_ROOT.'setup.php');
 }
 
-if(!file_exists('.htaccess')) {
+if(!file_exists(PATH_ROOT.'.htaccess')) {
   fsHtaccess::Create();
   header('Location: /');
   exit;
@@ -80,9 +80,10 @@ if (file_exists(FILE_LOCK)
     fsFunctions::Redirect(fsHtml::Url(URL_ROOT.'page/closed'));
 }
 
+$_REQUEST['includeHead'] .= '<meta name="generator" content="OnePageCMS" />';
+
 if (AUTH_ADMIN && !IS_ADMIN_CONTROLLER) {
   $HL = T('XMLcms_hide'); $PA = T('XMLcms_panel');
   $_REQUEST['includeBody'] .= "<div class='admin_panel_top' id='admin-panel-top' style='border-bottom:2px solid #000;margin:0px;position:fixed;top:0px;background:rgba(0,0,0,0.5);width:100%;height:22px;left:0px;z-index:99999999999;'><a style='float:left;text-decoration:none;color:#EEE;font-family:Tahoma;padding-left:15px;' onmouseout=\"this.style.color='#EEE';\" onmouseover=\"this.style.color='#FFFF00';\" href='".fsHtml::Url(URL_ROOT."AdminPanel/Hello")."' title='".$PA."'>".$PA."</a><a href='#' onclick=\"$('#admin-panel-top').slideUp('slow');\" style='float:right;text-decoration:none;color:#EEE;font-family:Tahoma;margin-right:10px;' onmouseout=\"this.style.color='#EEE';\" onmouseover=\"this.style.color='#FFFF00';\" title='".$HL."'>X</a></div>";  
-  $_REQUEST['includeHead'] .= '<meta name="generator" content="OnePageCMS" />';
   unset($HL); unset($PA);
 }

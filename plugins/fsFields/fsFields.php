@@ -13,7 +13,7 @@ class fsFields implements iSingleton
       return;
     }
     self::$obj = array();            
-    $fields = fsFunctions::DirectoryInfo(__DIR__.'/fields', true, false, 'fsField', array('php'));
+    $fields = fsFunctions::DirectoryInfo(__DIR__.'/fields', true, false, array('fsField'), array('php'));
     for($i = 0; $i < $fields['LENGTH']; ++$i) {
       $class = explode('.', $fields['NAMES'][$i]); 
       $class = $class[0];
@@ -42,8 +42,8 @@ class fsFields implements iSingleton
     $obj = self::GetInstance($fieldsArray[$fieldName]['type']);
     if($obj == null) {
       return '';
-    }
-    return $obj->Input($fieldsArray[$fieldName]['name'], $fieldValue, $htmlAttributes, json_decode($fieldsArray[$fieldName]['values']), $arrayName);
+    }           
+    return $obj->Input($fieldsArray[$fieldName]['name'], $fieldValue, $htmlAttributes, $fieldsArray[$fieldName]['values'], $arrayName);
   }
   
   public static function GetTypes() 

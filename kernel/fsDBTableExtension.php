@@ -36,15 +36,15 @@ class fsDBTableExtension extends fsDBTable
   */
   public function GetOne($keyValue, $asArr = true, $keyField = '')
   {
-    if (empty($keyField)) {
+    if ('' == $keyField) {
       $keyField = $this->_struct->key;
     }
     $this->Select()->Where('`'.$keyField.'` = "'.$keyValue.'"')->Limit(1);
     if (!$asArr) {
       return $this->Execute();
-    } else {
-      return $this->ExecuteToArray();
     }
+    $record = $this->ExecuteToArray();
+    return count($record) == 1 ? $record[0] : null;
   }
   
   /**

@@ -187,7 +187,7 @@ if ($_POST) {
         `duty` enum('0','1') NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`),
         UNIQUE KEY `name` (`name`),
-        UNIQUE KEY `special_type` (`special_type`),
+        UNIQUE KEY `special_type` (`special_type`)
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage']." AUTO_INCREMENT=1;
     ");
     

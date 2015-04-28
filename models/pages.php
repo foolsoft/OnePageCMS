@@ -102,7 +102,7 @@ class pages extends fsDBTableExtension
             ($page - 1) * $pageCount,
             $pageCount,
             $title == '' ? '' : 'AND `pi`.`title` LIKE "%'.$title.'%"'
-        )));
+        ), array()));
     }
     
     public function GetMenuPages($languageId)
@@ -134,7 +134,8 @@ class pages extends fsDBTableExtension
             fsConfig::GetInstance('db_prefix'),
             $pageAlt !== '' ? '`pi`.`alt` = "'.$pageAlt.'"' : '`p`.`id` = "'.$pageId.'"',
             $languageId
-        )));
+        ), array()));
+        
         return count($result) == 0 ? null : $result[0];
     }
 }

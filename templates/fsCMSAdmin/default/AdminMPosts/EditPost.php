@@ -40,7 +40,7 @@ $postDate = $postDate[0];
     <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_short', $post['html_short'], array('class' => 'ckeditor')); ?>
   </p>
   <p class='title'>
-    <?php echo T('XMLcms_text_content'); ?>:<br />
+    <?php _T('XMLcms_text_content'); ?>:<br />
     <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_full', $post['html_full'], array('class' => 'ckeditor')); ?>
   </p>
   <p class='title'>

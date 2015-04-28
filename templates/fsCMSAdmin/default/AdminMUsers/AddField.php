@@ -13,7 +13,7 @@
     <input onkeyup="fsCMS.Chpu(this.value, this.id);" id='name' class='input-100' maxlength='50' type='text' name='name' />
   </p>
   <p>
-    Regexp: ([0-9a-z\-\/]+, One|Two|Three, Blue||Red||Green)
+    Regexp: ([0-9a-z\-\/]+, One|Two|Three)
     <input class='input-100' maxlength='255' type='text' name='expression' />
   </p>
   <p class='title'>

@@ -2,11 +2,10 @@
 /nbproject/private/
 nbproject/project.properties
 nbproject/project.xml
-includes/js/initFsCMS.js
+includes/js/initFsCMSen.js
+includes/js/initFsCMSru.js
 .htaccess
 settings/Settings.php
 settings/dbSettings.php
 temp/
 cache/
-
-update.php

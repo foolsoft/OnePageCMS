@@ -827,13 +827,20 @@ class fsFunctions
     * @api 
     * @example StringFormat('Hello, {0}! My name is {1}!', array('World', 'Andrey'))
     * @param string $string Source string. 
-    * @param array $arrArgs Array of variables for substitute.    
+    * @param array $arrArgs (optional) Array of variables for substitute.    
+    * @since 1.1.0
+    * @param array $escape (optional) Array of char escape. Default <b>array('"' => '&quot;', "'" => '&apos;')</b>
     * @return string Result of substitution.
     */ 
-    public static function StringFormat($string, $arrArgs = array()) 
-    {
+    public static function StringFormat($string, $arrArgs = array(), $escape = array('"' => '&quot;', "'" => '&apos;')) 
+    {             
+      $from = $to = array();
+      foreach($escape as $fromEscape => $toEscape) {
+        $from[] = $fromEscape;
+        $to[] = $toEscape;
+      }
       foreach ($arrArgs as $idx => $value) {
-        $string = str_replace('{'.$idx.'}', $value, $string);        
+        $string = str_replace('{'.$idx.'}', str_replace($from, $to, $value), $string);        
       }
       return $string;
     }

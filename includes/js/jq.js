@@ -389,10 +389,10 @@ jQuery Ajax file upload
 				$('<input type="file" />')
 				.attr('name', this.settings.name)
 				.css({
-                    'margin-left': '-' + this.button.width() + 'px',
+                    'margin-left': '-' + (0 == this.button.width() ? 75 : this.button.width()) + 'px',
 					'padding': 0,
-					'width': this.button.width() + 'px',
-					'heigth': '10px',
+					'width': (0 == this.button.width() ? 75 : this.button.width()) + 'px',
+					'height': '20px',
 					'opacity': 0
 				})
 				.change(function(){

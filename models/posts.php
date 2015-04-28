@@ -95,7 +95,7 @@ class posts extends fsDBTableExtension
         return $this->Execute(fsFunctions::StringFormat('INSERT INTO `{0}posts_info` 
             (`id_post`, `id_language`, `title`, `alt`, `html_short`, `html_full`, `meta_keywords`, `meta_description`) VALUES
             ("{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}", "{8}") ON DUPLICATE KEY UPDATE 
-            `title` = "{3}", `alt` = "{4}", `meta_keywords` = "{5}", `meta_description` = "{6}", `html_short` = "{7}", `html_full` = "{8}"
+            `title` = "{3}", `alt` = "{4}", `meta_keywords` = "{7}", `meta_description` = "{8}", `html_short` = "{5}", `html_full` = "{6}"
         ', array(
             fsConfig::GetInstance('db_prefix'), $postId, $langiageId, $title, $alt, $short, $full, $keywords, $description
         )));

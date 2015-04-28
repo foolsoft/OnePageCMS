@@ -187,7 +187,7 @@ class AdminMUsers extends AdminPanel
     $user_fields = new user_fields();
     $user_fields = $user_fields->GetAssocArray();
     foreach ($param->user_field as $fieldName => $value) {
-      if(isset($user_fields[$fieldName]) && preg_match('/^'.$user_fields[$fieldName]['regexp'].'$/', $value)) {
+      if(isset($user_fields[$fieldName]) && preg_match('/^'.$user_fields[$fieldName]['expression'].'$/', $value)) {
         $user_info->Change($param->key, $fieldName, $value);
       }
     }
