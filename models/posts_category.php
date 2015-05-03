@@ -66,13 +66,13 @@ class posts_category extends fsDBTableExtension
     
     public function UpdateInfo($categoryId, $langiageId, $title, $alt, $keywords, $description)
     {
-        return $this->Execute(fsFunctions::StringFormat('INSERT INTO `{0}posts_category_info` 
+        return $this->ExecuteFormat('INSERT INTO `{0}posts_category_info` 
             (`id_category`, `id_language`, `title`, `alt`, `meta_keywords`, `meta_description`) VALUES
             ("{1}", "{2}", "{3}", "{4}", "{5}", "{6}") ON DUPLICATE KEY UPDATE 
             `title` = "{3}", `alt` = "{4}", `meta_keywords` = "{5}", `meta_description` = "{6}"
         ', array(
             fsConfig::GetInstance('db_prefix'), $categoryId, $langiageId, $title, $alt, $keywords, $description
-        )));
+        ));
     }
   
     public function GetCategories($languageId, $orderBy = array(), $excludeIds = array())

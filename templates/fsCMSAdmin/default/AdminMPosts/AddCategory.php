@@ -12,11 +12,11 @@
     <?php echo T('XMLcms_text_link'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'alt', array(), array('onkeyup' => 'fsCMS.Chpu(this.value, this.id);', 'maxlength' => 100)); ?>
   </p>
-  <p class='title'>
+  <p>
     <?php _T('XMLcms_text_description'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_description'); ?>
   </p>
-  <p class='title'>
+  <p>
     <?php _T('XMLcms_text_kw'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords'); ?>
   </p>
@@ -35,7 +35,7 @@
     <?php _T('XMLcms_text_template'); ?>:
     <?php echo fsHtml::Select('tpl_full', $tag->templates_pf); ?>
   </p>
-  <p class='title'>
+  <p>
     <?php _T('XMLcms_text_auth_needed'); ?>: 
     <input type='checkbox' name='auth' />
   </p>

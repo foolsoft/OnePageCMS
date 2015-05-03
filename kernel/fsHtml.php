@@ -45,7 +45,7 @@ class fsHtml
         self::_HtmlAttributesToString($htmlAttributes),
         $prefix,
         $suffix     
-      ), array());
+      ));
     }
     
     /** 
@@ -287,7 +287,7 @@ class fsHtml
         self::_HtmlAttributesToString($htmlAttributes),
         $prefix,
         $suffix
-      ), array());
+      ));
     }
 
     /** 
@@ -345,7 +345,7 @@ class fsHtml
         self::_HtmlAttributesToString($htmlAttributes),
         $prefix,
         $suffix
-      ), array());
+      ));
     }
 
     /** 
@@ -391,7 +391,7 @@ class fsHtml
         $text,
         $title === '' ? $text : $title,
         self::_HtmlAttributesToString($htmlAttributes)     
-      ), array());
+      ));
     }
     
     /** 
@@ -409,6 +409,6 @@ class fsHtml
         $text,
         $for === '' ? '' : ' for="'.$for.'"',
         self::_HtmlAttributesToString($htmlAttributes) 
-       ), array());
+       ));
     } 
 }

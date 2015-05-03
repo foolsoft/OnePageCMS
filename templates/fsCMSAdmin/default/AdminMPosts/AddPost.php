@@ -12,11 +12,11 @@
     <?php _T('XMLcms_text_link'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'alt', array(), array('onkeyup' => 'fsCMS.Chpu(this.value, this.id);', 'maxlength' => 100)); ?>
   </p>
-  <p class='title'>
+  <p>
     META - <?php _T('XMLcms_text_description'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_description'); ?>
   </p>
-  <p class='title'>
+  <p>
     META - <?php _T('XMLcms_text_kw'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords'); ?>
   </p>
@@ -28,11 +28,11 @@
       <?php } ?>
     </select>
   </p>
-  <p class='title'>
+  <p>
     <?php echo T('XMLcms_text_content').' ('.T('XMLcms_text_short').')'; ?>:<br />
     <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_short', array(), array('class' => 'ckeditor')); ?>
   </p>
-  <p class='title'>
+  <p>
     <?php _T('XMLcms_text_content'); ?>:<br />
     <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_full', array(), array('class' => 'ckeditor')); ?>
   </p>

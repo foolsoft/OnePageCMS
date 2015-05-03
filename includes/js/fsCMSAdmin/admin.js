@@ -31,7 +31,7 @@ function CmsDestroyJsEvents(selector) {
 
 function CmsInitJsEvents(selector) {
   selector = selector || 'body';
-  $(selector).find("#datepicker, .datepicker").datepicker({dateFormat: 'yy-m-d'});
+  $(selector).find("#datepicker, .datepicker").datepicker({dateFormat: 'yy-mm-dd'});
   $(selector).find('.fancybox').fancybox();
   $(selector).find('.sticky-0').sticky({ topSpacing: 0 });
   $(selector).find('form.confirm').submit(function() { return confirm(T('cms_text_sure')); });

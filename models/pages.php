@@ -67,7 +67,7 @@ class pages extends fsDBTableExtension
     
     public function UpdateInfo($pageId, $languageId, $title, $alt, $html, $keywords, $description) 
     {
-        $this->Execute(fsFunctions::StringFormat('INSERT INTO `{0}pages_info` 
+        $this->ExecuteFormat('INSERT INTO `{0}pages_info` 
             (`id_page`, `id_language`, `title`, `alt`, `html`, `keywords`, `description`) VALUES
             ("{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}") ON DUPLICATE KEY UPDATE 
             `title` = "{3}", `alt` = "{4}", `html` = "{5}", `keywords` = "{6}", `description` = "{7}"
@@ -80,7 +80,7 @@ class pages extends fsDBTableExtension
             $html,
             $keywords,
             $description
-        )));
+        ));
     }
     
     public function GetPages($languageId, $page = 1, $pageCount = 20, $title = '')

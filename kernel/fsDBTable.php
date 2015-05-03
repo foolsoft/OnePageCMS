@@ -631,18 +631,37 @@ class fsDBTable
   }
 
   /**
-  * Execute query   
+  * Execute SELECT query using fsFunctions::StringFormat and save result into array   
+  * @api
+  * @since 1.1.0
+  * @param string $queryTemplate MySQL query string. If empty will generate query from inner structure.
+  * @param boolean $queryVariables (optional) Array of foramt variables. Default <b>empty array</b>.
+  * @param string $arrayKeyField (optional) Result array index field. If empty will generate standart array indexes from zero. Default <b>empty string</b>. 
+  * @return array Result of query.      
+  */ 
+  public function ExecuteFormatToArray($queryTemplate, $queryVariables = array(), $arrayKeyField = '')
+  {
+      if($queryTemplate == '') {
+          return false;
+      }
+      foreach ($queryVariables as $idx => $value) {
+        $queryTemplate = str_replace('{'.$idx.'}', $this->_struct->db->Escape($value), $queryTemplate);        
+      }
+      return $this->ExecuteToArray($queryTemplate, $arrayKeyField);
+  }
+  
+  /**
+  * Execute SELECT query and save result into array 
   * @api
   * @since 1.0.0
-  * @param string $query (optional) MySQL query string. If empty will generate query from inner structure. Default empty string.
-  * @param string $arrayKeyField (optional) Result array index field. If empty will generate standart array indexes from zero.  Default empty string. 
+  * @param string $query (optional) MySQL query string. If empty will generate query from inner structure. Default <b>empty string</b>.
+  * @param string $arrayKeyField (optional) Result array index field. If empty will generate standart array indexes from zero. Default <b>empty string</b>. 
   * @return array Result of query.      
   */ 
   public function ExecuteToArray($query = '', $arrayKeyField = '')
   {
     $res = array();
-    $query = trim($query);
-    if ($this->_query->action != 'select' && ($query != '' && substr(strtolower($query), 0, 6) != 'select')) {
+    if ($this->_query->action != 'select' && ($query != '' && substr(strtolower(trim($query)), 0, 6) != 'select')) {
       return $res;
     }
     $this->Execute($query, false);
@@ -661,6 +680,26 @@ class fsDBTable
     return $res;
   }
 
+  /**
+  * Execute query using fsFunsctions::StringFormat  
+  * @api
+  * @since 1.1.0
+  * @param string $queryTemplate MySQL query template string. 
+  * @param boolean $queryVariables (optional) Array of foramt variables. Default <b>empty array</b>.
+  * @param boolean $next (optional) If <b>true</b> and query type is SELECT will automatically get first row of result. Default <b>true</b>.
+  * @return boolean Result of query.      
+  */
+  public function ExecuteFormat($queryTemplate, $queryVariables = array(), $next = true)
+  {      
+      if($queryTemplate == '') {
+          return false;
+      }
+      foreach ($queryVariables as $idx => $value) {
+        $queryTemplate = str_replace('{'.$idx.'}', $this->_struct->db->Escape($value), $queryTemplate);        
+      }
+      return $this->Execute($queryTemplate, $next);
+  }
+  
   /**
   * Execute query   
   * @api

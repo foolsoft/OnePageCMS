@@ -17,11 +17,11 @@ $postDate = $postDate[0];
     <?php _T('XMLcms_text_link'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'alt', $post['alt'], array('onkeyup' => 'fsCMS.Chpu(this.value, this.id);', 'maxlength' => 100)); ?>
   </p>
-  <p class='title'>
+  <p>
     META - <?php _T('XMLcms_text_description'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_description', $post['meta_description']); ?>
   </p>
-  <p class='title'>
+  <p>
     META - <?php _T('XMLcms_text_kw'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords', $post['meta_keywords']); ?>
   </p>
@@ -35,11 +35,11 @@ $postDate = $postDate[0];
       <?php } ?>
     </select>
   </p>
-  <p class='title'>
+  <p>
     <?php echo T('XMLcms_text_content').' ('.T('XMLcms_text_short').')'; ?>:<br />
     <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_short', $post['html_short'], array('class' => 'ckeditor')); ?>
   </p>
-  <p class='title'>
+  <p>
     <?php _T('XMLcms_text_content'); ?>:<br />
     <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'html_full', $post['html_full'], array('class' => 'ckeditor')); ?>
   </p>

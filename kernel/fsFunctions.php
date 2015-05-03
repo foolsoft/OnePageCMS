@@ -829,10 +829,10 @@ class fsFunctions
     * @param string $string Source string. 
     * @param array $arrArgs (optional) Array of variables for substitute.    
     * @since 1.1.0
-    * @param array $escape (optional) Array of char escape. Default <b>array('"' => '&quot;', "'" => '&apos;')</b>
+    * @param array $escape (optional) Array of char escape. Default <b>empty array</b>
     * @return string Result of substitution.
     */ 
-    public static function StringFormat($string, $arrArgs = array(), $escape = array('"' => '&quot;', "'" => '&apos;')) 
+    public static function StringFormat($string, $arrArgs = array(), $escape = array()) 
     {             
       $from = $to = array();
       foreach($escape as $fromEscape => $toEscape) {

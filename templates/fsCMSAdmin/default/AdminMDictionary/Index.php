@@ -11,7 +11,7 @@
   </div>
   <div class="float-left">
     <form method="post" action="<?php echo fsHtml::Url($myLink.'CreateLanguage'); ?>">
-      <?php echo fsHtml::Editor('from', '', array('size' => '3', 'placeholder' => 'en', 'maxlength' => 3)); ?>-
+      <?php echo fsHtml::Editor('from', '', array('size' => '3', 'placeholder' => 'en', 'maxlength' => 3)); ?> -
       <?php echo fsHtml::Editor('to', '', array('size' => '3', 'placeholder' => 'ru', 'maxlength' => 3)); ?>
       <input type="submit" value="<?php _T('XMLcms_add'); ?>" />
       <?php echo fsHtml::Button(T('XMLcms_panel_languages'), "window.location=URL_ROOT + 'AdminMDictionary/Languages' + URL_SUFFIX;"); ?>

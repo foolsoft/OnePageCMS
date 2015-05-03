@@ -71,7 +71,7 @@ class fsFileWorker
     */
   public function Write($string, $arrArgs = array())
   {
-    fwrite($this->_stream, $this->_Tabs().fsFunctions::StringFormat($string, $arrArgs, array()));   
+    fwrite($this->_stream, $this->_Tabs().fsFunctions::StringFormat($string, $arrArgs));   
   }
   /**
     * Write string to file with new line character in end.    

@@ -6,7 +6,7 @@ class MPosts extends cmsController
     public function actionCategory($param)
     {
         if (!$param->Exists('category')) {
-        return $this->HttpNotFound();
+            return $this->HttpNotFound();
         }
         if ($param->category == '') {
             $param->category = ALL_TYPES;
@@ -46,9 +46,9 @@ class MPosts extends cmsController
                )
         );
         $page = array(
-            'title' => htmlspecialchars_decode($posts_category['title']),
-            'meta_keywords' => htmlspecialchars_decode($posts_category['meta_keywords']),
-            'meta_description' => htmlspecialchars_decode($posts_category['meta_description'])
+            'title' => $posts_category['title'],
+            'meta_keywords' => $posts_category['meta_keywords'],
+            'meta_description' => $posts_category['meta_description']
         );
         $template = $param->Exists('in_template') && file_exists($this->_Template('Inline'.$posts_category['tpl']))
             ? $this->_Template('Inline'.$posts_category['tpl'])
@@ -73,12 +73,6 @@ class MPosts extends cmsController
         if($page['auth'] == 1 && !AUTH) {
             return $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')));     
         }
-        
-        $page['title'] = htmlspecialchars_decode($page['title']);
-        $page['html_short'] = htmlspecialchars_decode($page['html_short']);
-        $page['html_full'] = htmlspecialchars_decode($page['html_full']);
-        $page['meta_description'] = htmlspecialchars_decode($page['meta_description']);
-        $page['meta_keywords'] = htmlspecialchars_decode($page['meta_keywords']);
         
         $post_category = new post_category();
         $this->Tag('categories', $post_category->GetByPostId($page['id']));
