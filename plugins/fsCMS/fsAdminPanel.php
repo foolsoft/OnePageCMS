@@ -703,31 +703,34 @@ class AdminPanel extends cmsController
         $templatesFiles = fsFunctions::DirectoryInfo(PATH_TPL.$this->settings->template.'/MPages/', true, array(), array('Index'), array('php'));
         $this->Tag('templates', $templates['NAMES']);
         $this->Tag('templatesFiles', $templatesFiles['NAMES']);
+        $textPages = T('XMLcms_pages');
+        $textCategories = T('XMLcms_text_categories');
+        $textPosts = T('XMLcms_text_posts');
         $start_pages = array();
-        $start_pages['group_pages'] = '[group='.T('XMLcms_pages').']';
-        $db = new fsDBTableExtension('pages');
-        $db->Select()->Order(array('title'))->Execute('', false);
+        $start_pages['group_pages'] = '[group='.$textPages.']';
+        $db = new pages();
+        $db->GetAllPages(fsSession::GetInstance('LanguageId'));
         while($db->Next())
         {
-            $start_pages['page/'.$db->result->alt] = T($db->result->title);
+            $start_pages['page/'.$db->result->mysqlRow['alt']] = $db->result->mysqlRow['title'];
         }
-        $start_pages['group_pages_end'] = '[/group='.T('XMLcms_pages').']';
-        $start_pages['group_categories'] = '[group='.T('XMLcms_text_categories').']';
-        $db = new fsDBTableExtension('posts_category');
-        $db->Select()->Order(array('name'))->Execute('', false);
+        $start_pages['group_pages_end'] = '[/group='.$textPages.']';
+        $start_pages['group_categories'] = '[group='.$textCategories.']';
+        $db = new posts_category();
+        $db->GetAllCategories(fsSession::GetInstance('LanguageId'));
         while($db->Next())
         {
-            $start_pages['posts/'.$db->result->alt] = T($db->result->name);
+            $start_pages['posts/'.$db->result->mysqlRow['alt']] = $db->result->mysqlRow['title'];
         }
-        $start_pages['group_categories_end'] = '[/group='.T('XMLcms_text_categories').']';
-        $start_pages['group_posts'] = '[group='.T('XMLcms_text_posts').']';
-        $db = new fsDBTableExtension('posts');
-        $db->Select()->Order(array('title'))->Execute('', false);
+        $start_pages['group_categories_end'] = '[/group='.$textCategories.']';
+        $start_pages['group_posts'] = '[group='.$textPosts.']';
+        $db = new posts();
+        $db->GetAllPosts(fsSession::GetInstance('LanguageId'));
         while($db->Next())
         {
-            $start_pages['post/'.$db->result->alt] = T($db->result->title);
+            $start_pages['post/'.$db->result->mysqlRow['alt']] = $db->result->mysqlRow['title'];
         }
-        $start_pages['group_posts_end'] = '[/group='.T('XMLcms_text_posts').']';
+        $start_pages['group_posts_end'] = '[/group='.$textPosts.']';
         $this->Tag('start_pages', $start_pages);
         
         $folders = fsFunctions::DirectoryInfo(PATH_PLUGINS, false, true);

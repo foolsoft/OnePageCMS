@@ -36,6 +36,25 @@ class posts extends fsDBTableExtension
         return $this->_result->mysqlRow['c'];
     } 
 	
+    public function GetAllPosts($languageId)
+    {
+        return $this->ExecuteFormat('
+            SELECT `p`.*, `pi`.`title`, `pi`.`alt`, `pi`.`html_short`, `pi`.`html_full`, 
+                `pi`.`meta_keywords`, `pi`.`meta_description`, `pi`.`id_language`,
+                `pcs`.`id` as `category_id`, `pcsi`.`title` as `category_name`,
+                `pcsi`.`alt` as `category_alt`, `pcs`.`tpl` as `category_tpl`
+             FROM `{0}posts` p 
+             JOIN `{0}posts_info` pi ON `p`.`id` = `pi`.`id_post`
+             JOIN `{0}post_category` pc ON `p`.`id` = `pc`.`id_post`
+             JOIN `{0}posts_category` pcs ON `pc`.`id_category` = `pcs`.`id`
+             JOIN `{0}posts_category_info` pcsi ON `pcs`.`id` = `pcsi`.`id_category`
+             WHERE `pi`.`id_language` = "{1}" AND `pcsi`.`id_language` = "{1}"
+             ORDER BY `p`.`position`, `p`.`date` DESC',
+             array(fsConfig::GetInstance('db_prefix'), $languageId),
+             false
+        );
+    }
+    
     public function GetByCategory($languageId, $idOrAlt = ALL_TYPES, $start = 1, $count = 20, $activeOnly = true)
     {
         $sql = '';

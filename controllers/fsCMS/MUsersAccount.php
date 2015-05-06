@@ -33,7 +33,7 @@ class MUsersAccount extends cmsNeedAuthController
         $newValue = $fieldsRequest[$field['name']];
       }
       if($newValue !== null) {
-        if($field['regexp'] === '' || ($field['regexp'] !== '' && preg_match('/^'.$field['regexp'].'$/u', $newValue))) {
+        if($field['expression'] === '' || preg_match('/^'.$field['expression'].'$/u', $newValue)) {
 			$this->_table->Change($userId, $field['id'], $newValue);
 			$user['fields'][$field['name']]['value'] = $newValue;
 		}

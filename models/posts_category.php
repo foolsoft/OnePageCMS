@@ -75,6 +75,18 @@ class posts_category extends fsDBTableExtension
         ));
     }
   
+    public function GetAllCategories($languageId)
+    {
+        return $this->ExecuteFormat('
+            SELECT `c`.`id`, `c`.`id_parent`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
+            `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
+            `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
+            WHERE `ci`.`id_language` = "{1}"
+            ORDER BY `ci`.`title`', 
+            array(fsConfig::GetInstance('db_prefix'), $languageId), false
+        );
+    }
+  
     public function GetCategories($languageId, $orderBy = array(), $excludeIds = array())
     {
         return $this->ExecuteToArray(fsFunctions::StringFormat('

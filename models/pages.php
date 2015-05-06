@@ -83,6 +83,15 @@ class pages extends fsDBTableExtension
         ));
     }
     
+    public function GetAllPages($languageId)
+    {
+        return $this->ExecuteFormat('
+            SELECT `p`.`id`, `p`.`active`, `pi`.`alt`, `p`.`in_menu`, `p`.`auth`, `p`.`tpl`, `pi`.`title`, `pi`.`html`, `pi`.`keywords`, `pi`.`description`, `pi`.`id_language` 
+            FROM `{0}pages` p JOIN `{0}pages_info` pi ON `pi`.`id_page` = `p`.`id`
+            WHERE `pi`.`id_language` = "{1}"
+        ', array(fsConfig::GetInstance('db_prefix'), $languageId), false);
+    }
+    
     public function GetPages($languageId, $page = 1, $pageCount = 20, $title = '')
     {
         if(!is_numeric($page) || $page < 1) {
@@ -102,7 +111,7 @@ class pages extends fsDBTableExtension
             ($page - 1) * $pageCount,
             $pageCount,
             $title == '' ? '' : 'AND `pi`.`title` LIKE "%'.$title.'%"'
-        ), array()));
+        )));
     }
     
     public function GetMenuPages($languageId)
