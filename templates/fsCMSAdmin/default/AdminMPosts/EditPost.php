@@ -5,10 +5,11 @@
 $postDate = explode(' ', $post['date']);
 $postTime = $postDate[1];
 $postDate = $postDate[0];
+$textImage = T('XMLcms_text_image');
 ?>
 <?php echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fsCMS-btn admin-btn-back')); ?>
 <hr /> 
-<form action="<?php echo $myLink; ?>DoEditPost/key/<?php echo $post['id']; ?>/" method="post">
+<form enctype="multipart/form-data" action="<?php echo $myLink; ?>DoEditPost/key/<?php echo $post['id']; ?>/" method="post">
   <p class='title'>
     <?php _T('XMLcms_text_name'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'title', $post['title'], array('maxlength' => 100)); ?>
@@ -24,6 +25,18 @@ $postDate = $postDate[0];
   <p>
     META - <?php _T('XMLcms_text_kw'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords', $post['meta_keywords']); ?>
+  </p>
+  <p>
+    <?php echo $textImage; ?>:<br />
+    <span id="post-image">
+    <?php if(!empty($post['image'])) { ?>
+        <img src="<?php echo $post['image']; ?>" width="100" alt="<?php echo $textImage; ?>" title="<?php echo $textImage; ?>" />
+        <a href="javascript:;" title="<?php _T('XMLcms_delete'); ?>" onclick="$('#post-image').html('<input type=\'file\' name=\'image\' />');"><?php _T('XMLcms_delete'); ?></a>
+        <input type="hidden" name="image" value="<?php echo $post['image']; ?>" />
+    <?php } else { ?>
+        <input type="file" name="image" />
+    <?php } ?>
+    </span>
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_category'); ?>: <br />

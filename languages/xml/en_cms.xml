@@ -9,6 +9,12 @@
   <text name='cms_request_new_password'>
     <en>Request for password change</en>
   </text>
+  <text name='cms_text_image'>
+    <en>Image</en>
+  </text>
+  <text name='cms_text_bad_image'>
+    <en>Invalid image format</en>
+  </text>
   <text name='cms_start_update'>
     <en>Start update</en>
   </text>

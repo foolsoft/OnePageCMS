@@ -28,9 +28,9 @@ class MPosts extends cmsController
         
         $this->Tag('posts', $this->_table->GetByCategory(fsSession::GetInstance('LanguageId'), $posts_category['id'], $param->page, $pcount));  
         $this->Tag('childs', $pc->GetByParent(fsSession::GetInstance('LanguageId'), $posts_category['id']));
-        $this->Tag('pages', 
+        $this->Tag('pages', $param->Exists('pages') && $param->pages == 'false' ? '' : 
                fsPaginator::Get(
-                URL_ROOT.'posts/'.$param->category,
+                fsHtml::Url(URL_ROOT.'posts/'.$param->category),
                 'page',
                 $count,
                 $pcount,

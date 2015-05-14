@@ -5,7 +5,7 @@
 if(count($tag->childs) > 0) {
     foreach ($tag->childs as $child) { 
       echo fsFunctions::StringFormat('<a href="{1}" title="{0}">{0}</a><br />', 
-              array($child['name'], fsHtml::Url(URL_ROOT.'posts/'.$child['alt'])));
+              array($child['title'], fsHtml::Url(URL_ROOT.'posts/'.$child['alt'])));
     }
     echo '<hr />';
 }
@@ -17,7 +17,7 @@ if(count($tag->posts) > 0) {
       echo '<hr />'.$tag->pages;
     }
 } else {
-    echo T('XMLcms_search_result_null');
+    _T('XMLcms_search_result_null');
 }
 ?>
 [endblock-content]

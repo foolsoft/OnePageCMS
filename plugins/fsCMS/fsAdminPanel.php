@@ -768,38 +768,41 @@ class AdminPanel extends cmsController
         $settingsFile = PATH_ROOT.'settings/Settings.php';
         $startPage = $param->start_page_custom != '' ? $param->start_page_custom : $param->start_page; 
         
-        foreach($param->libs as $lib => $shoudBeActive) {
-            $path = PATH_PLUGINS.$lib.'/';
-            if(file_exists($path.'init.php') && $shoudBeActive == '0') {
-                rename($path.'init.php', $path.'_init.php');
-            } else if(file_exists($path.'_init.php') && $shoudBeActive == '1') {
-                rename($path.'_init.php', $path.'init.php');
+        if($param->controller = 'AdminPanel') {
+          if($param->Exists('libs') && is_array($param->libs)) {
+            foreach($param->libs as $lib => $shoudBeActive) {
+              $path = PATH_PLUGINS.$lib.'/';
+              if(file_exists($path.'init.php') && $shoudBeActive == '0') {
+                  rename($path.'init.php', $path.'_init.php');
+              } else if(file_exists($path.'_init.php') && $shoudBeActive == '1') {
+                  rename($path.'_init.php', $path.'init.php');
+              }
             }
-        }
-        
-        if($param->controller = 'AdminPanel' && $param->Exists('links_suffix') && file_exists($settingsFile)) {
-          $s = file_get_contents($settingsFile);
-          $s = preg_replace(
-            "/'links_suffix'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
-            "'links_suffix' => array('ReadOnly' => true, 'Value' => '".$param->links_suffix."')", $s);
-          $s = preg_replace(
-            "/'start_page'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
-            "'start_page' => array('ReadOnly' => true, 'Value' => '".$startPage."')", $s);
-          $s = preg_replace(
-            "/'url_404'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
-            "'url_404' => array('ReadOnly' => true, 'Value' => 'http://".$_SERVER['SERVER_NAME'].'/404'.$param->links_suffix."')", $s);
-          $s = preg_replace(
-            "/'multi_language'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+(true|false)\)/i", 
-            "'multi_language' => array('ReadOnly' => true, 'Value' => ".$param->multi_language.")", $s);  
-          fsFileWorker::UpdateFile($settingsFile, $s);
-          fsHtaccess::Create($param->links_suffix, $param->multi_language == 'true');
-
-          $this->Redirect('http://'.$_SERVER['SERVER_NAME'].'/'.
-            ($param->multi_language == 'true' ? fsSession::GetInstance('Language').'/' : '').
-            'AdminPanel/Config'.$param->links_suffix
-          );
-
-          fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');
+          }
+          if($param->Exists('links_suffix') && file_exists($settingsFile)) {
+            $s = file_get_contents($settingsFile);
+            $s = preg_replace(
+              "/'links_suffix'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
+              "'links_suffix' => array('ReadOnly' => true, 'Value' => '".$param->links_suffix."')", $s);
+            $s = preg_replace(
+              "/'start_page'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
+              "'start_page' => array('ReadOnly' => true, 'Value' => '".$startPage."')", $s);
+            $s = preg_replace(
+              "/'url_404'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
+              "'url_404' => array('ReadOnly' => true, 'Value' => 'http://".$_SERVER['SERVER_NAME'].'/404'.$param->links_suffix."')", $s);
+            $s = preg_replace(
+              "/'multi_language'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+(true|false)\)/i", 
+              "'multi_language' => array('ReadOnly' => true, 'Value' => ".$param->multi_language.")", $s);  
+            fsFileWorker::UpdateFile($settingsFile, $s);
+            fsHtaccess::Create($param->links_suffix, $param->multi_language == 'true');
+  
+            $this->Redirect('http://'.$_SERVER['SERVER_NAME'].'/'.
+              ($param->multi_language == 'true' ? fsSession::GetInstance('Language').'/' : '').
+              'AdminPanel/Config'.$param->links_suffix
+            );
+  
+            fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');
+          }
         }
         if ($this->Message() == '') {
           $this->Message(T('XMLcms_settings_updated'));

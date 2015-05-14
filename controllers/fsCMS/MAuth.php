@@ -124,7 +124,7 @@ class MAuth extends cmsController
     }
     
     $this->Message(T('XMLcms_text_no_email_users'));
-    $userInfo = $user_info->FindByValue($userFieldForRestore, $param->$userFieldForRestoreName);
+    $userInfo = $user_info->FindByValue($userFieldForRestoreName, $param->$userFieldForRestoreName);
     if(count($userInfo) != 1) {
         return;
     }

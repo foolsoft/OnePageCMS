@@ -7,7 +7,7 @@ session_set_cookie_params(null, '/', null, null, true); // httponly
 session_start();
 $_REQUEST['includeBody'] = '';
 $_REQUEST['includeHead'] = ''; 
-define('PATH_ROOT',       dirname(__FILE__).'/../');
+define('PATH_ROOT',       dirname(dirname(__FILE__)).'/');
 define('PATH_PLUGINS',    PATH_ROOT.'plugins/'); 
 define('PATH_CACHE',      PATH_ROOT.'cache/');
 define('PATH_CACHE_DB',   PATH_CACHE.'db/');

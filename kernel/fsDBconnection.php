@@ -56,6 +56,9 @@ class fsDBconnection
   /** @var integer Count of affected rows in last query */
   protected $_affectedRows = 0;
   
+  /** @var string Text of last error */
+  protected $_error = '';
+  
   /**
   * Connect to database.   
   * @api
@@ -108,11 +111,37 @@ class fsDBconnection
     $q = substr($sql, 0, 6);
     $q = strtoupper($q);
     if ($result) {
-      if ($q == 'INSERT')
+      if ($q == 'INSERT') {
       	$this->_last = $this->_connection->insert_id;
-      if ($q == 'INSERT' || $q == 'DELETE' || $q == 'UPDATE' || $q == 'REPLACE')
+      }
+      if ($q == 'INSERT' || $q == 'DELETE' || $q == 'UPDATE' || $q == 'REPLACE') {
       	$this->_affectedRows = $this->_connection->affected_rows;
+      }
+      $this->_error = '';
+    } else {
+      $this->_error = $this->_connection->error;  
     }
+    if ($closeConnection === true) {
+      $this->Close();
+    }
+    return $result;
+  }
+
+  /**
+  * Execute multiple query.   
+  * @api
+  * @since 1.1.0
+  * @param string $sql Query string.
+  * @param boolean $closeConnection (optional) Flag for closing mysqli coneection after query executing.
+  * @return mixed Result of executing MySQL query.      
+  */
+  public function MultiQuery($sql, $closeConnection = false)
+  {
+    if(empty($sql) || ($this->_connection == null && !$this->Connect())) {
+      return null;
+    } 
+    $result = $this->_connection->multi_query($sql);
+    $this->_error = $result ? '' : $this->_connection->error;  
     if ($closeConnection === true) {
       $this->Close();
     }
@@ -131,6 +160,17 @@ class fsDBconnection
       $this->_connection->close();
       $this->_connection = null;
     }
+  }
+  
+  /**
+  * Get text of last error.    
+  * @api
+  * @since 1.1.0
+  * @return string Text of error.      
+  */
+  public function LastError()
+  {
+    return $this->_error;
   }
   
   /**

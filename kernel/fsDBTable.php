@@ -108,7 +108,7 @@ class fsDBTable
   protected function ExecuteStack()
   {
       if(count($this->_queryStack) > 0) {
-        $this->Execute(implode(';', $this->_queryStack));
+        $this->MultiExecute(implode(';', $this->_queryStack).';', false);
         $this->_queryStack = array();
       }
   }
@@ -701,6 +701,24 @@ class fsDBTable
   }
   
   /**
+  * Execute multiple query   
+  * @api
+  * @since 1.1.0
+  * @param string $query MySQL query string.
+  * @return boolean Result of query.      
+  */
+  public function MultiExecute($query)
+  {
+    $this->_result->Clear();
+    $this->_result->mysqlResult = $this->_struct->db->MultiQuery($query);
+    if (!$this->_result->mysqlResult) { 
+        $this->_struct->db->Close();
+        die('Error in query: '.$this->_query->sql.'<br />'.$this->_struct->db->LastError());
+    }
+    return $this->_result->mysqlResult;
+  }
+  
+  /**
   * Execute query   
   * @api
   * @since 1.0.0
@@ -726,7 +744,7 @@ class fsDBTable
     $this->_result->mysqlResult = $this->_struct->db->Query($query);
     if (!$this->_result->mysqlResult) { 
         $this->_struct->db->Close();
-        die('Error in query: '.$this->_query->sql);
+        die('Error in query: '.$this->_query->sql.'<br />'.$this->_struct->db->LastError());
     }
     if ($next && ($this->_query->action == 'select' || strtolower(substr($this->_query->sql, 0, 6)) == 'select')) {
       $row = $this->_result->mysqlResult->fetch_assoc();

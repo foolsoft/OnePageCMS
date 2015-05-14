@@ -269,6 +269,12 @@
   <text name='cms_captcha'>
     <ru>Код с изображения</ru>
   </text>
+  <text name='cms_text_image'>
+    <ru>Изображение</ru>
+  </text>
+  <text name='cms_text_bad_image'>
+    <ru>Неверный формат изрбражения</ru>
+  </text>
   <text name='cms_captcha_wrong'>
     <ru>Неверный проверочный код</ru>
   </text>

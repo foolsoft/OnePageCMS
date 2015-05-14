@@ -18,6 +18,25 @@ class fsFunctions
   }
   
   /**
+    * Create basic authorization.    
+    * @since 1.1.0
+    * @api    
+    * @param string $username User name for log in.
+    * @param string $password Password for log in.
+    * @param string $message (optional) Message if operation was field.
+    * @return void  
+    */
+  public static function BasicAuth($username, $password, $message = 'Access denied')
+  {
+    if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW']) 
+        || ($_SERVER['PHP_AUTH_USER'] != $username) || ($_SERVER['PHP_AUTH_PW'] != $password)) {
+        header('HTTP/1.1 401 Unauthorized');
+        header('WWW-Authenticate: Basic realm="Access denied!"');
+        exit($message);
+    }
+  }
+  
+  /**
     * Return russian string from number.    
     * @since 1.1.0
     * @api    
@@ -894,11 +913,7 @@ class fsFunctions
     public static function CheckUploadFiles($name, $mimes = array(), $blacklistFormats = array(), $useFileMem = false, $canBeEmpty = true)
     {
       if (!isset($_FILES) || empty($_FILES[$name][0]['tmp_name'])) {
-        if($canBeEmpty) {
-          return false;
-        } else { 
-          return true;
-        }
+        return !$canBeEmpty;
       }
       $error = false;
       $fc = count($_FILES[$name]);

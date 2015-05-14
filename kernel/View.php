@@ -179,7 +179,7 @@ class View
         if (class_exists($matches[1][$i])) {
           $class = new $matches[1][$i]();
           if (!method_exists($class, $matches[2][$i])) {
-            continue;
+            die('Call undefined method {% '.$matches[1][$i].'/'.$matches[2][$i].' %}');
           }
           $denied = false; 
           $deniedResult = T('XMLcms_denied');

@@ -3,7 +3,8 @@ class AdminMPosts extends AdminPanel
 {
     protected $_tableName = 'posts';
     protected $_languages = array();
-  
+    private $_imagePath = 'uploads/posts/';
+    
     private function _CheckParamAltTitle(&$param)
     {
         $alts = $param->alt;
@@ -87,10 +88,12 @@ class AdminMPosts extends AdminPanel
   
     public function Init($request)
     {
+        $this->_imagePath = PATH_ROOT.$this->_imagePath;
         $this->Tag('title', T('XMLcms_text_posts'));
         $languages = new languages();
         $this->_languages = $languages->Get();
         unset($languages);
+        fsFunctions::CreateDirectory($this->_imagePath);
         parent::Init($request);
     }
 
@@ -203,7 +206,8 @@ class AdminMPosts extends AdminPanel
   
     public function actionDoAddPost($param)
     {
-        if (!$this->_CheckPostData($param) || !$this->_CheckAlt($this->_tableName, $param->alt)) {
+        if (!$this->_CheckPostData($param) || !$this->_CheckAlt($this->_tableName, $param->alt)
+            || !$this->_UploadImage($param)) {
             return -1;
         }
         $postId = parent::actionDoAdd($param);
@@ -215,11 +219,35 @@ class AdminMPosts extends AdminPanel
         }
         return -1;
     }
-  
+    
+    private function _UploadImage(&$param)
+    {
+        $param->image = empty($_FILES['image'][0]['tmp_name']) && $param->Exists('image') ? $param->image : '';
+        $error = fsFunctions::CheckUploadFiles('image',
+            array('image/gif', 'image/jpg', 'image/jpeg', 'image/png'),
+            false, true
+        );
+        if($error) {
+            $this->_Referer();
+            $this->Message(T('XMLcms_text_bad_image'));
+            return false;
+        }
+        $newFile = '';
+        if (!fsFunctions::UploadFiles('image', $this->_imagePath, $newFile)) {
+            $this->_Referer();
+            $this->Message(T('XMLcms_text_file_upload_error'));
+            return false;
+        }
+        if($newFile != '') {
+            $param->image = str_replace(PATH_ROOT, URL_ROOT_CLEAR, $this->_imagePath).$newFile;
+        }
+        return true;
+    }
+    
     public function actionDoEditPost($param)
     {
         if (!$this->_CheckPostData($param) || !$this->_CheckAlt($this->_tableName, $param->alt, $param->key)
-            || parent::actionDoEdit($param) !== 0) {
+            || !$this->_UploadImage($param) || parent::actionDoEdit($param) !== 0) {
             return;
         }
         $pc = new post_category();
@@ -233,8 +261,8 @@ class AdminMPosts extends AdminPanel
         if(!class_exists($table)) {
             return false;
         }
-        $table = new $table();
-        if(!$table->IsUniqueAlt($alts, $id)) {
+        $tableObj = new $table();
+        if(!$tableObj->IsUniqueAlt($alts, $id)) {
             $this->Message(T('XMLcms_text_unique_link'));
             $this->_Referer();
             return false;

@@ -3,7 +3,7 @@
 [block-content]
 <?php echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fsCMS-btn admin-btn-back')); ?>
 <hr />
-<form action="<?php echo $myLink; ?>DoAddPost/referer/Index/" method='post'>
+<form enctype="multipart/form-data" action="<?php echo $myLink; ?>DoAddPost/referer/Index/" method='post'>
   <p class='title'>
     <?php _T('XMLcms_text_name'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'title', array(), array('onkeyup' => 'fsCMS.Chpu(this.value, \'alt-\' + this.getAttribute(\'id\').split(\'-\')[1]);', 'maxlength' => 100)); ?>
@@ -19,6 +19,10 @@
   <p>
     META - <?php _T('XMLcms_text_kw'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords'); ?>
+  </p>
+  <p>
+    <?php _T('XMLcms_text_image'); ?>:
+    <input type="file" name="image" />
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_category'); ?>: <br />

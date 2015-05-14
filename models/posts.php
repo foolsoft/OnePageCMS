@@ -28,7 +28,8 @@ class posts extends fsDBTableExtension
           $sql = fsFunctions::StringFormat(
             'SELECT COUNT(`p`.`id`) as `c` FROM `{0}posts` p JOIN `{0}post_category` pc ON `p`.`id` = `pc`.`id_post`
              JOIN `{0}posts_category` pcs ON `pc`.`id_category` = `pcs`.`id` 
-             JOIN `{0}posts_category_info` pcsi ON `pcs`.`id` = `pcsi`.`id_category` '.$where,
+             JOIN `{0}posts_category_info` pcsi ON `pcs`.`id` = `pcsi`.`id_category` '.$where.'
+             GROUP BY `p`.`id`',
              array(fsConfig::GetInstance('db_prefix'), $idOrAlt, ALL_TYPES)
           );
         }
@@ -49,6 +50,7 @@ class posts extends fsDBTableExtension
              JOIN `{0}posts_category` pcs ON `pc`.`id_category` = `pcs`.`id`
              JOIN `{0}posts_category_info` pcsi ON `pcs`.`id` = `pcsi`.`id_category`
              WHERE `pi`.`id_language` = "{1}" AND `pcsi`.`id_language` = "{1}"
+             GROUP BY `p`.`id`
              ORDER BY `p`.`position`, `p`.`date` DESC',
              array(fsConfig::GetInstance('db_prefix'), $languageId),
              false
@@ -61,7 +63,7 @@ class posts extends fsDBTableExtension
         if ($idOrAlt == -1) { //No category
           $sql = fsFunctions::StringFormat(
             'SELECT `p`.* FROM `{0}posts` p LEFT JOIN `{0}post_category` pc ON `p`.`id` = `pc`.`id_post`
-             WHERE `pc`.`id_category` IS NULL'.
+             WHERE `pc`.`id_category` IS NULL '.
              ($activeOnly ? ' AND `p`.`active` = "1" ' : ''). 
              'ORDER BY `p`.`position`, `p`.`date` DESC LIMIT {1}, {2}', 
              array(fsConfig::GetInstance('db_prefix'), ($start - 1) * $count, $count)
@@ -85,6 +87,7 @@ class posts extends fsDBTableExtension
              JOIN `{0}posts_category` pcs ON `pc`.`id_category` = `pcs`.`id`
              JOIN `{0}posts_category_info` pcsi ON `pcs`.`id` = `pcsi`.`id_category`
              '.$where.'
+             GROUP BY `p`.`id`
              ORDER BY `p`.`position`, `p`.`date` DESC
              LIMIT {2}, {3}',
              array(fsConfig::GetInstance('db_prefix'), $idOrAlt, ($start - 1) * $count, $count, ALL_TYPES)
@@ -140,6 +143,7 @@ class posts extends fsDBTableExtension
             'date' => $resultQuery[0]['date'],
             'active' => $resultQuery[0]['active'],
             'position' => $resultQuery[0]['position'],
+            'image' => $resultQuery[0]['image'],
             'tpl_short' => $resultQuery[0]['tpl_short'],
             'tpl' => $resultQuery[0]['tpl'],
             'auth' => $resultQuery[0]['auth'],

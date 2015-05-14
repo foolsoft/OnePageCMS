@@ -32,4 +32,7 @@ $history = array(
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts` DROP `title`, DROP `alt`, DROP `html_short`, DROP `html_full`, DROP `meta_description`, DROP `meta_keywords`;',
         */
     ),
+    '2.2.1.0' => array(
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts` ADD `image` TEXT NULL AFTER `position`;'
+    ),
 );                                                                 

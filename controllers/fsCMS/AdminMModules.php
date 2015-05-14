@@ -27,52 +27,50 @@ class AdminMModules extends AdminPanel
       return $this->Message(T('XMLcms_text_bad_file_format'));
     }
     $newFile = '';
-    if (fsFunctions::UploadFiles('userfile', $this->_pathZip, $newFile)) {
-        $zip = new ZipArchive();
-        $res = $zip->open($this->_pathZip.$newFile);
-        if ($res === true) {
-         $zip->extractTo(PATH_ROOT);
-         $zip->close();
-         if (file_exists(PATH_ROOT.'settings.php')) {
-            include PATH_ROOT.'settings.php';
-            if (isset($MNAME)  && !empty($MNAME)) {
-              if (!isset($MADMIN_START)) {
-                $MADMIN_START = '';
-              }
-              if (!isset($MTEXT)) {
-                $MTEXT = $MNAME;
-              }
-              $this->_table->AddModule($MNAME, $MADMIN_START, $MTEXT);
-              if (isset($SETTINGS) && is_array($SETTINGS)) {
-                $controller_settings = new controller_settings();
-                foreach ($SETTINGS as $name => $value) {
-                  $controller_settings->Add($MNAME, $name, $value);
-                }
-                unset($controller_settings);
-              }
-              if (isset($MENU) && is_array($MENU)) {
-                $controller_menu = new controller_menu();
-                foreach ($MENU as $title => $href) {
-                  $controller_menu->Add($MNAME, $title, $href);
-                }
-                unset($controller_menu);  
-              } 
-            }
-            unlink(PATH_ROOT.'settings.php');
-         }
-         if (file_exists(PATH_ROOT.'install.php')) {
-            $db = new fsDBconnection();
-            include PATH_ROOT.'install.php';
-            unlink(PATH_ROOT.'install.php');
-         }
-         $this->Redirect($this->_My());
-         fsCache::Clear();
-        } else {
-          $this->Message(T('XMLcms_text_unzip_error'));
-        }
-    } else {
-        $this->Message(T('XMLcms_text_file_upload_error'));
+    if (!fsFunctions::UploadFiles('userfile', $this->_pathZip, $newFile)) {
+        return $this->Message(T('XMLcms_text_file_upload_error'));
     }
+    $zip = new ZipArchive();
+    $res = $zip->open($this->_pathZip.$newFile);
+    if ($res !== true) {
+        return $this->Message(T('XMLcms_text_unzip_error'));
+    }
+    $zip->extractTo(PATH_ROOT);
+    $zip->close();
+    if (file_exists(PATH_ROOT.'settings.php')) {
+       include PATH_ROOT.'settings.php';
+       if (isset($MNAME)  && !empty($MNAME)) {
+         if (!isset($MADMIN_START)) {
+           $MADMIN_START = '';
+         }
+         if (!isset($MTEXT)) {
+           $MTEXT = $MNAME;
+         }
+         $this->_table->AddModule($MNAME, $MADMIN_START, $MTEXT);
+         if (isset($SETTINGS) && is_array($SETTINGS)) {
+           $controller_settings = new controller_settings();
+           foreach ($SETTINGS as $name => $value) {
+             $controller_settings->Add($MNAME, $name, $value);
+           }
+           unset($controller_settings);
+         }
+         if (isset($MENU) && is_array($MENU)) {
+           $controller_menu = new controller_menu();
+           foreach ($MENU as $title => $href) {
+             $controller_menu->Add($MNAME, $title, $href);
+           }
+           unset($controller_menu);  
+         } 
+       }
+       unlink(PATH_ROOT.'settings.php');
+    }
+    if (file_exists(PATH_ROOT.'install.php')) {
+       $db = new fsDBconnection();
+       include PATH_ROOT.'install.php';
+       unlink(PATH_ROOT.'install.php');
+    }
+    $this->Redirect($this->_My());
+    fsCache::Clear();
   }
 
   public function actionAdd($param)

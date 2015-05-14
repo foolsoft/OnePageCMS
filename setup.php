@@ -120,6 +120,7 @@ if ($_POST) {
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `position` smallint(6) NOT NULL DEFAULT '0',
+        `image` text NULL,
         `tpl` varchar(50) NOT NULL,
         `tpl_short` varchar(50) NOT NULL,
         `active` enum('0','1') NOT NULL DEFAULT '1',
