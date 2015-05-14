@@ -26,10 +26,9 @@ class posts extends fsDBTableExtension
             $where .= ' AND `p`.`active` = "1"';
           }
           $sql = fsFunctions::StringFormat(
-            'SELECT COUNT(`p`.`id`) as `c` FROM `{0}posts` p JOIN `{0}post_category` pc ON `p`.`id` = `pc`.`id_post`
+            'SELECT COUNT(DISTINCT `p`.`id`) as `c` FROM `{0}posts` p JOIN `{0}post_category` pc ON `p`.`id` = `pc`.`id_post`
              JOIN `{0}posts_category` pcs ON `pc`.`id_category` = `pcs`.`id` 
-             JOIN `{0}posts_category_info` pcsi ON `pcs`.`id` = `pcsi`.`id_category` '.$where.'
-             GROUP BY `p`.`id`',
+             JOIN `{0}posts_category_info` pcsi ON `pcs`.`id` = `pcsi`.`id_category` '.$where,
              array(fsConfig::GetInstance('db_prefix'), $idOrAlt, ALL_TYPES)
           );
         }
