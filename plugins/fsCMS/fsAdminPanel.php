@@ -137,7 +137,7 @@ class AdminPanel extends cmsController
         $time = time(); 
         if($nextCheck[0] < $time) {
             $nextCheck[0] = $time + (2 * 60 * 60);
-            $response = file_get_contents($url);
+            $response = fsFunctions::RequestGet($url);
             if($json = json_decode($response, true)) {
                 file_put_contents($this->_updateFileFlag, $nextCheck.','.$json['version']);
                 if($json['version'] != $this->settings->version && '' != $json['link']) {

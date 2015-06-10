@@ -183,11 +183,11 @@ class fsFunctions
     * @since 1.0.0
     * @api    
     * @param string $url Url for request.
-    * @param array $data (optional) Request data. Default <b>null</b>.
+    * @param array $data (optional) Request data. Default <b>empty array</b>.
     * @param array $options (optional) Additional CURL options. Default <b>empty array</b>.
     * @return string Server answer.  
     */
-  public static function RequestGet($url, $data = null, $options = array()) 
+  public static function RequestGet($url, $data = array(), $options = array()) 
   {
     $defaults = array(
         CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query($data),
@@ -210,11 +210,11 @@ class fsFunctions
     * @since 1.0.0
     * @api    
     * @param string $url Url for request.
-    * @param array $data (optional) Request data. Default <b>null</b>.
+    * @param array $data (optional) Request data. Default <b>empty array</b>.
     * @param array $options (optional) Additional CURL options. Default <b>empty array</b>.
     * @return string Server answer.  
     */
-  public static function RequestPost($url, $data = null, $options = array()) 
+  public static function RequestPost($url, $data = array(), $options = array()) 
   {
     $defaults = array(
         CURLOPT_POST => 1,
