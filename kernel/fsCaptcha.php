@@ -12,6 +12,7 @@ class fsCaptcha
         'alph' => 'qwerty123klzxcLKJvbnm4567890QWERTYUIOPHGFDSAuiopasdfghjZXCVBNM',
         'length' => 4,
         'linesCount' => 2,
+        'bgColor' => array(255, 255, 255),
         'textColor' => array(255, 255, 255),
         'lineColor' => array(255, 255, 255) 
     );
@@ -38,14 +39,13 @@ class fsCaptcha
     public static function Create($settings = array())
     {
         header("Content-Type: image/jpeg");
-        
         $settings = array_merge(self::$_settings, $settings);
-        
         $ac = strlen($settings['alph']);
-        
         $img = imagecreatetruecolor($settings['width'], $settings['height']);
         $textColor = imagecolorallocate($img , $settings['textColor'][0], $settings['textColor'][1], $settings['textColor'][2]);
         $lineColor = imagecolorallocate($img , $settings['lineColor'][0], $settings['lineColor'][1], $settings['lineColor'][2]);
+        $bgColor =  imagecolorallocate($img, $settings['bgColor'][0], $settings['bgColor'][1], $settings['bgColor'][2]);
+        imagefill($img, 0, 0, $bgColor);
         $_SESSION['fsCaptcha'] = '';
         for ($i = 0; $i < $settings['length']; ++$i) {
             $_SESSION['fsCaptcha'] .= $settings['alph'][rand(0, $ac)];

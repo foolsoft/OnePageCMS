@@ -133,7 +133,7 @@ class AdminMUsers extends AdminPanel
     }
     $param->active =  $param->Exists('active') ? 1 : 0;
     $param->password = users::HashPassword($param->password);
-    if (($userId = parent::actionDoAdd($param)) > 0) {
+    if (($param->key = parent::actionDoAdd($param)) > 0) {
       $this->_UpdateUserFields($param);
     }
   }
