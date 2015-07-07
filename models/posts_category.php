@@ -98,7 +98,7 @@ class posts_category extends fsDBTableExtension
             fsConfig::GetInstance('db_prefix'), $languageId,
             count($excludeIds) == 0 ? '' : 'AND `c`.`id` NOT IN ('.implode(',', $excludeIds).')', 
             count($orderBy) == 0 ? '' : 'ORDER BY '.implode(',', $orderBy)
-        )));
+        )), 'id');
     }
     
     public function Get($languageId, $category)

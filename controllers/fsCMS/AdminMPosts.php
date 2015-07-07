@@ -170,8 +170,8 @@ class AdminMPosts extends AdminPanel
         $c = new posts_category();
         $all = $c->GetCategories(fsSession::GetInstance('LanguageId'), array('id_parent', 'title'), $excludeIds);
         $result = array();
-        foreach($all as $c) {
-            $result[$c['id']] = FunctionsPosts::GetFullCategoryName($all, $c);
+        foreach($all as $id => $c) {
+            $result[$id] = FunctionsPosts::GetFullCategoryName($all, $c);
         }
         return $result;
     }
