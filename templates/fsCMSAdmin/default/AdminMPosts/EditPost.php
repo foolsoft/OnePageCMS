@@ -41,10 +41,10 @@ $textImage = T('XMLcms_text_image');
   <p class='title'>
     <?php _T('XMLcms_text_category'); ?>: <br />
     <select onclick="PostTemplateLoad($(this).val());" class='input-100' multiple name='id_category[]' size='10'>
-      <?php foreach ($tag->categories as $category) { 
-        $selected = in_array($category['id'], $tag->post_categories) ? 'selected' : '';
+      <?php foreach ($tag->categories as $id => $category) { 
+        $selected = in_array($id, $tag->post_categories) ? 'selected' : '';
       ?>
-        <option <?php echo $selected; ?> value='<?php echo $category['id']; ?>'><?php echo FunctionsPosts::GetFullCategoryName($tag->categories, $category); ?></option>
+        <option <?php echo $selected; ?> value='<?php echo $id; ?>'><?php echo FunctionsPosts::GetFullCategoryName($tag->categories, $category); ?></option>
       <?php } ?>
     </select>
   </p>

@@ -27,8 +27,8 @@
   <p class='title'>
     <?php _T('XMLcms_text_category'); ?>: <br />
     <select onclick="PostTemplateLoad($(this).val());" class='input-100' multiple name='id_category[]' size='10'>
-      <?php foreach ($tag->categories as $category) { ?>
-        <option value='<?php echo $category['id']; ?>'><?php echo FunctionsPosts::GetFullCategoryName($tag->categories, $category); ?></option>
+      <?php foreach ($tag->categories as $id => $category) { ?>
+        <option value='<?php echo $id; ?>'><?php echo FunctionsPosts::GetFullCategoryName($tag->categories, $category); ?></option>
       <?php } ?>
     </select>
   </p>
