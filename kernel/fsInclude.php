@@ -58,9 +58,11 @@ class fsInclude implements iSingleton
     * @param string $type Type of include file.
     * @param string|array $files Url's of files for including.
     * @param boolean $autoShow (optional) Flag for result auto 'echo'. Default <b>true</b>.
+    * @since 1.1.0
+    * @param array $async (optional). Only for js type. Flags true or false for each files in $files parameter. Default value <b>false</b>. 
     * @return string Html code.     
     */
-    protected static function _Attach($type, $files, $autoShow = true) 
+    protected static function _Attach($type, $files, $autoShow = true, $async = array()) 
     {
         $string = ''; $result = '';
         switch ($type) {
@@ -71,7 +73,10 @@ class fsInclude implements iSingleton
                 $string = '<link rel="stylesheet" type="text/css" href="{0}" />';
                 break;
             case 'js':
-                $string = '<script type="text/javascript" src="{0}"></script>';
+                if(is_array($files) && count($files) != count($async)) {
+                    $async = array();
+                }
+                $string = '<script{1}src="{0}"></script>';
                 break;
             default:
                 return $string;
@@ -79,8 +84,9 @@ class fsInclude implements iSingleton
         if(!is_array($files)) {
             $files = array($files);
         }
-        foreach($files as $file) {
-            $result .= fsFunctions::StringFormat($string, array($file));
+        $noAsync = count($async) == 0;
+        foreach($files as $idx => $file) {
+            $result .= fsFunctions::StringFormat($string, array($file, $noAsync ? ' ' : ($async[$idx] === true ? ' async ' : ' ')));
         }
         if($autoShow) {
             echo $result;
@@ -107,11 +113,13 @@ class fsInclude implements iSingleton
     * @since 1.0.0
     * @param string|array $files Url's of files for including.
     * @param boolean $autoShow (optional) Flag for result auto 'echo'. Default <b>true</b>.
+    * @since 1.1.0
+    * @param array $async (optional). Flags true or false for each files in $files parameter. Default value <b>false</b>. 
     * @return string Html code.     
     */
-    public static function AttachJs($files, $autoShow = true) 
+    public static function AttachJs($files, $autoShow = true, $async = array()) 
     {
-        return self::_Attach('js', $files, $autoShow);
+        return self::_Attach('js', $files, $autoShow, $async);
     }
     
     /**

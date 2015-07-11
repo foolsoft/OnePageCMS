@@ -34,14 +34,14 @@ class MUsersAccount extends cmsNeedAuthController
       }
       if($newValue !== null) {
         if($field['expression'] === '' || preg_match('/^'.$field['expression'].'$/u', $newValue)) {
-			$this->_table->Change($userId, $field['id'], $newValue);
-			$user['fields'][$field['name']]['value'] = $newValue;
-		}
+            $this->_table->Change($userId, $field['id'], $newValue);
+            $user['fields'][$field['name']]['value'] = $newValue;
+        }
       }
     }
 
     fsSession::Set('AUTH', $user);
-
+    
     $this->Message(T('XMLcms_updated'));
   }
 

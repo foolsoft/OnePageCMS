@@ -1,26 +1,23 @@
-<table width="500">
-    <tr>
-        <th width="200" align="right"><?php _T('XMLcms_text_now_password'); ?></th>
-        <td>
-            <input type="password" value="" name="password" />
-        </td>
-    </tr>
-    <tr>
-        <th align="right"><?php _T('XMLcms_text_new_password'); ?></th>
-        <td>
-            <input type="password" value="" name="new_password" />
-        </td>
-    </tr>
-    <tr>
-        <th align="right"><?php _T('XMLcms_text_new_repassword'); ?></th>
-        <td>
-            <input type="password" value="" name="new_password_again" />
-        </td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-        <td align="right">
-            <input type="submit" value="<?php _T('XMLcms_save'); ?>" />
-        </td>
-    </tr>
-</table>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="margin-top">
+        <?php _T('XMLcms_text_now_password'); ?>
+            <div><input class="input-100" type="password" value="" name="password" /></div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="margin-top">
+            <?php _T('XMLcms_text_new_password'); ?>
+            <div><input class="input-100" type="password" name="new_password" /></div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="margin-top">
+            <?php _T('XMLcms_text_new_repassword'); ?>
+            <div><input class="input-100" type="password" name="new_password_again" /></div>
+        </div>
+    </div>
+</div>
+<div class="margin-top-15">
+    <input class="btn btn-default" type="submit" value="<?php _T('XMLcms_save'); ?>" />
+</div>

@@ -1,4 +1,4 @@
-[parent:../AdminPanel/Index.php]
+[parent:../AdminPanel/AddEdit.php]
 
 [block-content]
 <div class="sticky-0 dictionary-head">

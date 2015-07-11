@@ -5,8 +5,7 @@
 header('Content-type: text/html; charset=utf-8');
 session_set_cookie_params(null, '/', null, null, true); // httponly
 session_start();
-$_REQUEST['includeBody'] = '';
-$_REQUEST['includeHead'] = ''; 
+$_REQUEST['includeBody'] = $_REQUEST['includeHead'] = '';
 define('PATH_ROOT',       dirname(dirname(__FILE__)).'/');
 define('PATH_PLUGINS',    PATH_ROOT.'plugins/'); 
 define('PATH_CACHE',      PATH_ROOT.'cache/');

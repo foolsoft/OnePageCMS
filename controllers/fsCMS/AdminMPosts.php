@@ -210,8 +210,8 @@ class AdminMPosts extends AdminPanel
             || !$this->_UploadImage($param)) {
             return -1;
         }
-        $postId = parent::actionDoAdd($param);
-        if ($postId > 0) {
+        if (($postId = parent::actionDoAdd($param)) > 0) {
+            fsCache::Clear('posts');
             $pc = new post_category();
             $pc->Add($postId, $param->id_category);
             $this->_UpdatePostInfo($postId, $param);
@@ -301,6 +301,7 @@ class AdminMPosts extends AdminPanel
             return -1;
         }
         if(($categoryId = parent::actionDoAdd($param)) > 0) {
+            fsCache::Clear('posts_category');
             $this->_UpdateCategoryInfo($categoryId, $param);    
         }
         return $categoryId;
@@ -332,9 +333,11 @@ class AdminMPosts extends AdminPanel
                 $pcs = new posts_category();
                 $pc->DeleteBy($param->key, 'id_category');
                 $pcs->DeleteInfo($param->key);
+                fsCache::Clear('posts_category');
             } else {
                 $pc->DeleteBy($param->key, 'id_post');
                 $this->_table->DeleteInfo($param->key);
+                fsCache::Clear('posts');
             }
         }
     }

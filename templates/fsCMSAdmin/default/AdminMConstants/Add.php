@@ -1,4 +1,4 @@
-[parent:../AdminPanel/Index.php]
+[parent:../AdminPanel/AddEdit.php]
 
 [block-content]
 <?php echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fsCMS-btn admin-btn-back')); ?>

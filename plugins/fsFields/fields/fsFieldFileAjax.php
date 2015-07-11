@@ -4,7 +4,7 @@ class fsFieldFileAjax extends fsField
   protected $_title;
   protected $_name;
   
-  public function Input($htmlFormName, $value = '', $htmlAttributes = array(), $possibleValues = array())
+  public function Input($htmlFormName, $value = '', $htmlAttributes = array(), $possibleValues = array(), $arrayName = 'fields')
   {
     $params = '?name='.$htmlFormName.'ajax';
     if(isset($htmlAttributes['params'])) {
@@ -24,6 +24,9 @@ class fsFieldFileAjax extends fsField
       $code = $htmlAttributes['html'];
       unset($htmlAttributes['html']);
     }
+    if($arrayName !== '') {
+        $htmlFormName = $arrayName.'['.$htmlFormName.']';
+    }
     $sha1 = sha1($htmlFormName);
     $html = '<script type="text/javascript">$(document).ready(function() {';
     $html .= '$.ajax_upload($("#'.md5($htmlFormName).'"), {';
@@ -34,7 +37,7 @@ class fsFieldFileAjax extends fsField
     $html .= '});});</script>';
     
     $html .= fsHtml::Button(T('XMLcms_browse'), false, array('id' => md5($htmlFormName)));
-    $html .= fsHtml::Hidden('fields['.$htmlFormName.']', $value, array('id' => $sha1));
+    $html .= fsHtml::Hidden($htmlFormName, $value, array('id' => $sha1));
     $html .= ' <span id="fs'.$sha1.'">'.$value.'</span> '.
       fsHtml::Button(T('XMLcms_delete'), "$(this).hide();$('#".$sha1."').val('');$('#fs".$sha1."').text('');".$jsRemove, array('id' => 'delete'.$sha1, 'class' => $value == '' ? 'hidden' : '')).$code;
     return $html;

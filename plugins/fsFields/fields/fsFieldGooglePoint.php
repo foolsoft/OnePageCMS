@@ -8,7 +8,7 @@ class fsFieldGooglePoint extends fsField
   private $_mapDefaultCenterLon = '33.43660380000001';
   private $_mapDefaultZoom = '8';
   
-  public function Input($htmlFormName, $value = '', $htmlAttributes = array(), $possibleValues = array())
+  public function Input($htmlFormName, $value = '', $htmlAttributes = array(), $possibleValues = array(), $arrayName = 'fields')
   {
     $jsInclude = '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>';
     if (strpos($_REQUEST['includeHead'], $jsInclude) === false) {
@@ -34,10 +34,13 @@ class fsFieldGooglePoint extends fsField
       $zoom = is_numeric($htmlAttributes['zoom']) ? $htmlAttributes['zoom'] : $this->_mapDefaultZoom;
       unset($htmlAttributes['zoom']);
     }
+    if($arrayName !== '') {
+        $htmlFormName = $arrayName.'['.$htmlFormName.']';
+    }
     $width = isset($htmlAttributes['width']) ? $htmlAttributes['width'] : '100%';
     $height = isset($htmlAttributes['height']) ? $htmlAttributes['height'] : '200px';
     $mapName = 'googleMap'.$htmlFormName;
-    $html = fsHtml::Hidden('fields['.$htmlFormName.']', $value, array('id' => $htmlFormName));
+    $html = fsHtml::Hidden($htmlFormName, $value, array('id' => $htmlFormName));
     $html .= '<div style="width:'.$width.';height:'.$height.';" id="canvas-'.$htmlFormName.'"></div>';
     $html .= '<script>var '.$mapName.';'.
     'function init'.$mapName.'(){var mapOptions={zoom:'.$zoom.','.

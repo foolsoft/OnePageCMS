@@ -1,4 +1,4 @@
-[parent:../AdminPanel/Index.php]
+[parent:../AdminPanel/AddEdit.php]
 
 [block-content]
 <?php

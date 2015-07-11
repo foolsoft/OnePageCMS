@@ -41,4 +41,42 @@ class fsPaginator
         }
         return $html;
     }
+    
+    /**
+    * Get url for next page.
+    * @param string $link Base url.
+    * @param string $param Page GET parameter.
+    * @param integer $count Total records count.
+    * @param integer $pp (optional) Records per page. Default <b>20</b>.
+    * @param integer $current (optional) Current page from 1. Default <b>1</b>.
+    * @return string Url for next page.
+    */
+    public static function NextPage($link, $param, $count, $pp = 20, $current = 1)
+    {
+        $pCount = ($count % $pp == 0) ? (int)($count / $pp) : (int)($count / $pp) + 1;
+        if($pCount < 2) {
+          return '';
+        }
+        $sym = false === strpos($link, '?') ? '?' : (substr($link, -1) == '&' ? '' : '&');
+        $asReplace = preg_match('/^{.+}$/', $param);
+        return $pCount == $current
+            ? ''
+            : ($asReplace ? str_replace($param, ($current + 1), $link) : $link.$sym.$param.'='.($current + 1));
+    }
+
+    /**
+    * Get url for prevoius page.
+    * @param string $link Base url.
+    * @param string $param Page GET parameter.
+    * @param integer $current (optional) Current page from 1. Default <b>1</b>.
+    * @return string Url for previous page.
+    */
+    public static function PreviousPage($link, $param, $current = 1)
+    {
+        $sym = false === strpos($link, '?') ? '?' : (substr($link, -1) == '&' ? '' : '&');
+        $asReplace = preg_match('/^{.+}$/', $param);
+        return 1 == $current
+            ? ''
+            : ($asReplace ? str_replace($param, ($current - 1), $link) : $link.$sym.$param.'='.($current - 1));
+    }
 }

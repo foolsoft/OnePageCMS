@@ -1,4 +1,16 @@
+html, body { margin: 0px; padding: 0px; font-family: trebuchet ms; }
 body { background: #EEEEE0; }
+hr { clear: both; }
+textarea { resize: vertical; } 
+input::-moz-focus-inner { border: 0; padding: 0; }
+.space { margin: 0 5px; } .vspace { margin: 5px 0px; }
+.input-100 { width: 100%; margin-top: 5px; margin-bottom: 7px; } .input-small { width: 150px; margin-right: 15px;  } .input-position { width: 70px; margin-right: 15px;  }
+.clr { clear: both; } .fleft { float: left; } .fright { float: right; }
+.center { text-align: center; } .right { text-align: right; } .justify { text-align: justify; }
+.title { font-weight: bold; font-size: 16px; } .small {font-size: 12px; }  
+.hidden { display: none; } 
+.div-row { min-height: 30px; } .div-row .cell { float: left; } 
+.div-row, .one-of-one { width: 100%; } .one-of-two { width: 50%; } .one-of-three { width: 33.3333333333%; } .one-of-four { width: 25%; } .one-of-five { width: 20%; } 
 p { margin: 0 0 5px 0; } p.title span { font-weight: normal; }
 h3 { margin: 0px; text-decoration: underline; }
 form label:after { content: ':'; }

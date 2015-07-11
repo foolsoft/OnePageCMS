@@ -7,9 +7,9 @@ class MUsers extends cmsController
   public function FormRegistration($param) 
   {
     $html = $this->CreateView(array(), $this->_Template('FormRegistration'));
-    return "<form method=\"post\" action=\"".$this->_My('DoRegistration')."\" id=\"user-registration-form\" class=\"user-registration-form\">".
-              $html.
-           '</form>';
+    return '<form method="post" action="'.$this->_My('DoRegistration').'" id="user-registration-form" class="user-registration-form">'.
+            $html.
+        '</form>';
   }
   
   public function actionDoRegistration($param) 
@@ -30,14 +30,14 @@ class MUsers extends cmsController
     if (!$this->_table->CheckLogin($param->login)) {
       return $this->Message(T('XMLcms_text_login_not_unique'));
     } 
-    $userId = $this->_table->Add($param->login, $param->password, 0);
+    $userId = $this->_table->Add($param->login, $param->password);
     if ($userId > 0 && $param->Exists('user_field')) {
       $user_info = new user_info();
       $user_fields = new user_fields();
       $user_fields = $user_fields->GetAll();
       $uf = $param->user_field;
       foreach ($user_fields as $field) {
-        if(isset($uf[$field['name']]) && preg_match('/^'.$field['regexp'].'$/', $uf[$field['name']])) {
+        if(isset($uf[$field['name']]) && preg_match('/^'.$field['expression'].'$/', $uf[$field['name']])) {
             $user_info->Change($userId, $field['id'], $uf[$field['name']]);
         }
       }

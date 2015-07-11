@@ -378,7 +378,7 @@ if ($_POST) {
       ('Panel', 'start_page_custom', ''),
       ('Panel', 'auth_need_page', '".$page404."'),
       ('Panel', 'robot_email', 'robot@".$url."'),
-      ('Panel', 'version', '2.2.0.0'),
+      ('Panel', 'version', '2.2.1.0'),
       ('Panel', 'main_template', 'Index.php'),
       ('Panel', 'template', 'fsCMS/default'),
       ('Panel', 'template_admin', 'fsCMSAdmin/default'),

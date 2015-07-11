@@ -13,8 +13,8 @@ class fsCaptcha
         'length' => 4,
         'linesCount' => 2,
         'bgColor' => array(255, 255, 255),
-        'textColor' => array(255, 255, 255),
-        'lineColor' => array(255, 255, 255) 
+        'textColor' => array(0, 0, 0),
+        'lineColor' => array(0, 0, 0) 
     );
 
     /**

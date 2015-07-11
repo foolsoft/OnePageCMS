@@ -3,6 +3,29 @@ class MPosts extends cmsController
 {
     protected $_tableName = 'posts';
   
+    public function PostsCount($param)
+    {
+        if(!$param->Exists('category', true) || $param->category < 0) {
+            return -1;
+        }
+        $ids = array();
+        return $this->_table->GetPostCountInCategory($param->category, $param->Exists('childs'), $ids);
+    }
+    
+    public function Random($param)
+    {
+        if(!$param->Exists('category', true) || $param->category < 0) {
+            return '';
+        }
+        $limit = $param->TryGetPositiveNumber('limit', 3);
+        $template = $param->TryGetNotEmpty('template', 'Random');
+        $posts_category = new posts_category();
+        $categoies = array($param->category);
+        $posts_category->GetChilds(&$categoies, $param->category);
+        $posts = $this->_table->GetRandom(fsSession::GetInstance('LanguageId'), $limit, $categoies);
+        return $this->CreateView(array('posts' => $posts), $this->_Template($template));
+    }
+    
     public function actionCategory($param)
     {
         if (!$param->Exists('category')) {
@@ -45,6 +68,14 @@ class MPosts extends cmsController
                        : array()
                )
         );
+        $this->Tag('next_page', fsPaginator::NextPage(
+            fsHtml::Url(URL_ROOT.'posts/'.$param->category),
+            'page',
+            $count,
+            $pcount,
+            $param->page
+        ));
+        
         $page = array(
             'title' => $posts_category['title'],
             'meta_keywords' => $posts_category['meta_keywords'],

@@ -1,4 +1,4 @@
-[parent:Index.php]
+[parent:AddEdit.php]
 
 [block-content]
 <?php echo fsHtml::Link($myLink.'Hello', T('XMLcms_back'), false, array('class' => 'fsCMS-btn admin-btn-back')); ?>

@@ -19,7 +19,7 @@
 'text_main_menu' => 'Main menu',
 'text_admin' => 'Admin',
 'text_user' => 'User', 
-'text' => "<center><h1>Welcome!</h1><br/>Administration panel is <a href=\"{0}\">here</a>.</center>",
+'text' => "<center><h2>Welcome!</h2><br/>Administration panel is <a href=\"{0}\">here</a>.</center>",
 'text_description' => 'OnePage CMS web site!',
 'text_kw' => 'website,OnePageCMS,Mamatov Andrey',
 'text_nf' => "<p><strong>404</strong>: Not found</p>\r\n",

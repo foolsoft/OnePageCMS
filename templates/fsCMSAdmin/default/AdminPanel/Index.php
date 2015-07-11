@@ -1,18 +1,21 @@
+<?php
+fsInclude::AddJs(array(
+    URL_JS.'fsCMSAdmin/admin.js'
+));
+fsInclude::AddCss(array(
+    URL_PLUGINS.'jqueryui/jquery-ui.min.css', 
+    URL_ATHEME_CSS.'admin.css'
+));
+?>
 <!DOCTYPE html>
-<html>
+<html language="<?php echo fsSession::GetInstance('Language'); ?>">
 <head>
-    <title>OnePageCMS - <?php echo T('XMLcms_panel').($tag->title != '' ? ' - '.$tag->title : ''); ?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?php echo ($tag->title != '' ? $tag->title.' - ' : '').T('XMLcms_panel'); ?> - OnePageCMS</title>
     <?php 
-    fsFunctions::IncludeFile(PATH_TPL.'shared.php');
-    fsInclude::AddJs(array(URL_JS.'fsCMSAdmin/admin.js'));
-    fsInclude::AddCss(array(URL_PLUGINS.'jqueryui/jquery-ui.min.css', URL_ATHEME_CSS.'admin.css'));
-    echo fsInclude::Generate(array('ico')).fsInclude::GenerateCache(array('css'), 'admin');
-    if (file_exists(PATH_ATHEME_JS.$_REQUEST['controller'].'.js')) {
-        fsInclude::AttachJs(URL_ATHEME_JS.$_REQUEST['controller'].'.js');
-    }
-    if (file_exists(PATH_ATHEME_CSS.$_REQUEST['controller'].'.css')) {
-        fsInclude::AttachCss(URL_ATHEME_CSS.$_REQUEST['controller'].'.css');
-    }
+    fsFunctions::IncludeFile(PATH_TPL.'shared_header.php');
     ?>
     [block-head]<?php /* ACCESS TO <HEAD> FOR CHILD TEMPLATES */ ?>[endblock-head]
 </head>
@@ -26,7 +29,7 @@
       </div>
       <div class='admin-content'>
         <?php echo $tag->message; ?>
-        [block-content]<?php /* Method Template */ ?>[endblock-content]
+        [block-content]<?php /* Method template */ ?>[endblock-content]
       </div>
       <div class="clr"></div>  
     </div>
@@ -38,8 +41,19 @@
       <?php echo $tag->panelSupport; ?>  
     </div>
     <?php 
+    fsFunctions::IncludeFile(PATH_TPL.'shared_footer.php');
     echo fsInclude::GenerateCache(array('js'), 'admin_'.fsSession::GetInstance('Language')); 
-    fsInclude::AttachJs(array(URL_PLUGINS.'ace/ace.js', URL_PLUGINS.'ckeditor/ckeditor.js', URL_PLUGINS.'jqueryui/jquery-ui.min.js'));
+    echo fsInclude::GenerateCache(array('css'), 'admin');
+    fsInclude::AttachJs(array(
+        URL_PLUGINS.'jqueryui/jquery-ui.min.js'
+    ));
+    if (file_exists(PATH_ATHEME_JS.$_REQUEST['controller'].'.js')) {
+        fsInclude::AttachJs(URL_ATHEME_JS.$_REQUEST['controller'].'.js');
+    }
+    if (file_exists(PATH_ATHEME_CSS.$_REQUEST['controller'].'.css')) {
+        fsInclude::AttachCss(URL_ATHEME_CSS.$_REQUEST['controller'].'css');
+    }
     ?>
+    [block-footer]<?php /* ACCESS TO FOR CHILD TEMPLATES */ ?>[endblock-footer]
 </body>
 </html>

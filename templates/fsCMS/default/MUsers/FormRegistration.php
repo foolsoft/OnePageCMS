@@ -1,39 +1,13 @@
-<table>
-  <tr>
-    <th align='right'>
-      <?php _T('XMLcms_text_login'); ?>:
-    </th>
-    <td align='left'>
-      <input class='input-100' type='text' name='login' />  
-    </td>
-  </tr>
-  <tr>
-    <th align='right'>
-      <?php _T('XMLcms_text_password'); ?>:
-    </th>
-    <td align='left'>
-      <input class='input-100' type='password' name='password' />  
-    </td>
-  </tr>
-  <tr>
-    <th align='right'>
-      <?php _T('XMLcms_text_repassword'); ?>:
-    </th>
-    <td align='left'>
-      <input class='input-100' type='password' name='repassword' />  
-    </td>
-  </tr>
-  <tr>
-    <td align='center' colspan='2'>
-      <?php echo $tag->message; ?>
-    </td>
-  </tr>
-  <tr>
-    <td align='left'>
-      <a title="<?php _T('XMLcms_back'); ?>" href='<?php echo $referer; ?>'><?php _T('XMLcms_back'); ?></a>
-    </td>
-    <td align='right'>
-      <input type='submit' value='<?php _T('XMLcms_text_registration'); ?>'>  
-    </td>
-  </tr>
-</table>
+<div class="login center">
+    <?php echo $tag->message; ?>
+    <div class="margin-top-15"><?php _T('XMLcms_text_login'); ?></div>
+    <div><input type='text' name='login' /></div>
+    <div><?php _T('XMLcms_text_password'); ?></div>
+    <div><input type='password' name='password' /></div>
+    <div><?php _T('XMLcms_text_repassword'); ?></div>
+    <div><input type='password' name='repassword' /></div>
+    <div class="margin-top-15"><input class="btn btn-primary" type='submit' value='<?php _T('XMLcms_text_registration'); ?>' /></div>
+    <div class="margin-top-15">
+        <a title="<?php _T('XMLcms_back'); ?>" href='<?php echo $referer; ?>'><?php _T('XMLcms_back'); ?></a>
+    </div>
+</div>

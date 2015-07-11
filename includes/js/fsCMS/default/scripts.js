@@ -1,3 +1,4 @@
 $(document).ready(function() {
-  $('.fancybox').fancybox();
+    $('.fancybox').fancybox();
+    $('li.menu-item a[href="' + window.location.href +'"]').parent().addClass('active');
 });

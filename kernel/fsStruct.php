@@ -46,6 +46,58 @@ class fsStruct
     }
 
     /**
+      * Get field value if exists or return default value.
+      * @since 1.1.0
+      * @api
+      * @param string $field Field name.
+      * @param mixed $default (optional) Return value if field not exist. Default <b>empty string</b>.
+      * @return mixed Data.
+      */
+    public function TryGet($field, $default = '')
+    {
+        return $this->Exists($field) ? $this->fields[$field]['Value'] : $default;
+    }
+
+    /**
+      * Get field number value if exists or return default value.
+      * @since 1.1.0
+      * @api
+      * @param string $field Field name.
+      * @param mixed $default (optional) Return value if field not exist or not number. Default <b>0</b>.
+      * @return mixed Data.
+      */
+    public function TryGetNumber($field, $default = 0)
+    {
+        return $this->Exists($field, true) ? $this->fields[$field]['Value'] : $default;
+    }
+
+    /**
+      * Get field number value if exists or return default value.
+      * @since 1.1.0
+      * @api
+      * @param string $field Field name.
+      * @param mixed $default (optional) Return value if field not exist or not positive number. Default <b>1</b>.
+      * @return mixed Data.
+      */
+    public function TryGetPositiveNumber($field, $default = 1)
+    {
+        return $this->Exists($field, true) && $this->fields[$field]['Value'] > 0 ? $this->fields[$field]['Value'] : $default;
+    }
+
+    /**
+      * Get field not empty value if exists or return default value.
+      * @since 1.1.0
+      * @api
+      * @param string $field Field name.
+      * @param mixed $default eturn value if field not exist or empty string.
+      * @return mixed Data.
+      */
+    public function TryGetNotEmpty($field, $default)
+    {
+        return $this->$field != $this->_undefinedValue ? $this->fields[$field]['Value'] : $default;
+    }
+    
+    /**
       * Clear not 'ReadOnly' inner data.    
       * @since 1.0.0
       * @api  

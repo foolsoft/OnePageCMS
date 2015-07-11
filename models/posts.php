@@ -5,7 +5,82 @@ class posts extends fsDBTableExtension
     {
         parent::__destruct();
     }
-	
+
+    public function GetPostCountInCategory($idCategory, $calculateChilds = false, &$filter = array())
+    {
+        $cache = 'posts_GetPostCountInCategory_'.$idCategory.'_'.($calculateChilds ? '1' : '0');
+        $cacheData = fsCache::GetText($cache);
+        if($cacheData !== null) {
+            return $cacheData;
+        }
+        $count = 0;
+        $this->Execute(fsFunctions::StringFormat('
+            SELECT `id_post` FROM `{0}post_category`
+            WHERE `id_category` = "{1}" {2}', array(
+            fsConfig::GetInstance('db_prefix'), $idCategory,
+            count($filter) > 0 ? 'AND `id_post` NOT IN ('.implode(',', $filter).')' : ''
+        )), false);
+        while($this->Next())  {
+            ++$count;
+            $filter[] = $this->result->mysqlRow['id_post'];
+        }
+        if($calculateChilds === true) {
+            $rows = $this->ExecuteToArray(fsFunctions::StringFormat('
+                SELECT `id` FROM `{0}posts_category` WHERE `id_parent` = "{1}"', array(
+                fsConfig::GetInstance('db_prefix'), $idCategory
+            )), false);
+            foreach($rows as $row) {
+                $count += $this->GetPostCountInCategory($row['id'], true, $filter);
+            }
+        }
+        fsCache::CreateOrUpdate($cache, $count);
+        return $count;
+    }
+    
+    public function GetRandom($languageId, $limit = 1, $categories = array())
+    {
+        $resultQuery = $this->ExecuteToArray(fsFunctions::StringFormat('
+            SELECT `p`.*, `pi`.`title`, `pi`.`alt`, `pi`.`meta_keywords`, `pi`.`meta_description`,
+            `pi`.`id_language`, `pi`.`html_full`, `pi`.`html_short`
+            FROM `{0}posts` p JOIN `{0}posts_info` pi ON `pi`.`id_post` = `p`.`id`
+                JOIN `{0}post_category` pc ON `pc`.`id_post` = `p`.`id`
+            WHERE `p`.`active` = "1"
+                AND `pi`.`id_language` = "{3}"
+            GROUP BY `p`.`id`
+            ORDER BY RAND()
+            LIMIT {2}
+        ', array(
+            fsConfig::GetInstance('db_prefix'),
+            count($categories) > 0 ? 'AND `pc`.`id_category` IN ('.implode(',', $categories).')' : '',
+            $limit,
+            $languageId
+        )));
+        if(count($resultQuery) == 0) {
+            return null;
+        }
+        $result = array();
+        foreach($resultQuery as $row) {
+            $result[] = array(
+                'id' => $row['id'],
+                'id_user' => $row['id_user'],
+                'date' => $row['date'],
+                'active' => $row['active'],
+                'position' => $row['position'],
+                'image' => $row['image'],
+                'tpl_short' => $row['tpl_short'],
+                'tpl' => $row['tpl'],
+                'auth' => $row['auth'],
+                'title' => $row['title'],
+                'alt' => $row['alt'],
+                'html_short' => $row['html_short'],
+                'html_full' => $row['html_full'],
+                'meta_keywords' => $row['meta_keywords'],
+                'meta_description' => $row['meta_description']
+            );
+        }
+        return $result;
+    }
+    
     public function GetCountByCategory($idOrAlt = ALL_TYPES, $activeOnly = true)
     {
         $sql = '';

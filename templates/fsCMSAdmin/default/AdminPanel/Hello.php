@@ -19,3 +19,11 @@
   <?php echo $tag->linkTemplateManager; ?>
 </p>
 [endblock-content]
+
+[block-footer]
+<?php 
+fsInclude::AttachJs(array(
+    URL_PLUGINS.'ace/ace.js'
+), true, array(true));
+?>
+[endblock-footer]
