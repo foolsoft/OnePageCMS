@@ -1,7 +1,4 @@
 <?php
-fsInclude::AddJs(array(
-    URL_JS.'fsCMSAdmin/admin.js'
-));
 fsInclude::AddCss(array(
     URL_PLUGINS.'jqueryui/jquery-ui.min.css', 
     URL_ATHEME_CSS.'admin.css'
@@ -16,6 +13,7 @@ fsInclude::AddCss(array(
     <title><?php echo ($tag->title != '' ? $tag->title.' - ' : '').T('XMLcms_panel'); ?> - OnePageCMS</title>
     <?php 
     fsFunctions::IncludeFile(PATH_TPL.'shared_header.php');
+    fsInclude::AddJs(array(URL_JS.'fsCMSAdmin/admin.js'));
     ?>
     [block-head]<?php /* ACCESS TO <HEAD> FOR CHILD TEMPLATES */ ?>[endblock-head]
 </head>
@@ -33,8 +31,8 @@ fsInclude::AddCss(array(
       </div>
       <div class="clr"></div>  
     </div>
-    <div class='admin-footer'>
-      2011-<?php echo date("Y"); ?> &copy; <a href="http://foolsoft.ru" title="<?php _T('XMLcms_a'); ?>" target="_blank"><?php _T('XMLcms_a'); ?></a> | 
+    <div class="admin-footer">
+      2011-<?php echo date('Y'); ?> &copy; <a href="http://foolsoft.ru" title="<?php _T('XMLcms_a'); ?>" target="_blank"><?php _T('XMLcms_a'); ?></a> | 
       <a class="fancybox" href="#support" title="<?php _T('XMLcms_support'); ?>"><?php _T('XMLcms_support'); ?></a>
     </div>
     <div id="support" class="support hidden">
@@ -43,7 +41,7 @@ fsInclude::AddCss(array(
     <?php 
     fsFunctions::IncludeFile(PATH_TPL.'shared_footer.php');
     echo fsInclude::GenerateCache(array('js'), 'admin_'.fsSession::GetInstance('Language')); 
-    echo fsInclude::GenerateCache(array('css'), 'admin');
+    echo fsInclude::GenerateCache(array('css'), 'admin_'.fsSession::GetInstance('Language'));
     fsInclude::AttachJs(array(
         URL_PLUGINS.'jqueryui/jquery-ui.min.js'
     ));

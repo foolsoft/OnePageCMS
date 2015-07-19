@@ -1,5 +1,4 @@
 <?php 
-fsInclude::AddJs(array(URL_THEME_JS.'scripts.js'));
 fsInclude::AddCss(array(URL_THEME_CSS.'styles.css'));
 $title = isset($page['title']) ? $page['title'] : $tag->title;
 ?>
@@ -22,6 +21,7 @@ $title = isset($page['title']) ? $page['title'] : $tag->title;
     <![endif]-->
     <?php 
     fsFunctions::IncludeFile(PATH_TPL.'shared_header.php');
+    fsInclude::AddJs(array(URL_THEME_JS.'scripts.js'));
     ?>
     [block-head]<?php /* ACCESS TO <HEAD> FOR CHILD TEMPLATES */ ?>[endblock-head]
   </head>
@@ -70,7 +70,7 @@ $title = isset($page['title']) ? $page['title'] : $tag->title;
     <?php
     fsFunctions::IncludeFile(PATH_TPL.'shared_footer.php');
     echo fsInclude::GenerateCache(array('js'), fsSession::GetInstance('Language')); 
-    echo fsInclude::GenerateCache(array('css'));
+    echo fsInclude::GenerateCache(array('css'), fsSession::GetInstance('Language'));
     if (file_exists(PATH_THEME_JS.$_REQUEST['controller'].'.js')) {
         fsInclude::AttachJs(URL_THEME_JS.$_REQUEST['controller'].'.js');
     } else if (file_exists(PATH_DTHEME_JS.$_REQUEST['controller'].'.js')) {

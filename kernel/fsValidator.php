@@ -86,13 +86,13 @@ class fsValidator
 
                 case 'POSITIVE': //number > 0 
                     if (!is_numeric($what) || $what <= 0) { 
-                    return false;
+                        return false;
                     }
                     break;
 
                 case 'NEGATIVE': //number < 0
                     if (!is_numeric($what) || $what >= 0) {
-                    return false;
+                        return false;
                     }
                     break;
 
@@ -110,7 +110,7 @@ class fsValidator
 
                 case 'LENGTH': //string length
                     if (!isset($attr[$i]) || strlen($what) > $attr[$i]) {
-                    return false;
+                        return false;
                     }
                     break;
 

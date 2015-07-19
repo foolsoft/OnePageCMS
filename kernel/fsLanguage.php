@@ -30,10 +30,10 @@ class fsLanguage implements iSingleton
             fsSession::Create('LanguageId', $languages->GetField('id', $SYSTEM_LANGUAGE, 'name'));
         }
         if(isset($_REQUEST['language']) && $_REQUEST['language'] != '' && $_REQUEST['language'] != fsSession::GetInstance('Language')) {
-            $lang = $languages->GetOne($_REQUEST['language'], true, 'name'); 
-            if(count($lang) == 1 && $lang[0]['active'] == 1) {
+            $lang = $languages->GetOne($_REQUEST['language'], true, 'name');
+            if($lang != null && $lang['active'] == 1) {
                 fsSession::Set('Language', $_REQUEST['language']);
-                fsSession::Set('LanguageId', $lang[0]['id']);
+                fsSession::Set('LanguageId', $lang['id']);
             }
         }
         unset($languages);

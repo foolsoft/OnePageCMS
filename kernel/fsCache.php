@@ -9,6 +9,8 @@ class fsCache
     private static $_path = PATH_CACHE;
     /** @var string Url of cache folder */
     private static $_url = URL_CACHE;
+    /** @var string Suffix for cache life time file */
+    private static $_timeSuffix = '.time';
     
     /**
     * Create cache file    
@@ -16,14 +18,36 @@ class fsCache
     * @api    
     * @param string $fileName Name of file.
     * @param string $content Content of cache file.
+    * @since 1.1.0
+    * @param integer $lifeTimeInSeconds (optional) Cache life time in seconds. If zero life time unlimited. Default value <b>0</b>.
     * @return void.  
     */
-    public static function CreateOrUpdate($fileName, $content)
+    public static function CreateOrUpdate($fileName, $content, $lifeTimeInSeconds = 0)
     {
         $fullPath = self::GetPath($fileName);
         $directory = fsFunctions::GetDirectoryFromFullFilePath($fullPath);
         fsFunctions::CreateDirectory($directory);
         fsFileWorker::UpdateFile($fullPath, $content);
+        if($lifeTimeInSeconds > 0) {
+            fsFileWorker::UpdateFile($fullPath.self::$_timeSuffix, strtotime('+'.$lifeTimeInSeconds.' seconds'));
+        }
+    }
+    
+    /**
+    * Check cache file life time status   
+    * @since 1.1.0
+    * @api    
+    * @param string $fullPath Cache file full path.
+    * @return boolean Result of checking.  
+    */
+    private static function _CheckLifeTime($fullPath)
+    {
+        $timeFile = $fullPath.self::$_timeSuffix;
+        if(file_exists($timeFile)) {
+            $validTill = (int)file_get_contents($timeFile);
+            return $validTill == 0 || $validTill > time();
+        }
+        return true;
     }
     
     /**
@@ -36,7 +60,7 @@ class fsCache
     public static function GetText($fileName)
     {
         $fullPath = self::GetPath($fileName);
-        if(!file_exists($fullPath)) {
+        if(!file_exists($fullPath) || !self::_CheckLifeTime($fullPath)) {
             return null;
         }
         return file_get_contents($fullPath);
@@ -52,7 +76,7 @@ class fsCache
     public static function GetXml($fileName)
     {
         $fullPath = self::GetPath($fileName);
-        if(!file_exists($fullPath)) {
+        if(!file_exists($fullPath)|| !self::_CheckLifeTime($fullPath)) {
             return null;
         }
         return simplexml_load_file($fullPath);
@@ -100,5 +124,4 @@ class fsCache
             }
         }
     }
-    
 }
