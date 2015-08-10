@@ -107,7 +107,8 @@ class fsController
   */
   public function HttpNotFound() 
   {
-    return $this->Redirect(fsConfig::GetInstance('url_404'));
+    header('HTTP/1.0 404 Not Found');
+    die('<meta http-equiv="refresh" content="0;'.fsConfig::GetInstance('url_404').'">');
   }
   
   /**

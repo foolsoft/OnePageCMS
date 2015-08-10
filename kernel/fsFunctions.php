@@ -839,7 +839,7 @@ class fsFunctions
       include $file;
       return ob_get_clean();  
     }
-  
+    
     /**
     * Generate string with substitution.
     * @since 1.0.0

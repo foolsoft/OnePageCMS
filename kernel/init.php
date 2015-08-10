@@ -33,7 +33,8 @@ fsFunctions::IncludeFiles(array(
     PATH_ROOT.'kernel/fsDBTableExtension.php',
     PATH_ROOT.'kernel/fsSession.php',
     PATH_ROOT.'kernel/fsConfig.php',
-    PATH_ROOT.'kernel/fsLanguage.php'
+    PATH_ROOT.'kernel/fsLanguage.php',
+    PATH_ROOT.'kernel/fsMemcache.php',
 ));
 fsLanguage::GetInstance();
 define('URL_ROOT_CLEAR', 'http://'.$_SERVER['SERVER_NAME'].'/');

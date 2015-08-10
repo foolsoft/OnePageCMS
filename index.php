@@ -7,4 +7,4 @@ include './kernel/init.php';
 //fsFunctions::BasicAuth('admin', '12345');
 $fsKernel = new fsKernel();
 //fsFunctions::FormatPrint($_REQUEST); //Debug query
-$fsKernel->DoMethod(); 
+$fsKernel->DoMethod();
