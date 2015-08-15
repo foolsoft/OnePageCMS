@@ -98,7 +98,7 @@ class MPosts extends cmsController
     public function actionPost($param)
     {
         $page = $this->_table->Get(fsSession::GetInstance('LanguageId'), $param->post);
-        if ($page == null) {
+        if ($page == null || (!AUTH_ADMIN && $page['active'] == '0')) {
             return $this->HttpNotFound();
         }
         if($page['auth'] == 1 && !AUTH) {
