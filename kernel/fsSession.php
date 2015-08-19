@@ -21,9 +21,10 @@ class fsSession implements iSingleton
     private static function _GenerateSessionKey() 
     {
         $string = fsConfig::GetInstance('secret');
+        ksort($_SESSION);
         foreach($_SESSION as $key => $value) {
             if($key != self::$_sessionIdField) {
-                $string .= '&'.$key.'='.(is_array($value) ? fsFunctions::ArrayToString($value) : $value);
+                $string .= $key.(is_array($value) ? fsFunctions::ArrayToString($value) : $value);
             }
         }
         $string = sha1($string);
@@ -46,6 +47,7 @@ class fsSession implements iSingleton
             }
             self::$obj = new fsStruct($_SESSION, true);
             if(self::GetInstance(self::$_sessionIdField) != $sessionKey) {
+                //print_r($_SESSION);
                 self::Destroy();
                 echo '<script>setTimeout(function() { window.location = "/"; }, 5000);</script>';
                 die('Invalid session key! Redirect in progress...');
@@ -128,6 +130,7 @@ class fsSession implements iSingleton
         if (self::GetInstance($attr) !== null) {
             self::$obj->Delete($attr);
             unset($_SESSION[$attr]);
+            $_SESSION[self::$_sessionIdField] = self::_GenerateSessionKey();
         } else {
             throw new Exception('Invalid session field (Delete): ' . $attr);
         }

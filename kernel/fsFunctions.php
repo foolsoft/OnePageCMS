@@ -18,6 +18,21 @@ class fsFunctions
   }
   
   /**
+    * Print stack trace information.    
+    * @since 1.1.0
+    * @api    
+    * @param boolean $stopScript (optional) Flag for abort script execution. Default <b>false</b>.
+    * @return void  
+    */
+  public static function Trace($stopScript = false)
+  {
+    self::FormatPrint(debug_backtrace());
+    if($stopScript === true) {
+        exit;
+    }
+  }
+  
+  /**
     * Create basic authorization.    
     * @since 1.1.0
     * @api    
@@ -375,11 +390,14 @@ class fsFunctions
     * @since 1.0.0
     * @api    
     * @param string $url Url for redirection.
+    * @since 1.1.0
+    * @param integer $code (optional) Response code. Default <b>301</b>.  
     * @return void  
     */
-  public static function Redirect($url)
+  public static function Redirect($url, $code = 301)
   {
-    Header('Location: '.$url);
+    header('HTTP/1.1 '.$code.' Moved');
+    header('Location: '.$url);
     exit;
   }
   

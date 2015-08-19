@@ -123,7 +123,7 @@ if ($_POST) {
         `image` text NULL,
         `tpl` varchar(50) NOT NULL,
         `tpl_short` varchar(50) NOT NULL,
-        `active` enum('0','1') NOT NULL DEFAULT '1',
+        `active` enum('0','1','2') NOT NULL DEFAULT '1',
         `auth` enum('0','1') NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`)
       ) ENGINE=MyISAM  DEFAULT CHARSET=".$_POST['db_codepage'].";
@@ -151,6 +151,7 @@ if ($_POST) {
       CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."posts_category` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `id_parent` int(11) NOT NULL DEFAULT '0',
+        `image` varchar(255) NOT NULL,
         `tpl` varchar(50) NOT NULL,
         `tpl_short` varchar(50) NOT NULL,
         `tpl_full` varchar(50) NOT NULL,
@@ -237,7 +238,7 @@ if ($_POST) {
       CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."pages` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `in_menu` enum('0','1') NOT NULL DEFAULT '1',
-        `active` enum('0','1') NOT NULL DEFAULT '1',
+        `active` enum('0','1','2') NOT NULL DEFAULT '1',
         `tpl` varchar(100) NOT NULL,
         `auth` enum('0','1') NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`)
@@ -262,6 +263,8 @@ if ($_POST) {
         `password` varchar(125) NOT NULL,
         `active` enum('0','1') NOT NULL DEFAULT '1',
         `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '".$_POST['db_prefix']."types_users:name:id#',
+        `date_last_auth` timestamp NOT NULL,
+        `auth_count` int(4) NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`),
         UNIQUE KEY `login` (`login`)
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";

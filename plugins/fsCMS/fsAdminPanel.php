@@ -201,7 +201,7 @@ class AdminPanel extends cmsController
     public function Init($request) 
     {
         if (!AUTH_ADMIN) {
-          return $this->Redirect(fsHtml::Url(URL_ROOT.'MAuth/AuthAdmin'));
+          return $this->Redirect(fsHtml::Url(URL_ROOT.'MAuth/AuthAdmin'), 401);
         }
         $this->_view->actionsCompile = false;
 

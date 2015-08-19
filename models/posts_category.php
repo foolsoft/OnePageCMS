@@ -55,6 +55,7 @@ class posts_category extends fsDBTableExtension
             'tpl_short' => $resultQuery[0]['tpl_short'],
             'tpl_full' => $resultQuery[0]['tpl_full'],
             'tpl' => $resultQuery[0]['tpl'],
+            'image' => $resultQuery[0]['image'],
             'auth' => $resultQuery[0]['auth'],
             'title' => array(),
             'alt' => array(),
@@ -108,7 +109,7 @@ class posts_category extends fsDBTableExtension
     public function GetAllCategories($languageId)
     {
         return $this->ExecuteFormat('
-            SELECT `c`.`id`, `c`.`id_parent`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
+            SELECT `c`.`id`, `c`.`id_parent`, `c`.`image`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
             `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
             `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
             WHERE `ci`.`id_language` = "{1}"
@@ -120,7 +121,7 @@ class posts_category extends fsDBTableExtension
     public function GetCategories($languageId, $orderBy = array(), $excludeIds = array())
     {
         return $this->ExecuteToArray(fsFunctions::StringFormat('
-            SELECT `c`.`id`, `c`.`id_parent`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
+            SELECT `c`.`id`, `c`.`id_parent`, `c`.`image`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
             `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
             `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
             WHERE `ci`.`id_language` = "{1}" {2} {3} 
@@ -134,7 +135,7 @@ class posts_category extends fsDBTableExtension
     public function Get($languageId, $category)
     {
         $result = $this->ExecuteToArray(fsFunctions::StringFormat('
-            SELECT `c`.`id`, `c`.`id_parent`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
+            SELECT `c`.`id`, `c`.`id_parent`, `c`.`image`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
             `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
             `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
             WHERE `ci`.`id_language` = "{1}" AND (`ci`.`alt` = "{2}" OR CAST(`c`.`id` as CHAR) = "{2}")
@@ -147,7 +148,7 @@ class posts_category extends fsDBTableExtension
     public function GetByParent($languageId, $parentId)
     {
         return $this->ExecuteToArray(fsFunctions::StringFormat('
-            SELECT `c`.`id`, `c`.`id_parent`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
+            SELECT `c`.`id`, `c`.`id_parent`, `c`.`image`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
             `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
             `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
             WHERE `ci`.`id_language` = "{1}" AND `c`.`id_parent` = "{2}"
@@ -155,16 +156,5 @@ class posts_category extends fsDBTableExtension
         ', array(
             fsConfig::GetInstance('db_prefix'), $languageId, $parentId 
         )));
-    }
-  
-    public function Add($name, $alt = '')
-    {
-        if (empty($alt)) {
-          $alt = fsFunctions::Chpu($alt);
-        }
-        $this->name = $name;
-        $this->alt = $alt;
-        $this->Insert()->Execute();
-        return $this->insertedId;
     }
 }

@@ -57,14 +57,18 @@ class fsController
   * Stop execution of PHP.   
   * @api
   * @since 1.0.0
-  * @param string|boolean $url (optional) Url for redirect. If value is <b>false</b> only stopping PHP. Default <b>false</b>.
+  * @param string $url (optional) Url for redirect. If value is <b>null</b> only stopping PHP. Default <b>null</b>.
+  * @since 1.1.0
+  * @param integer $code (optional) Response code. Default <b>200</b>.  
   * @return void      
   */
-  final protected function _Stop($url = false)
+  final protected function _Stop($url = null, $code = 200)
   {
     if (is_string($url)) {
-      fsFunctions::Redirect($url);
+      fsFunctions::Redirect($url, $code);
     }
+    header(' ', true, $code);
+    exit;
   }
   
   /**
@@ -244,16 +248,36 @@ class fsController
   * Get or set response redirect value  
   * @api
   * @since 1.0.0
-  * @param mixed $url (optional) New url for redirect. Default <b>null</b>.  
+  * @param string $url (optional) New url for redirect. Default <b>null</b>.  
+  * @since 1.1.0
+  * @param integer $code (optional) Response code. Default <b>301</b>.  
   * @return string Url for redirect.      
   */
-  final public function Redirect($url = null)
+  final public function Redirect($url = null, $code = 301)
   {
     if (is_string($url)) {
       $this->_response->redirect = $url;
+      $this->ResponseCode($code);
     }
     return $this->_response->redirect;      
   }
+  
+  /**
+  * Get or set response code  
+  * @api
+  * @since 1.1.0
+  * @param integer $code (optional) New response code. Default <b>null</b>.  
+  * @return integer Code of response.      
+  */
+  final public function ResponseCode($code = null)
+  {
+    if (is_numeric($code) && $code > 0) {
+      $this->_response->code = $code;
+    }
+    return $this->_response->code;      
+  }
+  
+  
   
   /**
   * Get or set response message  

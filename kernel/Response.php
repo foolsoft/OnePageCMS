@@ -29,6 +29,7 @@ class Response
         'message' => array('Value' => ''),
         'html' => array('Value' => ''),
         'redirect' => array('Value' => ''),
+        'code' => array('Value' => 200),
         'empty' => array('Value' => false),
     ));
   }
@@ -40,6 +41,7 @@ class Response
       case 'message':
       case 'html':
       case 'redirect':
+      case 'code':
       case 'empty':
         return $this->_struct->$attr = $value;
         
@@ -59,6 +61,7 @@ class Response
       case 'empty':
       case 'template':
       case 'html':
+      case 'code':
       case 'redirect':
         return $this->_struct->$attr;
         

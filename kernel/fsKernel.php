@@ -61,36 +61,36 @@ class fsKernel extends fsController
     {
         $m = isset($_REQUEST['method']) ? $_REQUEST['method'] : '';
         $c = isset($_REQUEST['controller']) ? $_REQUEST['controller'] : '';
-         if ($c !== '' && !class_exists($c)) {
-            $this->_Stop(fsConfig::GetInstance('url_404'));
+        if($c !== '' && !class_exists($c)) {
+            $this->HttpNotFound();
         }
-        if ($m === '') {
+        if($m === '') {
             $m = 'Index';
             $_REQUEST['method'] = $m;
         }
         $m = 'action'.$m;
         $class = ($c === '' ? $this : new $c());
-        if (!method_exists($class, $m) || !method_exists($class, 'Init') || !method_exists($class, 'Finnaly')) { 
-            $this->_Stop(fsConfig::GetInstance('url_404'));
+        if(!method_exists($class, $m) || !method_exists($class, 'Init') || !method_exists($class, 'Finnaly')) { 
+            $this->HttpNotFound();
         }
         $request = new fsStruct($_REQUEST, true);
         $class->Init($request);
         if(fsSession::Exists('Message')) {
             fsSession::Delete('Message');
         }
-        if ($class->Redirect() != '') {
+        if($class->Redirect() != '') {
             fsSession::Create('Message', $class->Message());
-            $this->_Stop($class->Redirect());
+            $this->_Stop($class->Redirect(), $class->ResponseCode());
         }
         call_user_func(array($class, $m), $request);
         unset($request);
         fsSession::Create('Message', $class->Message());
-        if ($class->Redirect() != '') {
-            $this->_Stop($class->Redirect());
+        if($class->Redirect() != '') {
+            $this->_Stop($class->Redirect(), $class->ResponseCode());
         }
         $class->Finnaly();
         $html = $class->Html();
-        if ($html === '' && !$class->response->empty) {
+        if($html === '' && !$class->response->empty) {
             $html = $class->CreateView();
         }
         $html = preg_replace("/<\s*\/\s*body\s*>/", $_REQUEST['includeBody'].'</body>', $html);

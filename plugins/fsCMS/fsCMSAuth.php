@@ -12,7 +12,7 @@ class cmsNeedAuthController extends cmsController
     public function Init($request)
     {
         if (!AUTH) {
-            return $this->Redirect(fsHtml::Url(URL_ROOT.'user/auth'));
+            return $this->Redirect(fsHtml::Url(URL_ROOT.'user/auth'), 401);
         }
         parent::Init($request);
     }

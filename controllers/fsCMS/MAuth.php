@@ -2,7 +2,7 @@
 class MAuth extends cmsController 
 {
   protected $_tableName = 'users';
-  private $_authAdminCount = 5;
+  private $_authCount = 5;
   private $_methodAuthAdmin = 'AuthAdmin';
   
   public function Finnaly()
@@ -36,12 +36,12 @@ class MAuth extends cmsController
       if (!fsSession::Exists('AUTH_COUNT')) {
         fsSession::Create('AUTH_COUNT', 0);  
       }
-      if (fsSession::GetInstance('AUTH_COUNT') >= $this->_authAdminCount) {
+      if (fsSession::GetInstance('AUTH_COUNT') >= $this->_authCount) {
         $this->Message(T('XMLcms_text_max_log'));
         return $this->Redirect($this->_My($this->_methodAuthAdmin));
       }
       $login = fsValidator::ClearData($param->login);
-      $userData = $this->_table->IsAdmin($login, fsValidator::ClearData($param->password));
+      $userData = $this->_table->IsAdmin($login, fsValidator::ClearData($param->password), $this->_authCount);
       if($userData !== false) {
         fsSession::Delete('AUTH_COUNT');
         fsSession::SetOrCreate('AUTH', $userData);
@@ -52,7 +52,7 @@ class MAuth extends cmsController
       }
       $this->Redirect($this->_My($this->_methodAuthAdmin));
       fsSession::Set('AUTH_COUNT', fsSession::GetInstance('AUTH_COUNT') + 1);
-      if ($this->_authAdminCount == fsSession::GetInstance('AUTH_COUNT')) {
+      if ($this->_authCount == fsSession::GetInstance('AUTH_COUNT')) {
         $this->Message(T('XMLcms_text_max_log'));
         $this->_table->SetActive($login, 0);
       } else {

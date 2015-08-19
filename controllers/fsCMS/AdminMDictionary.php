@@ -277,7 +277,7 @@ class AdminMDictionary extends AdminPanel
         foreach($dataArray as $key => $value) {
           $btnDelete = ' '.fsHtml::Button($textDelete, "if(confirm(T('cms_text_sure'))){\$('#row-".$idx."').html('".$textAfterSave."');}");
           $html .= '<div class="div-row" id="row-'.$idx.'">';
-          $html .= $textOriginal.$from.': '.fsHtml::Editor('original['.$idx.']', trim($key), array('size' => '50')).' ';
+          $html .= $textOriginal.$from.': '.fsHtml::Editor('original['.$idx.']', trim($key), array('size' => '40')).' ';
           if(is_array($value)) { //XML
             $html .= '<span>';
             $htmlTemp = '';

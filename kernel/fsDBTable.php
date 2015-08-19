@@ -452,8 +452,8 @@ class fsDBTable
         throw new Exception('Update error: '.$vr);
       }
       $this->_query->update .= '`'.$this->_struct->name.'`.`'.$fields[$i].'` = "'.
-                              $this->_struct->db->Escape($values[$i]).'"'.
-                              ($i == $arr_len - 1 ? ' ' : ', ');
+            $this->_struct->db->Escape($values[$i]).'"'.
+            ($i == $arr_len - 1 ? ' ' : ', ');
     }
     return $this;
   }

@@ -41,7 +41,7 @@ class MPosts extends cmsController
             return '';
         }
         if($posts_category['auth'] == 1 && !AUTH) {
-            $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')));
+            $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')), 401);
             return '';     
         }
         
@@ -102,7 +102,7 @@ class MPosts extends cmsController
             return $this->HttpNotFound();
         }
         if($page['auth'] == 1 && !AUTH) {
-            return $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')));     
+            return $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')), 401);     
         }
         
         $post_category = new post_category();

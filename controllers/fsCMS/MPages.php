@@ -29,7 +29,7 @@ class MPages extends cmsController
                 return $this->HttpNotFound();
             }
             if($page['auth'] == 1 && !AUTH) {
-                return $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')));     
+                return $this->Redirect(fsHtml::Url(CMSSettings::GetInstance('auth_need_page')), 401);     
             }     
             $template = $this->_Template($page['tpl']);
         }  

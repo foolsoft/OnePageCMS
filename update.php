@@ -33,6 +33,9 @@ $history = array(
         */
     ),
     '2.2.1.0' => array(
-        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts` ADD `image` TEXT NULL AFTER `position`;'
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts` ADD `image` TEXT NULL AFTER `position`;',
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts_category` ADD `image` VARCHAR(255) NOT NULL AFTER `id_parent`;',
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'users` ADD `date_last_auth` TIMESTAMP NOT NULL;',
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'users` ADD `auth_count` INT NOT NULL DEFAULT "0";',
     ),
 );                                                                 

@@ -198,7 +198,7 @@ class AdminMPosts extends AdminPanel
         $posts_category = new posts_category();
         $posts_category = $posts_category->GetFullInfo($param->key);
         if (null == $posts_category) {
-            return $this->_Referer();
+            return $this->HttpNotFound();
         }                             
         $this->_InitAddEditCategory(array($param->key));                                                                
         $this->Html($this->CreateView(array('category' => $posts_category)));
@@ -238,8 +238,9 @@ class AdminMPosts extends AdminPanel
             $this->Message(T('XMLcms_text_file_upload_error'));
             return false;
         }
+        
         if($newFile != '') {
-            $param->image = str_replace(PATH_ROOT, URL_ROOT_CLEAR, $this->_imagePath).$newFile;
+            $param->image = str_replace(PATH_ROOT, '/', $this->_imagePath).$newFile;
         }
         return true;
     }
@@ -297,7 +298,8 @@ class AdminMPosts extends AdminPanel
     
     public function actionDoAddCategory($param)
     {
-        if(!$this->_CheckCategoryData($param) || !$this->_CheckAlt('posts_category', $param->alt)) {
+        if(!$this->_CheckCategoryData($param) || !$this->_CheckAlt('posts_category', $param->alt)
+            || !$this->_UploadImage($param)) {
             return -1;
         }
         if(($categoryId = parent::actionDoAdd($param)) > 0) {
@@ -310,7 +312,7 @@ class AdminMPosts extends AdminPanel
     public function actionDoEditCategory($param)
     {
         if (!$this->_CheckCategoryData($param) || !$this->_CheckAlt('posts_category', $param->alt, $param->key) 
-            || 0 !== parent::actionDoEdit($param)) {
+            || !$this->_UploadImage($param) || 0 !== parent::actionDoEdit($param)) {
             return -1;
         }
         $this->_UpdateCategoryInfo($param->key, $param);
