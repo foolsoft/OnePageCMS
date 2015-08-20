@@ -33,9 +33,11 @@ $history = array(
         */
     ),
     '2.2.1.0' => array(
+        'UPDATE `'.fsConfig::GetInstance('db_prefix').'controller_settings` SET `value` = "2.2.1.0" WHERE `controller` = "Panel" AND `name` = "version";',
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts` ADD `image` TEXT NULL AFTER `position`;',
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts_category` ADD `image` VARCHAR(255) NOT NULL AFTER `id_parent`;',
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'users` ADD `date_last_auth` TIMESTAMP NOT NULL;',
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'users` ADD `auth_count` INT NOT NULL DEFAULT "0";',
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts_category_info` ADD `description` TEXT NOT NULL;',
     ),
 );                                                                 

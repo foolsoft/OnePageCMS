@@ -11,6 +11,7 @@ class AdminMPosts extends AdminPanel
         $titles = $param->title;
         $metaKw = $param->meta_keywords;
         $metaDescr = $param->meta_description;
+        $descr = $param->description;
         foreach($this->_languages as $languageId => $languageName) {
             if(!isset($titles[$languageId]) || !isset($alts[$languageId])) {
                 return false;
@@ -22,9 +23,11 @@ class AdminMPosts extends AdminPanel
             }
             $metaKw[$languageId] = trim(strip_tags($metaKw[$languageId]));
             $metaDescr[$languageId] = trim(strip_tags($metaDescr[$languageId]));
+            $descr[$languageId] = trim($descr[$languageId]);
         }
         $param->meta_keywords = $metaKw;
         $param->meta_description = $metaDescr;
+        $param->description = $descr;
         $param->alt = $alts;
         $param->title = $titles;
         return true;
@@ -34,8 +37,8 @@ class AdminMPosts extends AdminPanel
     {
         $this->_Referer();
         $this->Message(T('XMLcms_text_need_all_data'));
-        if (!is_array($param->alt) || !is_array($param->title)
-            || count($param->title) == 0 || count($param->alt) == 0
+        if (!is_array($param->alt) || !is_array($param->title) || !is_array($param->description)
+            || count($param->title) == 0 || count($param->alt) == 0 || count($param->description) == 0
             || !$this->_CheckParamAltTitle($param)) {
             return false;
         }
@@ -276,10 +279,11 @@ class AdminMPosts extends AdminPanel
         $posts_category = new posts_category();
         $alts = $param->alt;
         $titles = $param->title;
-        $keywords = $param->meta_keywords;
-        $descriptions = $param->meta_description;
+        $meta_keywords = $param->meta_keywords;
+        $meta_descriptions = $param->meta_description;
+        $descriptions = $param->description;
         foreach($this->_languages as $languageId => $languageName) {
-            $posts_category->UpdateInfo($categoryId, $languageId, $titles[$languageId], $alts[$languageId], $keywords[$languageId], $descriptions[$languageId]);
+            $posts_category->UpdateInfo($categoryId, $languageId, $titles[$languageId], $alts[$languageId], $meta_keywords[$languageId], $meta_descriptions[$languageId], $descriptions[$languageId]);
         }
     }
     

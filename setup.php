@@ -313,8 +313,8 @@ if ($_POST) {
         `title` varchar(255) NOT NULL,
         `alt` varchar(255) NOT NULL,
         `html` text NOT NULL,
-        `keywords` varchar(500) NOT NULL,
-        `description` varchar(500) NOT NULL,
+        `keywords` varchar(250) NOT NULL,
+        `description` varchar(200) NOT NULL,
         UNIQUE KEY `name` (`id_page`, `id_language`)
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
     ");
@@ -325,8 +325,9 @@ if ($_POST) {
         `id_language` int(11) NOT NULL,
         `title` varchar(255) NOT NULL,
         `alt` varchar(255) NOT NULL,
-        `meta_description` varchar(500) NOT NULL,
-        `meta_keywords` varchar(500) NOT NULL,
+        `meta_description` varchar(200) NOT NULL,
+        `meta_keywords` varchar(250) NOT NULL,
+        `description` text NOT NULL,
         UNIQUE KEY `id_category` (`id_category`,`id_language`)
       ) ENGINE=MyISAM DEFAULT CHARSET=".$_POST['db_codepage'].";
     ");

@@ -1,4 +1,4 @@
-[parent:../AdminPanel/Index.php]
+[parent:../AdminPanel/AddEdit.php]
 
 [block-content]
 <?php
@@ -16,8 +16,12 @@ echo fsHtml::Link($myLink.'Categories', T('XMLcms_back'), false, array('class' =
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'alt', $category['alt'], array('onkeyup' => 'fsCMS.Chpu(this.value, this.id);', 'maxlength' => 100)); ?>
   </p>
   <p>
-    <?php _T('XMLcms_text_description'); ?>:<br />
+    META - <?php _T('XMLcms_text_description'); ?>:<br />
     <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_description', $category['meta_description']); ?>
+  </p>
+  <p>
+    META - <?php _T('XMLcms_text_kw'); ?>:<br />
+    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords', $category['meta_keywords']); ?>
   </p>
   <p>
     <?php echo $textImage; ?>:<br />
@@ -32,8 +36,8 @@ echo fsHtml::Link($myLink.'Categories', T('XMLcms_back'), false, array('class' =
     </span>
   </p>
   <p>
-    <?php _T('XMLcms_text_kw'); ?>:<br />
-    <?php echo fsHtml::EditorMultiLanguage($tag->languages, 'meta_keywords', $category['meta_keywords']); ?>
+    <?php _T('XMLcms_text_description'); ?>:<br />
+    <?php echo fsHtml::TextareaMultiLanguage($tag->languages, 'description', $category['description'], array('class' => 'ckeditor')); ?>
   </p>
   <p class='title'>
     <?php _T('XMLcms_parent'); ?>:<br />

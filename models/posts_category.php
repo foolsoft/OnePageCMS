@@ -39,7 +39,7 @@ class posts_category extends fsDBTableExtension
     public function GetFullInfo($categoryId) 
     {
         $resultQuery = $this->ExecuteToArray(fsFunctions::StringFormat('
-            SELECT `c`.*, `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` 
+            SELECT `c`.*, `ci`.`title`, `ci`.`description`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` 
             FROM `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `ci`.`id_category` = `c`.`id`
             WHERE `c`.`id` = "{1}"
         ', array(
@@ -57,12 +57,14 @@ class posts_category extends fsDBTableExtension
             'tpl' => $resultQuery[0]['tpl'],
             'image' => $resultQuery[0]['image'],
             'auth' => $resultQuery[0]['auth'],
+            'description' => array(),
             'title' => array(),
             'alt' => array(),
             'meta_keywords' => array(),
             'meta_description' => array()
         );
         foreach($resultQuery as $row) {
+            $result['description'][$row['id_language']] = $row['description'];
             $result['title'][$row['id_language']] = $row['title'];
             $result['alt'][$row['id_language']] = $row['alt'];
             $result['meta_keywords'][$row['id_language']] = $row['meta_keywords'];
@@ -95,14 +97,14 @@ class posts_category extends fsDBTableExtension
         return $this->Execute('DELETE FROM `'.fsConfig::GetInstance('db_prefix').'posts_category_info` WHERE `id_category` = "'.$categoryId.'"');
     }
     
-    public function UpdateInfo($categoryId, $langiageId, $title, $alt, $keywords, $description)
+    public function UpdateInfo($categoryId, $langiageId, $title, $alt, $meta_keywords, $meta_description, $description)
     {
         return $this->ExecuteFormat('INSERT INTO `{0}posts_category_info` 
-            (`id_category`, `id_language`, `title`, `alt`, `meta_keywords`, `meta_description`) VALUES
-            ("{1}", "{2}", "{3}", "{4}", "{5}", "{6}") ON DUPLICATE KEY UPDATE 
-            `title` = "{3}", `alt` = "{4}", `meta_keywords` = "{5}", `meta_description` = "{6}"
+            (`id_category`, `id_language`, `title`, `alt`, `meta_keywords`, `meta_description`, `description`) VALUES
+            ("{1}", "{2}", "{3}", "{4}", "{5}", "{6}", "{7}") ON DUPLICATE KEY UPDATE 
+            `title` = "{3}", `alt` = "{4}", `meta_keywords` = "{5}", `meta_description` = "{6}", `description` = "{7}"
         ', array(
-            fsConfig::GetInstance('db_prefix'), $categoryId, $langiageId, $title, $alt, $keywords, $description
+            fsConfig::GetInstance('db_prefix'), $categoryId, $langiageId, $title, $alt, $meta_keywords, $meta_description, $description
         ));
     }
   
@@ -110,7 +112,7 @@ class posts_category extends fsDBTableExtension
     {
         return $this->ExecuteFormat('
             SELECT `c`.`id`, `c`.`id_parent`, `c`.`image`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
-            `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
+            `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`description`, `ci`.`meta_description`, `ci`.`id_language` FROM
             `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
             WHERE `ci`.`id_language` = "{1}"
             ORDER BY `ci`.`title`', 
@@ -122,7 +124,7 @@ class posts_category extends fsDBTableExtension
     {
         return $this->ExecuteToArray(fsFunctions::StringFormat('
             SELECT `c`.`id`, `c`.`id_parent`, `c`.`image`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
-            `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
+            `ci`.`title`, `ci`.`description`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
             `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
             WHERE `ci`.`id_language` = "{1}" {2} {3} 
         ', array(
@@ -136,7 +138,7 @@ class posts_category extends fsDBTableExtension
     {
         $result = $this->ExecuteToArray(fsFunctions::StringFormat('
             SELECT `c`.`id`, `c`.`id_parent`, `c`.`image`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
-            `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
+            `ci`.`title`, `ci`.`description`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
             `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
             WHERE `ci`.`id_language` = "{1}" AND (`ci`.`alt` = "{2}" OR CAST(`c`.`id` as CHAR) = "{2}")
         ', array(
@@ -149,7 +151,7 @@ class posts_category extends fsDBTableExtension
     {
         return $this->ExecuteToArray(fsFunctions::StringFormat('
             SELECT `c`.`id`, `c`.`id_parent`, `c`.`image`, `c`.`tpl`, `c`.`tpl_short`, `c`.`tpl_full`, `c`.`auth`,
-            `ci`.`title`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
+            `ci`.`title`, `ci`.`description`, `ci`.`alt`, `ci`.`meta_keywords`, `ci`.`meta_description`, `ci`.`id_language` FROM
             `{0}posts_category` c JOIN `{0}posts_category_info` ci ON `c`.`id` = `ci`.`id_category`
             WHERE `ci`.`id_language` = "{1}" AND `c`.`id_parent` = "{2}"
             ORDER BY `ci`.`title` 
