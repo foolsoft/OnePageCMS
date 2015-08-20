@@ -12,6 +12,9 @@
   <text name='cms_text_image'>
     <en>Image</en>
   </text>
+  <text name='cms_update'>
+    <en>Refresh</en>
+  </text>
   <text name='cms_text_bad_image'>
     <en>Invalid image format</en>
   </text>

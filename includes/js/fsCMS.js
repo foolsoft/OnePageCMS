@@ -60,11 +60,11 @@ var fsCMS = {
           }
       },
       complete: function (jqXHR, status) {
-          if (typeof (CallBackComplete) === 'function') {
-              CallBackComplete(jqXHR, status);
-          }
           if (WaitAnimationId !== false && (ResultId === false || ResultId.indexOf(WaitAnimationId) === -1)) {
               fsCMS.WaitAnimation('Off', WaitAnimationId);
+          }
+          if (typeof (CallBackComplete) === 'function') {
+              CallBackComplete(jqXHR, status);
           }
       },
       success: function(answer) {
@@ -107,6 +107,14 @@ var fsCMS = {
       $('#'+id).val(str);
     }
     return str;
+  },
+  UpdateImage: function(imgId) {
+    var p = 'fsCMSUpdate=', src = $('#' + imgId).attr('src'), delimiter = src.indexOf('?') < 0 ? '?' : '&';
+    if(src.indexOf('?' + p) >= 0 || src.indexOf('&' + p) >= 0) {
+        delimiter = '';
+    }
+    src = src.replace(new RegExp(p + '\\d+\\.\\d+$', 'gi'), '');
+    $('#' + imgId).attr('src', src + delimiter + p + Math.random());
   },
   IsNumeric: function(obj, def, intOnly, positiveOnly) {
     def = def || 0;

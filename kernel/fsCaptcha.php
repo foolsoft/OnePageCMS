@@ -5,6 +5,8 @@
 */
 class fsCaptcha
 {
+    private static $_key = '_fsCaptcha';
+    
     /** @var array Default captcha image settings */
     private static $_settings = array(
         'width' => 100,
@@ -26,7 +28,7 @@ class fsCaptcha
     */
     public static function Check($string)
     {
-        return $string == $_SESSION['fsCaptcha'];
+        return $string == fsSession::GetInstance(self::$_key);
     }
 
     /** 
@@ -46,10 +48,11 @@ class fsCaptcha
         $lineColor = imagecolorallocate($img , $settings['lineColor'][0], $settings['lineColor'][1], $settings['lineColor'][2]);
         $bgColor =  imagecolorallocate($img, $settings['bgColor'][0], $settings['bgColor'][1], $settings['bgColor'][2]);
         imagefill($img, 0, 0, $bgColor);
-        $_SESSION['fsCaptcha'] = '';
+        $key = '';
         for ($i = 0; $i < $settings['length']; ++$i) {
-            $_SESSION['fsCaptcha'] .= $settings['alph'][rand(0, $ac)];
+           $key .= $settings['alph'][rand(0, $ac)];
         }
+        fsSession::SetOrCreate(self::$_key, $key);
         for ($i = 0; $i < $settings['linesCount']; ++$i) {
             $x1 = rand(0, $settings['width'] / 2);
             $x2 = rand($settings['width'] / 2, $settings['width']);
@@ -57,7 +60,7 @@ class fsCaptcha
             $y2 = rand($settings['height'] / 2, $settings['height']);
             imageline($img, $x1, $y1, $x2, $y2, $lineColor);
         }                         
-        imagestring($img, rand(5, 12), rand(0, $settings['width']/2), rand(0, $settings['height']/2), $_SESSION['fsCaptcha'], $textColor);
+        imagestring($img, rand(5, 12), rand(0, $settings['width']/2), rand(0, $settings['height']/2), $key, $textColor);
         imagejpeg($img);
         exit;
     }

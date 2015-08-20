@@ -7,9 +7,11 @@ function CommentsAdd(form)
     false,
     'loader',
     16,
+    false,
+    false,
     function(answer) {
-      var json = JSON.parse(answer);
-      if(json.Status==0) {
+      var json = JSON.parse(answer.responseText);
+      if(json.Status == 0) {
         CommentsUpdate($(form).find('input[name=group]').val());
         $(form).html(json.Text);
       } else {

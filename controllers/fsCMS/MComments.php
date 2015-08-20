@@ -34,7 +34,7 @@ class MComments extends cmsController
       return '';
     }
     if(!$isAnswer) {
-      $param->group = str_replace(' ', '-', strip_tags($param->group));
+      $param->group = str_replace(array(' ', '--'), array('-', ''), strip_tags($param->group));
     } else {
       $this->_table->Select()->Where('`id` = "'.$param->parent.'"')->Execute();
       if($this->_table->result->id == '') {
@@ -131,6 +131,10 @@ class MComments extends cmsController
     $ip = fsFunctions::GetIp();
     $ips = fsFunctions::Explode("\n", $this->settings->block_ip, '');
     $users = fsFunctions::Explode("\n", $this->settings->block_users, '');
+    
+    if(!fsCaptcha::Check($param->captcha)) {
+        return $this->Json(array('Status' => 9, 'Text' => T('XMLcms_captcha_wrong')));
+    }
     
     if(AUTH) {
       $param->author_id = fsSession::GetArrInstance('AUTH', 'id');

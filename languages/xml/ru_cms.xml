@@ -562,6 +562,9 @@
   <text name='cms_updated'>
     <ru>Запись успешно обновлена!</ru>
   </text>
+  <text name='cms_update'>
+    <ru>Обновить</ru>
+  </text>
   <text name='cms_settings_updated'>
     <ru>Настройки успешно обновлены!</ru>
   </text>

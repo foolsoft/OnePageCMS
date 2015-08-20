@@ -23,6 +23,13 @@
     -->
   <?php } */ ?>
   <div class="div-row">
+      <div class="cell"><?php _T('XMLcms_captcha'); ?>: (<a href="javascript:;" onclick="fsCMS.UpdateImage('captcha')"><?php _T('XMLcms_update'); ?></a>)</div>
+    <div class="cell">
+        <img id="captcha" src="<?php echo fsHtml::Url(URL_ROOT.'MCaptcha/Create'); ?>" alt="Captcha" />
+        <input type="text" name="captcha" value="" />
+    </div>
+  </div>
+  <div class="div-row">
     <input type="submit" value="<?php _T('XMLcms_add'); ?>" />
   </div>
 </div>
