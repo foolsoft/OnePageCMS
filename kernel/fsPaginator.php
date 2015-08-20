@@ -35,7 +35,7 @@ class fsPaginator
         $sym = false === strpos($link, '?') ? '?' : (substr($link, -1) == '&' ? '' : '&');
         for ($i = 1; $i <= $pCount; ++$i) {
           $html .= ($i != $current
-                    ? "<a ".$attributes." href='".($asReplace ? str_replace($param, $i, $link) : $link.$sym.$param."=".$i)."' title='".$PT." ".$i."'>".$i.'</a>'
+                    ? "<a ".$attributes." href='".($asReplace ? str_replace($param, $i, $link) : $link.($i == 1 ? '' : $sym.$param.'='.$i))."' title='".$PT." ".$i."'>".$i.'</a>'
                     : '<b>'.$i.'</b>').
                 ($i == $pCount ? '' : ' | ');
         }

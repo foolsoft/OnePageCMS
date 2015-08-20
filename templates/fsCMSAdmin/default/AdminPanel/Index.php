@@ -49,7 +49,7 @@ fsInclude::AddCss(array(
         fsInclude::AttachJs(URL_ATHEME_JS.$_REQUEST['controller'].'.js');
     }
     if (file_exists(PATH_ATHEME_CSS.$_REQUEST['controller'].'.css')) {
-        fsInclude::AttachCss(URL_ATHEME_CSS.$_REQUEST['controller'].'css');
+        fsInclude::AttachCss(URL_ATHEME_CSS.$_REQUEST['controller'].'.css');
     }
     ?>
     [block-footer]<?php /* ACCESS TO FOR CHILD TEMPLATES */ ?>[endblock-footer]
