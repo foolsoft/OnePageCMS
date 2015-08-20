@@ -3,7 +3,6 @@ fsInclude::AddCss(array(
     URL_PLUGINS.'fancybox/jquery.fancybox.css'
 ));
 fsInclude::AttachJs(array(
-    URL_JS.'jq.js', 
     URL_PLUGINS.'fancybox/jquery.fancybox.pack.js'
 ));
 if (file_exists(PATH_JS.$_REQUEST['controller'].'.js')) {

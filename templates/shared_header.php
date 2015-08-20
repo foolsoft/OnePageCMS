@@ -7,5 +7,4 @@ fsInclude::AddJs(array(
 ));
 fsInclude::AttachJs(array(
     URL_JS.'jq.js',
-    URL_PLUGINS.'fancybox/jquery.fancybox.pack.js'
 )); 

@@ -49,7 +49,7 @@ echo fsHtml::Link($myLink.'Categories', T('XMLcms_back'), false, array('class' =
   </p>
   <p class='title'>
     <?php _T('XMLcms_text_template_short'); ?>:
-    <?php echo fsHtml::Select('tpl_short', $tag->templates_pf, $category['tpl_short']); ?>
+    <?php echo fsHtml::Select('tpl_short', $tag->templates_ps, $category['tpl_short']); ?>
     <span class="space"></span>
     <?php _T('XMLcms_text_template'); ?>:
     <?php echo fsHtml::Select('tpl_full', $tag->templates_pf, $category['tpl_full']); ?>
