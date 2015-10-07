@@ -85,7 +85,7 @@ class JsMinifier
   $js = $jshrink->unlock($js);
   unset($jshrink);
   return $js;
-  } catch (\Exception $e) {
+  } catch (Exception $e) {
   if (isset($jshrink)) {
   // Since the breakdownScript function probably wasn't finished
   // we clean it out before discarding it.
@@ -118,7 +118,7 @@ class JsMinifier
   */
   protected function initialize($js, $options)
   {
-  $this->options = array_merge(static::$defaultOptions, $options);
+  $this->options = array_merge(self::$defaultOptions, $options);
   $js = str_replace("\r\n", "\n", $js);
   $this->input = str_replace("\r", "\n", $js);
   // We add a newline to the end of the script to make it easier to deal
@@ -152,7 +152,7 @@ class JsMinifier
   break;
   // otherwise we treat the newline like a space
   case ' ':
-  if(static::isAlphaNumeric($this->b))
+  if(self::isAlphaNumeric($this->b))
   echo $this->a;
   $this->saveString();
   break;
@@ -164,14 +164,14 @@ class JsMinifier
   $this->saveString();
   break;
   } else {
-  if (static::isAlphaNumeric($this->a)) {
+  if (self::isAlphaNumeric($this->a)) {
   echo $this->a;
   $this->saveString();
   }
   }
   break;
   case ' ':
-  if(!static::isAlphaNumeric($this->a))
+  if(!self::isAlphaNumeric($this->a))
   break;
   default:
   // check for some regex that breaks stuff

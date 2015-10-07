@@ -34,8 +34,8 @@ class MPages extends cmsController
             $template = $this->_Template($page['tpl']);
         }  
     
-        $page['meta_keywords'] = $page['keywords'] == '' ? $page['keywords'] : CMSSettings::GetInstance('default_keywords'); 
-        $page['meta_description'] = $page['description'] == '' ? $page['description'] : CMSSettings::GetInstance('default_description'); 
+        $page['meta_keywords'] = $page['keywords'] != '' ? $page['keywords'] : CMSSettings::GetInstance('default_keywords'); 
+        $page['meta_description'] = $page['description'] != '' ? $page['description'] : CMSSettings::GetInstance('default_description'); 
     
         $html = $this->CreateView(array('page' => $page, 'htmlTags' => $param->Exists('data') ? $param->data : array()), $template);
     

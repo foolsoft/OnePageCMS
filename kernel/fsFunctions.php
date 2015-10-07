@@ -590,7 +590,8 @@ class fsFunctions
     } else { 
       $ip = $_SERVER['REMOTE_ADDR'];
     }
-    return $ip;   
+    $ip = explode(',', $ip);
+    return $ip[0];
   } 
   
   /**

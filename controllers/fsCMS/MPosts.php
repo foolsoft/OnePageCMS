@@ -106,7 +106,17 @@ class MPosts extends cmsController
         }
         
         $post_category = new post_category();
-        $this->Tag('categories', $post_category->GetByPostId($page['id']));
+        $posts_category = new posts_category();
+        $categories = $post_category->GetByPostId($page['id']);
+        $categoriesInfo = array();
+        foreach($categories as $category) {
+            $categoriesInfo[] = $posts_category->Get(fsSession::GetInstance('LanguageId'), $category);
+        }
+        
+        $page['meta_keywords'] = $page['meta_keywords'] != '' ? $page['meta_keywords'] : ($categoryInfo['meta_keywords'] != '' ? $categoryInfo['meta_keywords'] : CMSSettings::GetInstance('default_keywords')); 
+        $page['meta_description'] = $page['meta_description'] != '' ? $page['meta_description'] : ($categoryInfo['meta_description'] != '' ? $categoryInfo['meta_description'] : CMSSettings::GetInstance('default_description')); 
+        
+        $this->Tag('categories', $categories);
         $this->Html($this->CreateView(array('page' => $page), $this->_Template($page['tpl'])));
     } 
 }

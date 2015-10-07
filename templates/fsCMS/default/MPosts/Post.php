@@ -6,6 +6,9 @@
     <?php echo $page['title']; ?>
   </div>
   <div class='post-short'>
+    <!--noindex-->
+    <?php echo $page['html_short']; ?>
+    <!--/noindex-->  
     <?php echo $page['html_full']; ?>
   </div>
   <div class='post-short-footer'>

@@ -6,34 +6,14 @@ class posts_category extends fsDBTableExtension
         parent::__destruct();
     }
   
+    public function GetParents(&$result, $idCategory, $onlyFirstLevel = false)
+    {
+        return $this->GetTree($result, 'GetParents', 'id_parent','id', $idCategory, $onlyFirstLevel);
+    }
+    
     public function GetChilds(&$result, $idCategory, $onlyFirstLevel = false)
     {
-        $separator = ',';
-        $cache = 'posts_category_GetChilds_'.$idCategory.'_'.($onlyFirstLevel ? '1' : '0');
-        $cacheContent = fsCache::GetText($cache);
-        if($cacheContent !== null) {
-            $result = explode($separator, $cacheContent);
-            if(time() < $result[0]) {
-                array_shift($result);
-                return count($result);
-            }
-        }
-        $this->Select(array('id'))->Where('`id_parent` = "'.$idCategory.'"')->Execute('', false);
-        $level = array();
-        while($this->Next()) {
-            $id = $this->result->id;
-            if(!in_array($id, $result)) {
-                $level[] = $id;
-                $result[] = $id;
-            }
-        }
-        if($onlyFirstLevel !== true) {
-            foreach($level as $id) {
-                $this->GetChilds($result, $id, false);
-            }
-        }
-        fsCache::CreateOrUpdate($cache, strtotime('+1 day').$separator.implode($separator, $result));
-        return count($result);
+        return $this->GetTree($result, 'GetChilds', 'id','id_parent', $idCategory, $onlyFirstLevel);
     }
     
     public function GetFullInfo($categoryId) 
