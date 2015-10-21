@@ -104,7 +104,49 @@ class users extends fsDBTableExtension
         } 
         return false;
     }
-  
+
+    public function GetList(&$users, $filterWhere = array(), $filterHaving = '', $count = 0, $from = 0)
+    {
+        $countQuery = 0;
+        $limitString = $count > 0 ? $count : '';
+        if($limitString != '') {
+            if($from > 0) {
+                $limitString = $from.', '.$limitString;
+            }
+            $limitString = 'LIMIT '.$limitString;
+        }
+        $isLimit = $limitString != '';
+        
+        $where = $this->_WhereArrayToString($filterWhere, 'u');
+        if($where != '') {
+            $where = 'WHERE '.$where;
+        }
+        if($filterHaving != '') {
+            $filterHaving = 'HAVING '.$filterHaving;
+        }
+        
+        $sql = fsFunctions::StringFormat('SELECT {0} `u`.*, `ut`.`name` as `link_type`, `ut`.`allow`, `ut`.`disallow`, GROUP_CONCAT(DISTINCT ui.value SEPARATOR "|") as info 
+            FROM {1} `u` JOIN `{2}types_users` `ut` ON `u`.`type` = `ut`.`id`
+            LEFT JOIN `{2}user_info` ui ON `ui`.`id_user` = `u`.`id`
+            {3} GROUP BY `u`.`id` {4} {5}', array(
+            $isLimit ? 'SQL_CALC_FOUND_ROWS' : '',
+            $this->_struct->name,
+            fsConfig::GetInstance('db_prefix'),
+            $where,
+            $filterHaving,
+            $limitString    
+        ));
+
+        $users = $this->ExecuteToArray($sql);
+        if($isLimit) {
+            $this->Execute('SELECT FOUND_ROWS() as c');
+            $countQuery = $this->result->mysqlRow['c'];
+        } else {
+            $countQuery = count($users);
+        }
+        return $countQuery;
+    }
+    
     public function IsAdmin($login, $password, $maxAuth = 5)
     {
         $result = $this->isUser($login, $password, $maxAuth);

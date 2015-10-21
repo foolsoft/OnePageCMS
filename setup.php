@@ -119,6 +119,7 @@ if ($_POST) {
        CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."posts` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `date_modify` BIGINT NOT NULL,
         `position` smallint(6) NOT NULL DEFAULT '0',
         `image` text NULL,
         `tpl` varchar(50) NOT NULL,
@@ -238,6 +239,8 @@ if ($_POST) {
       CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."pages` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `in_menu` enum('0','1') NOT NULL DEFAULT '1',
+        `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `date_modify` BIGINT NOT NULL,
         `active` enum('0','1','2') NOT NULL DEFAULT '1',
         `tpl` varchar(100) NOT NULL,
         `auth` enum('0','1') NOT NULL DEFAULT '0',

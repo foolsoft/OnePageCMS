@@ -15,6 +15,19 @@
   <text name='cms_update'>
     <en>Refresh</en>
   </text>
+  <text name='cms_text_on_page'>
+    <en>On page</en>
+  </text>
+  
+  <text name='cms_he_any'>
+    <en>Any</en>
+  </text>
+  <text name='cms_it_any'>
+    <en>Any</en>
+  </text>
+  <text name='cms_she_any'>
+    <en>Any</en>
+  </text>
   <text name='cms_text_bad_image'>
     <en>Invalid image format</en>
   </text>

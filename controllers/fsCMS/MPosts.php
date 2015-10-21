@@ -3,6 +3,31 @@ class MPosts extends cmsController
 {
     protected $_tableName = 'posts';
   
+    public static function Sitemap($param) 
+    {
+        $result = array();
+        $db = new posts();
+        $db->GetAllPosts($param->languageId);
+        while($db->Next()) {
+            $result[] = array(
+                'loc' => fsHtml::Url(URL_ROOT.'post/'.$db->result->mysqlRow['alt']),
+                'changefreq' => 'monthly',
+                'priority' => '1.0',
+                'lastmod' => $db->result->mysqlRow['date_modify']
+            );
+        }
+        $db = new posts_category();
+        $db->GetAllCategories($param->languageId);
+        while($db->Next()) {
+            $result[] = array(
+                'loc' => fsHtml::Url(URL_ROOT.'posts/'.$db->result->mysqlRow['alt']),
+                'changefreq' => 'monthly',
+                'priority' => '1.0',
+            );
+        }
+        return $result;
+    }
+    
     public function PostsCount($param)
     {
         if(!$param->Exists('category', true) || $param->category < 0) {
@@ -36,7 +61,8 @@ class MPosts extends cmsController
         }
         $pc = new posts_category();
         $posts_category = $pc->Get(fsSession::GetInstance('LanguageId'), $param->category);
-        if ($posts_category === null) {
+        $param->exclude = $param->Exists('exclude') ? explode('|', $param->exclude) : array();
+        if ($posts_category === null || in_array($posts_category['id'], $param->exclude)) {
             $this->HttpNotFound();
             return '';
         }
@@ -49,7 +75,7 @@ class MPosts extends cmsController
         $pcount = $param->Exists('count', true) && $param->count > 0 ? $param->count : $this->settings->page_count;  
         $count = $this->_table->GetCountByCategory($posts_category['id']); 
         
-        $this->Tag('posts', $this->_table->GetByCategory(fsSession::GetInstance('LanguageId'), $posts_category['id'], $param->page, $pcount));  
+        $this->Tag('posts', $this->_table->GetByCategory(fsSession::GetInstance('LanguageId'), $posts_category['id'], $param->page, $pcount, true, $param->exclude));  
         $this->Tag('childs', $pc->GetByParent(fsSession::GetInstance('LanguageId'), $posts_category['id']));
         $this->Tag('pages', $param->Exists('pages') && $param->pages == 'false' ? '' : 
                fsPaginator::Get(

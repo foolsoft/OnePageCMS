@@ -65,6 +65,7 @@ class AdminMPosts extends AdminPanel
         if ($param->time == '') {
             $param->time = date('H:i:s');
         }
+        $param->date_modify = time();
         $param->date = $param->date.' '.$param->time;
         if (!fsValidator::Check($param->date, 'TIMEDATE')) {
             $param->date = date('Y-m-d H:i:s');

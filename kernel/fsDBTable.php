@@ -96,7 +96,7 @@ class fsDBTable
         $this->_queryStack[] = $query;
         return;
       }
-      throw Exception('Cannot add query inside stack');
+      throw Exception('Can not add query inside stack');
   }
   
   /**
@@ -118,16 +118,15 @@ class fsDBTable
   * @api
   * @since 1.0.0
   * @param array $arr Where clause as array
-  * @param string|boolean $prefix (optional) Table name for field. If <b>false</b> it is current table name. Default <b>false</b>.     
+  * @param string $prefix (optional) Table name for field. If <b>empty</b> it is current table name. <b>Null</b> value disable prefix. Default <b>empty string</b>.     
   * @return string Where clause.      
   */
-  protected function _WhereArrayToString($arr, $prefix = false)
+  protected function _WhereArrayToString($arr, $prefix = '')
   {
-    if ($prefix == false) {
+    if ($prefix === '') {
       $prefix = $this->_struct->name;
     }
-    $result = '';
-    $logic = '';
+    $result = $logic = '';
     $count_arr = count($arr);
     for ($i = 0; $i < $count_arr; ++$i) {
       if (!isset($arr[$i])) {
@@ -141,20 +140,22 @@ class fsDBTable
         $logic = $arr[$i]['logic'];
       }
       if (isset($arr[$i][0])) {
-        $str = ' ('.$this->_WhereArrayToString($arr[$i]).') ';
+        $str = ' ('.$this->_WhereArrayToString($arr[$i], $prefix).') ';
       } else {
         $key = '=';
-        if (isset($arr[$i]['key']) &&  fsValidator::Match($arr[$i]['key'], '(=|<|>|>=|<=|\!=)')) {
+        if (isset($arr[$i]['key']) &&  fsValidator::Match($arr[$i]['key'], '(=|<|>|>=|<=|\!=|LIKE|NOT LIKE)')) {
           $key = $arr[$i]['key'];
         }  
         foreach($arr[$i] as $field => $value) {
           if ($field != 'key' && $field != 'logic') {
-            $str = '(`'.$prefix.'`.`'.$field.'` '.$key.' "'.$value.'")';
+            $fieldName = strpos($field, '.') !== false ? $field : '`'.$prefix.'`.`'.$field.'`';  
+            $str = '('.$fieldName.' '.$key.' "'.$value.'")';
             break;
           }
         }
-        if ('' == $str)
+        if ('' == $str) {
           continue;
+        }
       }
       $result .= $str;
     }
@@ -489,7 +490,7 @@ class fsDBTable
   * @param string|array $clause Query clause.
   * @example If string: standart of MySQL. If array:
     $array (field => value, //requared
-       key => =|<|>|<=|>>|!=, //default =
+       key => =|<|>|<=|>>|!=|LIKE|NOT LIKE, //default =
        logic => OR|AND //default AND
     )  
     $clause = array (

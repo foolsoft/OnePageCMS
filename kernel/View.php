@@ -170,7 +170,7 @@ class View
   protected function _ActionsCompile($html, $params = array())
   {
     $matches = array();            
-    $subMatch = "([a-zA-Z\_]+)(=([\{\}\s\-_a-zA-Z0-9]*))?";
+    $subMatch = "([a-zA-Z\_]+)(=([\{\}\s\-_a-zA-Z0-9|]*))?";
     $mainMatch = "^\{%\s+([a-zA-Z0-9_]+)/([a-zA-Z0-9_]+)(\s*\|\s*((".$subMatch."\s*?,?\s*?)*)?)?\s+%\}^";
     $matchesCount = preg_match_all($mainMatch, $html, $matches);
     while ($matchesCount > 0) {

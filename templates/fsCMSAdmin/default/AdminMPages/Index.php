@@ -11,16 +11,20 @@
 <hr />
 <table class="list-table">
   <tr>
-    <th>№</th>
+    <th width="20">Id</th>
+    <th>Url</th>
     <th><?php _T('XMLcms_text_title'); ?></th>
+    <th><?php _T('XMLcms_text_template'); ?></th>
     <th><?php _T('XMLcms_text_action'); ?></th>
   </tr>
   <?php foreach ($tag->pages as $page) { ?>
   <tr class='admin-row-active-<?php echo $page['active']; ?>'>
     <td><?php echo $page['id']; ?></td>
+    <td><?php echo $page['alt']; ?></td>
     <td>
       <?php echo fsHtml::Link(URL_ROOT.'page/'.$page['alt'], $page['title'], T('XMLcms_text_open'), array('target' => '_blank')); ?>
     </td>
+    <td><?php echo $page['tpl']; ?></td>
     <td>
       <div class='admin-action-td'>
       <?php if ($page['active'] == 0) { ?>

@@ -9,3 +9,4 @@ settings/Settings.php
 settings/dbSettings.php
 temp/
 cache/
+uploads/

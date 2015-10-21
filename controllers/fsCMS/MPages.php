@@ -3,6 +3,22 @@ class MPages extends cmsController
 {
     protected $_tableName = 'pages';
   
+    public static function Sitemap($param)
+    {
+        $db = new pages();
+        $result = array();
+        $db->GetAllPages($param->languageId);
+        while($db->Next()) {
+            $result[] = array(
+                'loc' => fsHtml::Url(URL_ROOT.'page/'.$db->result->mysqlRow['alt']),
+                'changefreq' => 'monthly',
+                'priority' => '1.0',
+                'lastmod' => $db->result->mysqlRow['date_modify']
+            ); 
+        }
+        return $result;
+    }
+    
     public function actionView($param)
     {
         if (!$param->Exists('page')) {

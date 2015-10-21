@@ -25,17 +25,15 @@ class types_users extends fsDBTableExtension
     
     public function Get($id = null)
     {
-      $this->Select();
-      $where = $id == GUEST_USER_TYPE ? array() : array(array('id' => GUEST_USER_TYPE, 'key' => '!='));
-      if(is_numeric($id) && $id >= 0) {
-        $where[] = array('id' => $id);       
-      }
-      $this->Where($where);
-      $this->Order(array('name'));
-      $result = $this->ExecuteToArray();
-      if($id === null) {
-        return $result; 
-      }
-      return count($result) == 1 ? $result[0] : null;
+        $this->Select();
+        $where = $id === GUEST_USER_TYPE ? array() : array(array('id' => GUEST_USER_TYPE, 'key' => '!='));
+        if(is_numeric($id) && $id >= 0) {
+            $where[] = array('id' => $id);       
+        }
+        $result = $this->Where($where)->Order(array('name'))->ExecuteToArray();
+        if($id === null) {
+            return $result; 
+        }
+        return count($result) == 1 ? $result[0] : null;
     }
 }

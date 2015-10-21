@@ -64,6 +64,7 @@ class posts extends fsDBTableExtension
                 'id' => $row['id'],
                 'id_user' => $row['id_user'],
                 'date' => $row['date'],
+                'date_modify' => $row['date_modify'],
                 'active' => $row['active'],
                 'position' => $row['position'],
                 'image' => $row['image'],
@@ -131,7 +132,7 @@ class posts extends fsDBTableExtension
         );
     }
     
-    public function GetByCategory($languageId, $idOrAlt = ALL_TYPES, $start = 1, $count = 20, $activeOnly = true)
+    public function GetByCategory($languageId, $idOrAlt = ALL_TYPES, $start = 1, $count = 20, $activeOnly = true, $excludeIds = array())
     {
         $sql = '';
         if ($idOrAlt == -1) { //No category
@@ -149,6 +150,9 @@ class posts extends fsDBTableExtension
           }
           if ($activeOnly) {
             $where .= ' AND `p`.`active` = "1"';
+          }
+          if(count($excludeIds) > 0) {
+            $where .= ' AND `pc`.`id_category` NOT IN ('.implode(',', $excludeIds).')';
           }
           $sql = fsFunctions::StringFormat('
             SELECT `p`.*, `pi`.`title`, `pi`.`alt`, `pi`.`html_short`, `pi`.`html_full`, 
@@ -215,6 +219,7 @@ class posts extends fsDBTableExtension
             'id' => $resultQuery[0]['id'],
             'id_user' => $resultQuery[0]['id_user'],
             'date' => $resultQuery[0]['date'],
+            `date_modify` => $resultQuery[0]['date_modify'], 
             'active' => $resultQuery[0]['active'],
             'position' => $resultQuery[0]['position'],
             'image' => $resultQuery[0]['image'],

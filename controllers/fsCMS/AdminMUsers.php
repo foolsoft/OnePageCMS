@@ -146,9 +146,49 @@ class AdminMUsers extends AdminPanel
 
     public function actionIndex($param) 
     {
-        $users = $param->Exists('search') && $param->search != '' ? $this->_table->Select('*', true)->Where('`login` LIKE "%' . $param->search . '%"')->ExecuteToArray() : $this->_table->GetAll(true, true);
-        $this->Tag('users', $users);
         $this->Tag('search', $param->search);
+        $this->Tag('loginOrId', $param->loginOrId);
+        $this->Tag('onpage', $param->Exists('onpage', true, '[1-9]\d*') ? $param->onpage : 10);
+        $param->page = $param->Exists('page', true, '[1-9]\d*') ? $param->page : 1;
+        $types_users = new types_users();
+        $users = $filterWhere = $types = array();
+        $pageParams = 'onpage='.$this->Tag('onpage').'&page';
+        $filterHaving = '';
+        
+        if($param->Exists('type', true, '[1-9]\d*')) {
+            $filterWhere[] = array(
+                'type' => $param->type
+            );
+            $this->Tag('type', $param->type);
+        }
+        if($param->loginOrId != '') {
+            $filterWhere[] = array(
+                array(
+                    'login' => '%'.$param->loginOrId.'%',
+                    'logic' => 'OR',
+                    'key' => 'LIKE'
+                ), 
+                array(
+                    'id' => $param->loginOrId,
+                )
+            );
+        }
+        if($param->search != '') {
+            $filterHaving = 'info LIKE "%'.$param->search.'%"';
+            $pageParams = 'search='.$param->search.'&'.$pageParams;
+        }
+        
+        $count = $this->_table->GetList($users, $filterWhere, $filterHaving, $this->Tag('onpage'), $this->Tag('onpage') * ($param->page - 1));
+        $pages = fsPaginator::Get($this->_My('Index'), $pageParams, $count,  $this->Tag('onpage'), $param->page);
+        $types_users = $types_users->Get();
+        $types['-1'] = T('XMLcms_she_any');
+        foreach ($types_users as $type) {
+            $types[$type['id']] = $type['name'];
+        }
+        
+        $this->Tag('users', $users);
+        $this->Tag('pages', $pages);
+        $this->Tag('types', $types);
     }
 
     public function actionGroups($param) 

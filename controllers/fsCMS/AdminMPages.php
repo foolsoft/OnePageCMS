@@ -35,6 +35,7 @@ class AdminMPages extends AdminPanel
         $param->in_menu = $param->Exists('in_menu') ? 1 : 0;
         $param->active = $param->Exists('active') ? 1 : 0;
         $param->auth = $param->Exists('auth') ? 1 : 0;
+        $param->date_modify = time();
         $this->Message('');
         $this->Redirect('');
         return true;
@@ -91,10 +92,10 @@ class AdminMPages extends AdminPanel
 
     public function actionIndex($param)
     {
-        $pp = $param->title == '' ? 20 : 0;
-        $page = $param->Exists('page', true) ? $param->page : 1;
-        $pages = $pp === 0 ? '' : fsPaginator::Get($this->_My('Index'), 'page', $this->_table->GetCount(), $pp, $page);
-        $this->Tag('pages', $this->_table->GetPages(fsSession::GetInstance('LanguageId'), $page, $pp, $param->title));
+        $param->onpage = $param->title == '' ? ($param->Exists('onpage', true, '[1-9]\d*') && $param->onpage > 0 ? $param->onpage : 20) : 0;
+        $param->page = $param->Exists('page', true, '[1-9]\d*') ? $param->page : 1;
+        $pages = $param->onpage === 0 ? '' : fsPaginator::Get($this->_My('Index'), 'page', $this->_table->GetCount(), $param->onpage, $param->page);
+        $this->Tag('pages', $this->_table->GetPages(fsSession::GetInstance('LanguageId'), $param->page, $param->onpage, $param->title));
         $this->Tag('pagesNavigation', $pages);
         $this->Tag('search', $param->title);
     }
@@ -105,7 +106,7 @@ class AdminMPages extends AdminPanel
             return -1;
         }
         $this->_UpdatePageInfo($param->key, $param);
-  	    return $param->key;
+        return $param->key;
     }
   
     public function actionEdit($param)

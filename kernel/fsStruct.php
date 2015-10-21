@@ -134,12 +134,16 @@ class fsStruct
       * @api  
       * @param string $field Name of data to be check.
       * @param boolean $checkNumeric Flag for additional check for numeric type. Default <b>false</b>.
+      * @since 1.1.0
+      * @param string $checkNumber Regex for additional check number value. Default <b>null</b>.
       * @return boolean Result of checking.  
       */
-    public function Exists($field, $checkNumeric = false)
+    public function Exists($field, $checkNumeric = false, $checkNumber = '\-?\d+(\.\d+)?')
     {
-      return isset($this->fields[$field]) && 
-             (!$checkNumeric || is_numeric($this->fields[$field]['Value'])); 
+        if(isset($this->fields[$field]) &&  (!$checkNumeric || is_numeric($this->fields[$field]['Value']))) {
+            return $checkNumeric ? preg_match('/^'.$checkNumber.'$/', $this->fields[$field]['Value']) : true;
+        }
+        return false;
     }
 
     /**

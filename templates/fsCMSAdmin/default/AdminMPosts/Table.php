@@ -5,7 +5,7 @@ $textActivate = T('XMLcms_activate');
 ?>
 <table class="list-table">
   <tr>
-    <th>№</th>
+    <th width="20">Id</th>
     <th><?php _T('XMLcms_text_title'); ?></th>
     <th><?php _T('XMLcms_text_category'); ?></th>
     <th><?php _T('XMLcms_text_date'); ?></th>

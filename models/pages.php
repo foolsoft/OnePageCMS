@@ -86,7 +86,7 @@ class pages extends fsDBTableExtension
     public function GetAllPages($languageId)
     {
         return $this->ExecuteFormat('
-            SELECT `p`.`id`, `p`.`active`, `pi`.`alt`, `p`.`in_menu`, `p`.`auth`, `p`.`tpl`, `pi`.`title`, `pi`.`html`, `pi`.`keywords`, `pi`.`description`, `pi`.`id_language` 
+            SELECT `p`.`id`, `p`.`date_modify`, `p`.`active`, `pi`.`alt`, `p`.`in_menu`, `p`.`auth`, `p`.`tpl`, `pi`.`title`, `pi`.`html`, `pi`.`keywords`, `pi`.`description`, `pi`.`id_language` 
             FROM `{0}pages` p JOIN `{0}pages_info` pi ON `pi`.`id_page` = `p`.`id`
             WHERE `pi`.`id_language` = "{1}"
         ', array(fsConfig::GetInstance('db_prefix'), $languageId), false);

@@ -40,4 +40,9 @@ $history = array(
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'users` ADD `auth_count` INT NOT NULL DEFAULT "0";',
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts_category_info` ADD `description` TEXT NOT NULL;',
     ),
+    '2.2.2.0' => array(
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts` ADD `date_modify` BIGINT NOT NULL AFTER `date`;',
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'pages` ADD `date_modify` BIGINT NOT NULL;',
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'pages` ADD `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;',
+    ),
 );                                                                 

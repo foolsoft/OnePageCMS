@@ -16,14 +16,18 @@ $textActivate = T('XMLcms_activate');
   <div class='clr'></div>
 </div>
 <hr />
-<form method="post">
+<form method="get">
+    <?php 
+    echo T('XMLcms_text_on_page').' '.fsHtml::Number('onpage', $tag->onpage, array('style' => 'width:50px', 'min' => 1)).' ';
+    echo T('XMLcms_group').' '.fsHtml::Select('type', $tag->types, $tag->type); 
+    ?>
     <input type="text" name="search" value="<?php echo $tag->search; ?>" />
     <input type="submit"  value="<?php _T('XMLcms_text_search'); ?> " />
 </form>
 <hr />
 <table class="list-table">
   <tr>
-    <th>Id</th>
+    <th width="20">Id</th>
     <th><?php _T('XMLcms_text_login'); ?></th>
     <th><?php _T('XMLcms_text_type'); ?></th>
     <th><?php _T('XMLcms_text_action'); ?></th>
@@ -53,4 +57,7 @@ $textActivate = T('XMLcms_activate');
   </tr>
   <?php } ?>
 </table>  
+<?php if($tag->pages != '') {
+    echo '<hr />'.$tag->pages;
+} ?>
 [endblock-content]
