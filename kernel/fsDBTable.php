@@ -90,10 +90,13 @@ class fsDBTable
   * @since 1.1.0
   * @return void.      
   */
-  protected function AddStack($query)
+  public function AddStack($query)
   {
       if($query !== '' && isset($query[6]) && strtolower(substr($query, 0, 6)) != 'select') {
         $this->_queryStack[] = $query;
+        if(count($this->_queryStack) > 100) {
+            $this->ExecuteStack();
+        }
         return;
       }
       throw Exception('Can not add query inside stack');
@@ -105,7 +108,7 @@ class fsDBTable
   * @since 1.1.0
   * @return void.      
   */
-  protected function ExecuteStack()
+  public function ExecuteStack()
   {
       if(count($this->_queryStack) > 0) {
         $this->MultiExecute(implode(';', $this->_queryStack).';', false);
@@ -289,6 +292,9 @@ class fsDBTable
       case 'drop':
         $this->_query->sql = 'DROP TABLE `'.$this->_struct->name.'`';
         break;
+      case 'truncate':
+        $this->_query->sql = 'TRUNCATE TABLE `'.$this->_struct->name.'`';
+        break;
       case 'delete':
         $this->_query->sql = 'DELETE FROM `'.$this->_struct->name.'`';
         break;
@@ -339,7 +345,8 @@ class fsDBTable
                   $this->_join[$i]['MyField'].'` ';
           }
         }
-        $this->_query->sql = 'SELECT '.$f.' FROM `'.$this->_struct->name.'` '.$links;
+        $this->_query->sql = 'SELECT '.($this->_query->limit != false ? 'SQL_CALC_FOUND_ROWS ' : '').
+            $f.' FROM `'.$this->_struct->name.'` '.$links;
         break;
       default:
         return '';
@@ -374,7 +381,7 @@ class fsDBTable
                 ($i == $temp - 1 ? ' ' : ', ');
       }
     }
-    if ($this->_query->action == 'select' && $this->_query->limit != false) {
+    if ($this->_query->limit != false) {
       $this->_query->sql .= ' LIMIT '. $this->_query->limit;
     }
     return $this->_query->sql;
@@ -399,6 +406,19 @@ class fsDBTable
     return $this;
   }
   
+  /**
+  * Get last query rows count without LIMIT operation.
+  * @api
+  * @since 1.1.0
+  * @return integer Rows count.
+  */
+  public function GetQueryRowsCount()
+  {
+    $result = $this->_struct->db->Query('SELECT FOUND_ROWS() as c');
+    $data = $result->fetch_assoc();
+    return $data['c'];
+  }
+
   /**
   * Generate INSERT query.   
   * @api
@@ -480,6 +500,18 @@ class fsDBTable
   public function Drop()
   {
     $this->_query->action = 'drop';
+    return $this;
+  }
+
+  /**
+  * Generate TRUNCATE query.
+  * @api
+  * @since 1.1.0
+  * @return fDBTable Current object.
+  */
+  public function Truncate()
+  {
+    $this->_query->action = 'truncate';
     return $this;
   }
 
@@ -624,8 +656,7 @@ class fsDBTable
   public function Next($step = 1)
   {
     $counter = 0;
-    while ($counter < $step && 
-           $row = $this->_result->mysqlResult->fetch_assoc()) {
+    while ($counter < $step && $row = $this->_result->mysqlResult->fetch_assoc()) {
       ++$counter;
     }
     return $this->_UpdateResult($row);
@@ -714,7 +745,7 @@ class fsDBTable
     $this->_result->mysqlResult = $this->_struct->db->MultiQuery($query);
     if (!$this->_result->mysqlResult) { 
         $this->_struct->db->Close();
-        die('Error in query: '.$this->_query->sql.'<br />'.$this->_struct->db->LastError());
+        die('Error in query: '.$query.'<br />'.$this->_struct->db->LastError());
     }
     return $this->_result->mysqlResult;
   }

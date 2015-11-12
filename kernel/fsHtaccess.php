@@ -94,9 +94,11 @@ class fsHtaccess
       Allow from all
   </Files>
 
+  '.self::$_append.'
+
   <IfModule mod_rewrite.c>
     RewriteEngine On
-
+   
     #Redirect to domain with www	
     {13}RewriteCond %{HTTP_HOST} ^{0}$ [NC]
     {13}RewriteRule ^(.*)$ {2}/$1 [R=301,L]
@@ -137,8 +139,7 @@ class fsHtaccess
     #fsKernel
     RewriteCond %{QUERY_STRING} (.*)
     RewriteRule ^{5}([A-Za-z0-9]+){1}$ /index.php?{6}method=${9}&%1 [L]
-  </IfModule>  
-      '.self::$_append, array(
+  </IfModule>', array(
         str_replace('.', '\.', $domain).'\.'.$domainZone,
         $linkSuffix,
         $protocol.'//www.'.$domain.'.'.$domainZone,

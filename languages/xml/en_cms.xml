@@ -18,7 +18,12 @@
   <text name='cms_text_on_page'>
     <en>On page</en>
   </text>
-  
+  <text name='text_from'>
+    <en>from</en>
+  </text>
+  <text name='text_till'>
+    <en>till</en>
+  </text>
   <text name='cms_he_any'>
     <en>Any</en>
   </text>

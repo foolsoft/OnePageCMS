@@ -108,8 +108,7 @@ class fsDBconnection
       return null;
     } 
     $result = $this->_connection->query($sql);
-    $q = substr($sql, 0, 6);
-    $q = strtoupper($q);
+    $q = strtoupper(substr($sql, 0, 6));
     if ($result) {
       if ($q == 'INSERT') {
       	$this->_last = $this->_connection->insert_id;

@@ -75,46 +75,49 @@ class MComments extends cmsController
 
   public function Comments($param)
   {
-    if(!$param->Exists('group') || $param->group == '') {
+    if(!$param->Exists('group')) {
       return '';
     }
-    $template = 'Comments';
-    if($param->Exists('template')) {
-      $template = $param->template;
+    $template = $param->template != '' ? $param->template : 'Comments';
+    $commentTemplate = $param->comment_template != '' ? $param->comment_template.EXT_TPL : 'Comment.php';
+    $param->limit = $param->Exists('limit', true, '\+d') ? $param->limit : null;
+    $param->group = str_replace(' ', '-', trim(strip_tags($param->group)));
+    if($param->group == '') {
+        $param->group = false;
     }
-    $commentTemplate = 'Comment.php';
-    if($param->Exists('comment_template')) {
-      $commentTemplate = $param->comment_template;
-    }
-    $param->group = str_replace(' ', '-', strip_tags($param->group));
-    
+
     $this->Tag('template', $commentTemplate);
     $this->Tag('group', $param->group);
-    
-    $limitFrom = false; $limitCount = false;
-    if($this->settings->comments_on_page > 0) {
+    $this->Tag('edit_time', $this->settings->edit_time);
+
+    $limitFrom = $limitCount = false;
+    if($param->limit != null) {
+        $limitFrom = 0;
+        $limitCount = $param->limit;
+    }
+     
+    if($param->limit == null && $this->settings->comments_on_page > 0) {
       if($param->Exists('comment_page', true) && $param->comment_page > 0) {
         $limitFrom = ($param->comment_page - 1) * $this->settings->comments_on_page;
       }
       $limitCount = $this->settings->comments_on_page;
       $count = $this->_table->GetCount('`main_parent` = "0"'); 
       $this->Tag('pages', 
-                 Paginator::Get(
-                  'javascript:CommentsPage("'.$param->group.'", {comment_page});',
-                  '{comment_page}',
-                  $count,
-                  $this->settings->comments_on_page,
-                  $param->comment_page
-                 )
+            Paginator::Get(
+             'javascript:CommentsPage("'.$param->group.'", {comment_page});',
+             '{comment_page}',
+             $count,
+             $this->settings->comments_on_page,
+             $param->comment_page
+            )
       );
     }
+
     $this->_AddMyScriptsAndStyles(true, true, URL_THEME_JS, URL_THEME_CSS);
-    $this->Tag(
-      'comments',
-      $this->_table->Get($param->group, 1, $this->settings->sorting == 'ASC', $limitFrom, $limitCount)
+    $this->Tag('comments',
+        $this->_table->Get($param->group, 1, $this->settings->sorting == 'ASC', $limitFrom, $limitCount)
     );
-    $this->Tag('edit_time', $this->settings->edit_time);
-    
+
     $html = $this->CreateView(array(), $this->_Template($template));
     if($param->Exists('ajax')) {
       $this->Html($html);

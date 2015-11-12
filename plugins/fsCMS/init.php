@@ -18,15 +18,10 @@ define('PATH_DTHEME_CSS',  PATH_CSS.'fsCMS/default/');
 define('PATH_DTHEME_JS',   PATH_JS.'fsCMS/default/');
 define('PATH_DTHEME_IMG',  PATH_IMG.'fsCMS/default/');
 define('EMAIL_SUPPORT',  'support@onepagecms.net');
+define('IS_MOBILE',  fsFunctions::IsMobile());
 
 if (!file_exists(PATH_ROOT.'settings/dbSettings.php') || !file_exists(PATH_ROOT.'settings/Settings.php')) {
     fsFunctions::Redirect(URL_ROOT.'setup.php');
-}
-
-if(!file_exists(PATH_ROOT.'.htaccess')) {
-    fsHtaccess::Create();
-    header('Location: /');
-    exit;
 }
 
 if(!AUTH && !fsSession::Exists('GUEST')) {

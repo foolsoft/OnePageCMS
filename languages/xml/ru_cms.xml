@@ -12,6 +12,12 @@
   <text name='cms_savebackup'>
     <ru>Скачать копию сайта</ru>
   </text> 
+  <text name='text_from'>
+    <ru>с</ru>
+  </text>
+  <text name='text_till'>
+    <ru>по</ru>
+  </text>
   <text name='cms_start_update'>
     <ru>Начать обновление</ru>
   </text> 

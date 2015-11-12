@@ -91,7 +91,7 @@ var fsCMS = {
     str = str.replace(/у/g, 'y').replace(/ф/g, 'f').replace(/х/g, 'x').replace(/ц/g, 'c');
     str = str.replace(/ч/g, 'ch').replace(/ш/g, 'sh').replace(/щ/g, 'sh').replace(/ъ/g, '');
     str = str.replace(/ы/g, 'i').replace(/ь/g, '').replace(/э/g, 'e').replace(/ю/g, 'u').replace(/я/g,'ya');
-    str = str.replace(/А/g, 'A').replace(/Б/g, 'B').replace(/В/g, 'B').replace(/Г/g, 'G');
+    str = str.replace(/А/g, 'A').replace(/Б/g, 'B').replace(/В/g, 'V').replace(/Г/g, 'G');
     str = str.replace(/Д/g, 'D').replace(/Е/g, 'E').replace(/Ё/g, 'E').replace(/Ж/g, 'J');
     str = str.replace(/З/g, 'Z').replace(/И/g, 'I').replace(/Й/g, 'I').replace(/К/g,'K');
     str = str.replace(/Л/g,'L').replace(/М/g,'M').replace(/Н/g,'N').replace(/О/g,'O').replace(/П/g,'P');
@@ -107,6 +107,10 @@ var fsCMS = {
       $('#'+id).val(str);
     }
     return str;
+  },
+  Random: function getRandomInt(min, max)
+  {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   },
   UpdateImage: function(imgId) {
     var p = 'fsCMSUpdate=', src = $('#' + imgId).attr('src'), delimiter = src.indexOf('?') < 0 ? '?' : '&';

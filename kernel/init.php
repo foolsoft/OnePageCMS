@@ -66,3 +66,9 @@ fsFunctions::IncludeFile(PATH_PLUGINS.'init.php');
 fsFunctions::IncludeFile(PATH_ROOT.'controllers/init.php');
 fsFunctions::IncludeFolder(PATH_CACHE, array(), array('php'));
 fsFunctions::IncludeFolder(PATH_CACHE_DB, array(), array('php'));
+
+if(!file_exists(PATH_ROOT.'.htaccess')) {
+    fsHtaccess::Create();
+    header('Location: /');
+    exit;
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+  <text name='kernel_pages'>
+    <en>Pages</en>
+    <ru>Страницы</ru>
+  </text>
+  <text name='kernel_page'>
+    <en>Page</en>
+    <ru>Страница</ru>
+  </text>
+  <text name='kernel_first'>
+    <en>First</en>
+    <ru>Первая</ru>
+  </text>
+  <text name='kernel_last'>
+    <en>Last</en>
+    <ru>Последняя</ru>
+  </text>
+</dictionary>
