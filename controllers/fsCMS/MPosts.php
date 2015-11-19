@@ -46,7 +46,7 @@ class MPosts extends cmsController
         $template = $param->TryGetNotEmpty('template', 'Random');
         $posts_category = new posts_category();
         $categoies = array($param->category);
-        $posts_category->GetChilds(&$categoies, $param->category);
+        $posts_category->GetChilds($categoies, $param->category);
         $posts = $this->_table->GetRandom(fsSession::GetInstance('LanguageId'), $limit, $categoies);
         return $this->CreateView(array('posts' => $posts), $this->_Template($template));
     }

@@ -48,7 +48,8 @@ class comments extends fsDBTableExtension
   
   public function Remove($id)
   {
-    return $this->Delete()->Where('`id` = "'.$id.'" OR `main_parent` = "'.$id.'" OR `parent` = "'.$id.'"')->Execute();
+      $idsStr = implode(',', is_array($id) ? $id : array($id));
+      return $this->Delete()->Where('`id` IN ('.$idsStr.') OR `main_parent` IN ('.$idsStr.') OR `parent` IN ('.$idsStr.')')->Execute();
   }
   
   public function Get($group = false, $active = '1', $asc = false, $limitFrom = false, $limitCount = false, $mainParent = 0)

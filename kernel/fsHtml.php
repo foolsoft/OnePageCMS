@@ -358,6 +358,9 @@ class fsHtml
     */
     public static function Url($href, $addSuffix = true)
     {
+      if(preg_match('/^\{.*\}$/', $href)) {
+        return $href;
+      }
       $hrefSuffix = fsConfig::GetInstance('links_suffix');
       if($hrefSuffix !== null && $addSuffix === true) {
         $params = strpos($href, '?');

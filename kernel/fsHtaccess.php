@@ -61,10 +61,10 @@ class fsHtaccess
 
   Options All -Indexes
 
-  ErrorDocument 401 /index.php?controller=MPages&method=View&page=?401
-  ErrorDocument 404 /index.php?controller=MPages&method=View&page=?404
-  ErrorDocument 403 /index.php?controller=MPages&method=View&page=?403
-  ErrorDocument 500 /index.php?controller=MPages&method=View&page=?500
+  ErrorDocument 401 /index.php?controller=MPages&method=View&page=?401 #Part of OnePageCMS
+  ErrorDocument 404 /index.php?controller=MPages&method=View&page=?404 #Part of OnePageCMS
+  ErrorDocument 403 /index.php?controller=MPages&method=View&page=?403 #Part of OnePageCMS
+  ErrorDocument 500 /index.php?controller=MPages&method=View&page=?500 #Part of OnePageCMS
 
   <ifmodule mod_deflate.c>
     <filesmatch .(js|css)$="">
@@ -109,19 +109,19 @@ class fsHtaccess
 
     {4}
 
-    #MPages
+    #MPages #Part of OnePageCMS
     RewriteRule ^{11}404{1}$ /index.php?{7}controller=MPages&method=View&page=?404 [L]
     RewriteRule ^{12}?$ /index.php?{6}method=StartPage [L]
     RewriteCond %{QUERY_STRING} (.*)
     RewriteRule ^{5}page/([0-9a-zA-Z_\-]+){1}$ /index.php?{6}controller=MPages&method=View&page=${9}&%1 [L]
     RewriteRule ^template/([0-9a-zA-Z_\-]+)$ /index.php?controller=MTemplate&method=Change&name=$1 [L]
 
-    #MPosts
+    #MPosts #Part of OnePageCMS
     RewriteRule ^{5}post/([0-9a-zA-Z_\-]+){1}$ /index.php?{6}controller=MPosts&method=Post&post=${9} [L]
     RewriteCond %{QUERY_STRING} (.*)
     RewriteRule ^{5}posts(/([0-9a-zA-Z_\-]*))?{1}$ /index.php?{6}controller=MPosts&method=Category&category=${10}&%1 [L]
     
-    #MUsers
+    #MUsers #Part of OnePageCMS
     RewriteRule ^{5}user/registration{1}$ /index.php?{6}controller=MUsers&method=Registration [L]
     RewriteRule ^{5}user/auth{1}$ /index.php?{6}controller=MAuth&method=Auth [L]
 	RewriteRule ^{5}user/forgot{1}$ /index.php?{6}controller=MAuth&method=Forgot [L]

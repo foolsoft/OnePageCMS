@@ -70,7 +70,6 @@ class AdminMComments extends AdminPanel
       return;
     }
     
-    $fields = array();
     $commentFields = $this->_table->result->additional != '' ? json_decode($this->_table->result->additional) : array();
     $table = new fsDBTableExtension('comment_fields');
     $fields = $table->GetAll(true, false, array('title', 'name'));
@@ -91,7 +90,7 @@ class AdminMComments extends AdminPanel
       $this->Tag('settings', $this->settings);
   }
   
-  public function actionDoDelete($param)
+  public function actionDelete($param)
   {
     if(parent::actionDoDelete($param) == 0) {
       $this->_table->Remove($param->key);

@@ -522,14 +522,9 @@ class AdminPanel extends cmsController
             $key = $param->key;
             $where = !$param->Exists('table_key')
                       ? '`'.($obj->key == '' ?  'id' : $obj->key).'`'
-                      : "`".$param->table_key."`";
+                      : '`'.$param->table_key.'`';
             if(is_array($key)) {
-              $c = count($key);
-              $where .= ' IN (';
-              for($i = 0; $i < $c; ++$i) {
-                $where .= "'".$key[$i]."'".($i == $c - 1 ? '' : ', ');  
-              }
-              $where .= ')';
+              $where .= ' IN ('.implode(',', $key).')';
             } else {
               $where .= " = '".$param->key."'";
             }
@@ -551,7 +546,6 @@ class AdminPanel extends cmsController
               if(!is_array($temp)) {
                 $paramStr .= '&'.$P.'='.$param->$P;
               } else {
-                $c = count($temp);
                 foreach($temp as $idx => $value) {
                   $paramStr .= '&'.$P.'['.$idx.']='.$value;
                 }

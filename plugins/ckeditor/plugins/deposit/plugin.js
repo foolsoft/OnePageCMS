@@ -1,10 +1,8 @@
 var langDepoist, translationsD = {
-    ru:
-    {
+    ru: {
         title: 'Загрузка на DepositFiles',
         upload: 'Загрузить'
-    },
-    en:
+    }, en:
     {
         title: 'Upload to depositfiles',
         upload: 'Upload'
@@ -17,9 +15,9 @@ CKEDITOR.plugins.add( 'deposit',
   _initTranslations: function( editor )
   {
       var current_lang = CKEDITOR.lang.detect();
-      CKEDITOR.lang[ current_lang ]['deposit'] = translationsD[ current_lang ]
+      editor.lang['deposit'] = translationsD[ current_lang ]
           ? translationsD[ current_lang ]
-          : translationsD[ translations.def ];
+          : translationsD[ translationsD.def ];
       langDepoist = editor.lang.deposit;
   },
 

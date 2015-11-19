@@ -1,6 +1,5 @@
 var langT, translationsT = {
-    ru:
-    {
+    ru: {
         title: 'Словари',
         texts: 'Тексты',
         words: 'Слова',
@@ -8,8 +7,7 @@ var langT, translationsT = {
         search: 'Поиск',
         value: 'Значение',
         clear: 'Очистить',
-    },
-    en:
+    }, en:
     {
         title: 'Dictionaries',
         texts: 'Texts',
@@ -27,9 +25,9 @@ CKEDITOR.plugins.add( 't',
   _initTranslations: function( editor )
   {
       var current_lang = CKEDITOR.lang.detect();
-      CKEDITOR.lang[ current_lang ]['t'] = translationsT[ current_lang ]
+      editor.lang['t'] = translationsT[ current_lang ]
           ? translationsT[ current_lang ]
-          : translationsT[ translations.def ];
+          : translationsT[ translationsT.def ];
       langT = editor.lang.t;
   },
 
