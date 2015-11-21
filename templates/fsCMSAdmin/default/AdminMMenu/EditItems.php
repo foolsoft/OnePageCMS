@@ -2,10 +2,8 @@
 
 [block-content]
 <?php
-$selectedTitle = '';
-$selectedLink = '';
-$selectedOrder = '0';
-$selectedParent = '0';
+$selectedTitle = $selectedTarget = $selectedLink = '';
+$selectedOrder = $selectedParent = '0';
 ?>
 <?php echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fsCMS-btn admin-btn-back')); ?>
 <hr />
@@ -42,6 +40,7 @@ $selectedParent = '0';
               $selectedOrder = $item['position'];
               $selectedParent = $item['parent'];
               $selectedLink = $item['href'];
+              $selectedTarget = $item['target'];
             } 
     ?>
       <option <?php echo $selected; ?> value='<?php echo $item['id']; ?>'><?php echo $item['title']; ?></option>
@@ -93,7 +92,7 @@ $selectedParent = '0';
     <input name='position' type='number' value='<?php echo $selectedOrder; ?>' class='input-small' />
     <span class="space"></span>
     Target:
-    <?php echo fsHtml::Select('target', array('_self', '_blank', '_parent', '_top'), $item['target']); ?>
+    <?php echo fsHtml::Select('target', array('_self', '_blank', '_parent', '_top'), $selectedTarget); ?>
   </p>
   <hr />
   <div>

@@ -229,6 +229,7 @@ if ($_POST) {
         `href` varchar(500) NOT NULL,
         `parent` int(11) NOT NULL,
         `position` int(11) NOT NULL,
+        `target` varchar(10) NOT NULL DEFAULT '_self',
         PRIMARY KEY (`id`),
         KEY `parent` (`parent`),
         KEY `position` (`position`)

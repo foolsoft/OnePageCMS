@@ -66,7 +66,7 @@ class MSitemap extends cmsController
         $sitemap = new SimpleXMLElement($xmlHead);
         $count = 0; $idx = 1; 
         foreach($urls as $url) {
-            $link = htmlspecialchars($url['loc']);
+            $link = trim(htmlspecialchars($url['loc']));
             if(empty($link)) {
                 continue;
             }
