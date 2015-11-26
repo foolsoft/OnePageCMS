@@ -53,7 +53,7 @@ class cmsController extends fsController
     public function CreateView($params = array(), $template = '', $show = false, $adminMode = false) 
     {
       $params['myLink'] = $this->_link;
-      $params['referer'] = $_SERVER['HTTP_REFERER'];
+      $params['referer'] = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
       return parent::CreateView($params, $template, $show, $adminMode);
     }
   
@@ -131,17 +131,20 @@ class cmsController extends fsController
         if (!fsSession::Exists('Template')) {
           fsSession::Create('Template', CMSSettings::GetInstance('template'));
         }
-        define('URL_ATHEME_CSS', URL_CSS.CMSSettings::GetInstance('template_admin').'/');
-        define('URL_ATHEME_JS',  URL_JS.CMSSettings::GetInstance('template_admin').'/');
-        define('URL_ATHEME_IMG', URL_IMG.CMSSettings::GetInstance('template_admin').'/');
-        define('URL_THEME_CSS',  URL_CSS.fsSession::GetInstance('Template').'/');
-        define('URL_THEME_JS',   URL_JS.fsSession::GetInstance('Template').'/');
-        define('URL_THEME_IMG',  URL_IMG.fsSession::GetInstance('Template').'/');
-        define('PATH_ATHEME_CSS', PATH_CSS.CMSSettings::GetInstance('template_admin').'/');
-        define('PATH_ATHEME_JS',  PATH_JS.CMSSettings::GetInstance('template_admin').'/');
-        define('PATH_ATHEME_IMG', PATH_IMG.CMSSettings::GetInstance('template_admin').'/');
-        define('PATH_THEME_CSS',  PATH_CSS.fsSession::GetInstance('Template').'/');
-        define('PATH_THEME_JS',   PATH_JS.fsSession::GetInstance('Template').'/');
-        define('PATH_THEME_IMG',  PATH_IMG.fsSession::GetInstance('Template').'/');
+        
+        if(!defined('URL_ATHEME_CSS')) {
+            define('URL_ATHEME_CSS', URL_CSS.CMSSettings::GetInstance('template_admin').'/');
+            define('URL_ATHEME_JS',  URL_JS.CMSSettings::GetInstance('template_admin').'/');
+            define('URL_ATHEME_IMG', URL_IMG.CMSSettings::GetInstance('template_admin').'/');
+            define('URL_THEME_CSS',  URL_CSS.fsSession::GetInstance('Template').'/');
+            define('URL_THEME_JS',   URL_JS.fsSession::GetInstance('Template').'/');
+            define('URL_THEME_IMG',  URL_IMG.fsSession::GetInstance('Template').'/');
+            define('PATH_ATHEME_CSS', PATH_CSS.CMSSettings::GetInstance('template_admin').'/');
+            define('PATH_ATHEME_JS',  PATH_JS.CMSSettings::GetInstance('template_admin').'/');
+            define('PATH_ATHEME_IMG', PATH_IMG.CMSSettings::GetInstance('template_admin').'/');
+            define('PATH_THEME_CSS',  PATH_CSS.fsSession::GetInstance('Template').'/');
+            define('PATH_THEME_JS',   PATH_JS.fsSession::GetInstance('Template').'/');
+            define('PATH_THEME_IMG',  PATH_IMG.fsSession::GetInstance('Template').'/');
+        }
     }
 }

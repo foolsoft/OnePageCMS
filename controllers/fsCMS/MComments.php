@@ -80,7 +80,7 @@ class MComments extends cmsController
     }
     $template = $param->template != '' ? $param->template : 'Comments';
     $commentTemplate = $param->comment_template != '' ? $param->comment_template.EXT_TPL : 'Comment.php';
-    $param->limit = $param->Exists('limit', true, '\+d') ? $param->limit : null;
+    $param->limit = $param->Exists('limit', true, '\d+') ? $param->limit : null;
     $param->group = str_replace(' ', '-', trim(strip_tags($param->group)));
     if($param->group == '') {
         $param->group = false;

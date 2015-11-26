@@ -51,11 +51,12 @@ class fsLanguage implements iSingleton
           $el = $newXML->createElement("dictionary");
           foreach ($DT['NAMES'] as $D) {
             $TD = explode('-', $D);
-            if (count($TD) != 3 && $D != 'xml') {
+            $notXmlFile = $D != 'xml';
+            if (count($TD) != 3 && $notXmlFile) {
               continue;
             }
-            $LP = PATH_LANG.$D.'/';
-            $SL = !$isSDCACHEFILE && $TD[2] == $SYSTEM_LANGUAGE;
+            $LP = PATH_LANG.$D.'/'; 
+            $SL = !$isSDCACHEFILE && ($notXmlFile && $TD[2] == $SYSTEM_LANGUAGE);
             $L = !$isDCACHEFILE
                  && $SYSTEM_LANGUAGE != fsSession::GetInstance('Language')
                  && $TD[0] == $SYSTEM_LANGUAGE
@@ -109,6 +110,9 @@ class fsLanguage implements iSingleton
         }
         if(file_exists($DCACHEFILE)) {
           include $DCACHEFILE;
+        }
+        if(!isset($DICTIONARY)) {
+            $DICTIONARY = array();
         }
         $GLOBALS['DICTIONARY'] = array_merge((array)$SYSTEM_DICTIONARY, (array)$DICTIONARY);        
         unset($SYSTEM_DICTIONARY, $DCACHEFILE, $SDCACHEFILE, $XDCACHEFILE, $isDCACHEFILE, $isSDCACHEFILE, $isXDCACHEFILE);

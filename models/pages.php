@@ -135,9 +135,9 @@ class pages extends fsDBTableExtension
             return array();
         }
         $result = $this->ExecuteToArray(fsFunctions::StringFormat('
-            SELECT `p`.`id`, `pi`.`alt`, `p`.`in_menu`, `p`.`auth`, `p`.`tpl`, `pi`.`title`, `pi`.`html`, `pi`.`keywords`, `pi`.`description`, `pi`.`id_language` 
+            SELECT `p`.`id`, `pi`.`alt`, `p`.`active`, `p`.`in_menu`, `p`.`auth`, `p`.`tpl`, `pi`.`title`, `pi`.`html`, `pi`.`keywords`, `pi`.`description`, `pi`.`id_language` 
             FROM `{0}pages` p JOIN `{0}pages_info` pi ON `pi`.`id_page` = `p`.`id`
-            WHERE {1} AND `p`.`active` = "1" AND `pi`.`id_language` = "{2}"
+            WHERE {1} AND `pi`.`id_language` = "{2}"
             LIMIT 1
         ', array(
             fsConfig::GetInstance('db_prefix'),

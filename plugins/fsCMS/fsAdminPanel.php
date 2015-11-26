@@ -139,7 +139,7 @@ class AdminPanel extends cmsController
             $nextCheck[0] = $time + (2 * 60 * 60);
             $response = fsFunctions::RequestGet($url);
             if($json = json_decode($response, true)) {
-                file_put_contents($this->_updateFileFlag, $nextCheck.','.$json['version']);
+                file_put_contents($this->_updateFileFlag, $nextCheck[0].','.$json['version']);
                 if($json['version'] != $this->settings->version && '' != $json['link']) {
                     file_put_contents($this->_updateFileName, fopen($json['link'], 'r'));
                     $nextCheck[1] = $json['version']; 

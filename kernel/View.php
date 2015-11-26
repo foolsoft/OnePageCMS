@@ -142,7 +142,9 @@ class View
         $match = array();
         preg_match_all("^\{if-".$tag."\}.*\{endif-".$tag."\}^s", $html, $match);
         foreach ($match as $m) {
-          $html = str_replace($m[0], '', $html);  
+          if(count($m) > 0) {
+            $html = str_replace($m[0], '', $html);  
+          }
         }
         $html = str_replace('{ifnot-'.$tag.'}', '', $html);
         $html = str_replace('{endifnot-'.$tag.'}', '', $html);
@@ -152,7 +154,9 @@ class View
           $match = array();
           preg_match_all("^\{ifnot-".$tag."\}.*\{endifnot-".$tag."\}^s", $html, $match);
           foreach($match as $m) {
-            $html = str_replace($m[0], '', $html);  
+            if(count($m) > 0) {
+                $html = str_replace($m[0], '', $html);  
+            }
           }
       } 
     }
