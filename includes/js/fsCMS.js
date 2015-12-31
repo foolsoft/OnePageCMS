@@ -108,8 +108,7 @@ var fsCMS = {
     }
     return str;
   },
-  Random: function getRandomInt(min, max)
-  {
+  Random: function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   },
   UpdateImage: function(imgId) {

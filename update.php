@@ -45,5 +45,6 @@ $history = array(
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'pages` ADD `date_modify` BIGINT NOT NULL;',
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'pages` ADD `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;',
         'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'menu_items` ADD `target` varchar(10) NOT NULL DEFAULT "_self";',
+        'ALTER TABLE `'.fsConfig::GetInstance('db_prefix').'posts` ADD `id_user` INT NOT NULL COMMENT '.fsConfig::GetInstance('db_prefix').'users:login:id# AFTER `id`;'
     ),
 );                                                                 

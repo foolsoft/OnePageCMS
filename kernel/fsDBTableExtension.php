@@ -125,22 +125,37 @@ class fsDBTableExtension extends fsDBTable
     return is_array($field) ? $this : $this->_result->$field;
   }
   
-    /**
+  /**
   * Update one field in row.   
   * @api
   * @since 1.1.0
   * @param string $keyValue Value for selecting.
-  * @param boolean $fieldName Name of column to change.
-  * @param boolean $fieldValue New column value.
+  * @param string $fieldName Name of column to change.
+  * @param string $fieldValue New column value.
   * @param string $keyField (optional) Column name for $keyValue. If empty uses table primary key. Default empty string.
   * @return boolean Result of query.      
   */
   public function UpdateField($keyValue, $fieldName, $fieldValue, $keyField = '')
   {
+      return $this->UpdateFields($keyValue, array($fieldName), array($fieldValue), $keyField);
+  }
+  
+  /**
+  * Update fields in row.   
+  * @api
+  * @since 1.1.0
+  * @param string $keyValue Value for selecting.
+  * @param array $fieldsName Names of columns to change.
+  * @param array $fieldsValue New columns values.
+  * @param string $keyField (optional) Column name for $keyValue. If empty uses table primary key. Default empty string.
+  * @return boolean Result of query.      
+  */
+  public function UpdateFields($keyValue, $fieldsName, $fieldsValue, $keyField = '')
+  {
     if ('' == $keyField) {
       $keyField = $this->_struct->key;
     }
-    return $this->Update(array($fieldName), array($fieldValue))->Where('`'.$keyField.'` = "'.$keyValue.'"')->Execute();
+    return $this->Update($fieldsName, $fieldsValue)->Where('`'.$keyField.'` = "'.$keyValue.'"')->Execute();
   }
   
   /**

@@ -200,12 +200,15 @@ class fsFunctions
     * @param string $url Url for request.
     * @param array $data (optional) Request data. Default <b>empty array</b>.
     * @param array $options (optional) Additional CURL options. Default <b>empty array</b>.
+    * @since 1.1.0
+    * @param array $headers (optional) Response headers. Default <b>empty array</b>.
     * @return string Server answer.  
     */
-  public static function RequestGet($url, $data = array(), $options = array()) 
+  public static function RequestGet($url, $data = array(), $options = array(), &$headers = array()) 
   {
+    $headers = array();
     $defaults = array(
-        CURLOPT_URL => $url. (strpos($url, '?') === FALSE ? '?' : ''). http_build_query($data),
+        CURLOPT_URL => $url. (strpos($url, '?') === false && count($data) > 0 ? '?' : ''). http_build_query($data),
         CURLOPT_HEADER => 0,
         CURLOPT_RETURNTRANSFER => TRUE,
         CURLOPT_TIMEOUT => 4
@@ -215,6 +218,7 @@ class fsFunctions
     if(!($result = curl_exec($ch))) {
         trigger_error(curl_error($ch));
     }
+    $headers = curl_getinfo($ch);
     curl_close($ch);
     return $result; 
   }
@@ -226,10 +230,13 @@ class fsFunctions
     * @param string $url Url for request.
     * @param array $data (optional) Request data. Default <b>empty array</b>.
     * @param array $options (optional) Additional CURL options. Default <b>empty array</b>.
+    * @since 1.1.0
+    * @param array $headers (optional) Response headers. Default <b>empty array</b>.
     * @return string Server answer.  
     */
-  public static function RequestPost($url, $data = array(), $options = array()) 
+  public static function RequestPost($url, $data = array(), $options = array(), &$headers = array()) 
   {
+    $headers = array();  
     $defaults = array(
         CURLOPT_POST => 1,
         CURLOPT_HEADER => 0,
@@ -243,10 +250,10 @@ class fsFunctions
 
     $ch = curl_init();
     curl_setopt_array($ch, ($options + $defaults));
-    if(!($result = curl_exec($ch)))
-    {
+    if(!($result = curl_exec($ch))) {
         trigger_error(curl_error($ch));
     }
+    $headers = curl_getinfo($ch);
     curl_close($ch);
     return $result;  
   }
@@ -944,7 +951,7 @@ class fsFunctions
         if ($changeName) {
           $ext = pathinfo(basename($_FILES[$name][$i]['name']), PATHINFO_EXTENSION);
           $uploadfile[$i] = md5(rand().basename($_FILES[$name][$i]['name'])).'.'.$ext;
-          while (file_exists($path.$uploadfile)) {
+          while (file_exists($path.$uploadfile[$i])) {
             $uploadfile[$i] = md5(rand().basename($_FILES[$name][$i]['name'])).'.'.$ext;
           }
         }

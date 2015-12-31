@@ -118,6 +118,7 @@ if ($_POST) {
     $connection->Query("
        CREATE TABLE IF NOT EXISTS `".$_POST['db_prefix']."posts` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
+        `id_user` int(11) NOT NULL COMMENT '".$_POST['db_prefix']."users:login:id#',
         `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `date_modify` BIGINT NOT NULL,
         `position` smallint(6) NOT NULL DEFAULT '0',

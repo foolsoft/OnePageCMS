@@ -147,7 +147,7 @@ class fsController
   */ 
   final protected function _Referer($setRedirect = true)
   {
-    $referer = !fsFunctions::NotEmpty($_SERVER['HTTP_REFERER']) ? URL_ROOT : $_SERVER['HTTP_REFERER'];
+    $referer = empty($_SERVER['HTTP_REFERER']) ? URL_ROOT : $_SERVER['HTTP_REFERER'];
     if ($setRedirect) {
       $this->Redirect($referer);
     }
