@@ -234,6 +234,7 @@ class fsDBTable
           break;
           
         case 'float':
+        case 'double':
           if (!fsValidator::Check($value, 'FNUMERIC')) {
             return $field;
           }
@@ -242,6 +243,7 @@ class fsDBTable
         case 'tinyint':
         case 'int':
         case 'smallint':
+        case 'mediumint':
         case 'bigint':
           if (!fsValidator::Check($value, 'NUMERIC')) {
             return $field;

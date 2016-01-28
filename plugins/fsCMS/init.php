@@ -46,7 +46,8 @@ fsFunctions::IncludeFiles(array(
     PATH_PLUGINS.'fsCMS/CMSSettings.php',
     PATH_PLUGINS.'fsCMS/fsCMS.php',
     PATH_PLUGINS.'fsCMS/fsCMSAuth.php',
-    PATH_PLUGINS.'fsCMS/fsAdminPanel.php'
+    PATH_PLUGINS.'fsCMS/fsAdminPanel.php',
+    PATH_PLUGINS.'fsCMS/fsAdminPanelList.php',
  ));
                
 $includeFilesPrefix = array('!Admin'); 

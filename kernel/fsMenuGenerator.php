@@ -9,7 +9,7 @@ class fsMenuGenerator
       $html = '<ul id="menu-level-'.$level.'" class="'.$class.' '.$class.'-level-'.$level.'">';
       foreach ($menu as $array) {
         $html .= "<li class='".$class."-item ".$class."-item-level-".$level."'>";
-        $html .= fsHtml::Link($linkPrefix.$array['href'], T($array['title']));
+        $html .= fsHtml::Link($array['href'] != '' && $array['href'][0] == '#' ? $array['href'] : $linkPrefix.$array['href'], T($array['title']));
         if (count($array['child']) > 0) {
           $html .= self::_GenerateULMenu($linkPrefix, $array['child'], $class, $level + 1);
         }

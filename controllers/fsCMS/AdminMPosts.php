@@ -83,7 +83,7 @@ class AdminMPosts extends AdminPanel
         $inCategory = $this->_table->GetByCategory(fsSession::GetInstance('LanguageId'), $category, $page, $ppage, false);
         $count = $this->_table->GetCountByCategory($category, false); 
         $this->Tag('posts', $inCategory);
-        $this->Tag('pages', fsPaginator::Get($this->_My('Index/category/'.$category.'/'), 'page', $count, $ppage, $page));
+        $this->Tag('pages', fsPaginator::Get($this->_My('Index/category/'.$category), 'page', $count, $ppage, $page));
         return $this->CreateView(array(), $this->_Template('Table'), $param->Exists('show'));
    }
   
