@@ -191,8 +191,11 @@ class fsInclude implements iSingleton
                 continue;
             }
             foreach (self::$obj[$type] as $file) {
-                if(strpos($file, URL_ROOT_CLEAR) === 0 && !file_exists(str_replace(URL_ROOT_CLEAR, PATH_ROOT, $file))) {
-                    continue;
+                if(strpos($file, URL_ROOT_CLEAR) === 0) {
+                    $file = str_replace(URL_ROOT_CLEAR, PATH_ROOT, $file);
+                    if(!file_exists($file)) {
+                        continue;
+                    }
                 }
                 switch($type) {
                     case 'js':

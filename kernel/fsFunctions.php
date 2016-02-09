@@ -459,7 +459,7 @@ class fsFunctions
         fclose($f);
       }
     }
-    $head = "";
+    $head = '';
     if ($from != '') {
       $fromArray = explode('<', $from);
       if(count($fromArray) == 2) {
@@ -477,7 +477,7 @@ class fsFunctions
       $head .= "multipart/mixed;";
     }
     $head .= "boundary=\"----------".$un."\"\r\n\r\n";
-    return mail($to, $subj, $zag, $head);
+    return mail($to, '=?UTF-8?B?'.base64_encode($subj).'?=', $zag, $head);
   }
   
   
@@ -619,6 +619,18 @@ class fsFunctions
        return $arr;
     }
   
+    /**
+    * Check is current request over SSL.
+    * @since 1.1.0
+    * @api    
+    * @return boolean Result of checking
+    */
+    public static function IsSSL()
+    {
+      return (isset($_SERVER['HTTPS']) && ('on' == strtolower($_SERVER['HTTPS']) || '1' == $_SERVER['HTTPS']))
+          || (isset($_SERVER['SERVER_PORT']) && '443' == $_SERVER['SERVER_PORT']);
+    }
+    
   /**
     * Get user ip address.
     * @since 1.0.0

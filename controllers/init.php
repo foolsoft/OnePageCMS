@@ -2,4 +2,9 @@
 /*
  * Initialize controllers 
  */
-fsFunctions::IncludeFolder(PATH_ROOT.'controllers/', array((IS_ADMIN_CONTROLLER ? '' : '!').'Admin'), array('php'), array('init.php')); 
+fsFunctions::IncludeFolder(
+    PATH_ROOT.'controllers/',
+    IS_ADMIN_CONTROLLER ? array('Admin', 'Functions') : array('!Admin'),
+    array('php'),
+    array('init.php')
+);

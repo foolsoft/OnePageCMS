@@ -90,6 +90,25 @@ class fsSession implements iSingleton
     }
 
     /**
+     * Create or rewrite session array value.
+     * @since 1.1.0
+     * @api
+     * @param string $key Session array name.
+     * @param string $attr Session attribute name.
+     * @param string $value New value.
+     * @return void
+     */
+    public static function ArrSetOrCreate($key, $attr, $value)
+    {
+        if(!isset($_SESSION[$key]) || !is_array($_SESSION[$key])) {
+            $_SESSION[$key] = array();
+        }
+        $_SESSION[$key][$attr] = $value;
+        $_SESSION[self::$_sessionIdField] = self::_GenerateSessionKey();
+        self::$obj = null;
+    }
+    
+    /**
      * Set session value.    
      * @since 1.0.0
      * @api   

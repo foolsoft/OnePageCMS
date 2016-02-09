@@ -74,7 +74,8 @@ if ($_POST) {
     $f->WriteLine('<?php');
     $f->WriteLine("\$GLOBALS['CONFIG'] = array(");
     $alph = '0123tyuiop456789qwerasdfghjklzVFRTGxcvbnmQAZXSWEDCBNH$%^YUJMKIOLP!@#&*()_ +=-';
-    $page404 = 'http://'.$_SERVER['SERVER_NAME'].'/404';
+    $protocol = fsFunctions::IsSSL() ? 'https' : 'http';
+    $page404 = $protocol.'://'.$_SERVER['SERVER_NAME'].'/404';
     $secret = '';   
     while(strlen($secret) < 25) {
         $secret .= $alph[rand(0, strlen($alph))];
@@ -430,7 +431,7 @@ if ($_POST) {
 <html>
 <head>
   <title><?php echo isset($L['ptitle']) ? $L['ptitle'] : 'Select language'; ?></title>
-  <link rel="icon" type="image/vnd.microsoft.icon" href="http://<?php echo $_SERVER["SERVER_NAME"]; ?>/includes/img/favicon.ico">
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/includes/img/favicon.ico">
 </head>
 <body style='background:#EEEEE0;padding:0;margin:0;'>
   <div style='width:1000px;margin:0 auto;'>

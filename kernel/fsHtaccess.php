@@ -99,6 +99,9 @@ class fsHtaccess
   <IfModule mod_rewrite.c>
     RewriteEngine On
    
+    #RewriteCond %{HTTP:X-Forwarded-Protocol} !=https
+    #RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
+  
     #Redirect to domain with www	
     {13}RewriteCond %{HTTP_HOST} ^{0}$ [NC]
     {13}RewriteRule ^(.*)$ {2}/$1 [R=301,L]

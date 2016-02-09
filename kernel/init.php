@@ -37,7 +37,8 @@ fsFunctions::IncludeFiles(array(
     PATH_ROOT.'kernel/fsMemcache.php',
 ));
 fsLanguage::GetInstance();
-define('URL_ROOT_CLEAR', 'http://'.$_SERVER['SERVER_NAME'].'/');
+define('PROTOCOL', fsFunctions::IsSSL() ? 'https' : 'https');
+define('URL_ROOT_CLEAR', PROTOCOL.'://'.$_SERVER['SERVER_NAME'].'/');
 define('URL_ROOT',    URL_ROOT_CLEAR.(fsConfig::GetInstance('multi_language') === true ? fsSession::GetInstance('Language').'/' : ''));
 define('URL_PLUGINS', URL_ROOT_CLEAR.'plugins/');
 define('URL_CACHE',   URL_ROOT_CLEAR.'cache/');

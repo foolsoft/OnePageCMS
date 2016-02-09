@@ -16,6 +16,7 @@ echo fsHtml::Link($myLink.'Index', T('XMLcms_back'), false, array('class' => 'fs
     <?php if(!$isAddAction && $type == 'file' && !empty($item[$name])) { ?>
     <div>
     <a title="<?php _T('XMLcms_text_open'); ?>" href="<?php echo $item[$name]; ?>" target="_blank"><?php echo $item[$name]; ?></a>
+    <input type="hidden" value="<?php echo $item[$name]; ?>" name="<?php echo $name.'_prev'; ?>">
     </div>
     <?php } ?>
 

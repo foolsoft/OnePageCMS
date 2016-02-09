@@ -33,9 +33,9 @@ $title = isset($page['title']) ? $page['title'] : $tag->title;
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only"><?php _T('XMLcms_text_menu'); ?></span>
-            <span class="icon-bar">1</span>
-            <span class="icon-bar">2</span>
-            <span class="icon-bar">3</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="<?php echo URL_ROOT; ?>"><?php echo $tag->constants->title; ?></a>
         </div>

@@ -98,7 +98,8 @@ class AdminPanelList extends AdminPanel
             $type = empty($c['type']) ? 'text' : $c['type'];
             switch($type) {
                 case 'file':
-                    $param->$name = '';
+                    $prevName = $name.'_prev';
+                    $param->$name = $param->Exists($prevName) ? $param->$prevName : '';
                     $error = fsFunctions::CheckUploadFiles($name,
                         is_array($c['filter']) ? $c['filter'] : array(),
                         false, true
