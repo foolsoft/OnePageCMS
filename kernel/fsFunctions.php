@@ -955,6 +955,7 @@ class fsFunctions
       if (!isset($_FILES) || empty($_FILES[$name][0]['tmp_name'])) {
         return true;
       }
+      $path = self::Slash($path);
       $fc = count($_FILES[$name]);
       $uploadfile = array(); 
       $return = true;

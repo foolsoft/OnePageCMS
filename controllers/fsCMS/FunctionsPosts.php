@@ -10,4 +10,11 @@ class FunctionsPosts
         }
         return $title;
     }
+    
+    public static function GetPostUrl($postId)
+    {
+        $posts = new posts();
+        $posts = $posts->Get(fsSession::GetInstance('LanguageId'), $postId);
+        return fsHtml::Url(URL_ROOT.'post/'.$posts['alt']);
+    }
 }
