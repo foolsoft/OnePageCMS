@@ -6,8 +6,17 @@
   <text name='cms_controller_message'>
     <ru>Сообщение модуля</ru>
   </text>
+  <text name='cms_text_exist_email'>
+    <ru>Данный Email уже зарегистрирован</ru>
+  </text>
   <text name='cms_panel_languages'>
     <ru>Языки сайта</ru>
+  </text>
+  <text name='cms_search_in_info'>
+    <ru>Информация содержит</ru>
+  </text>
+    <text name='cms_id_or_login'>
+    <ru>Id или логин</ru>
   </text>
   <text name='cms_savebackup'>
     <ru>Скачать копию сайта</ru>

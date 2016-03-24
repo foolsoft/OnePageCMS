@@ -17,12 +17,16 @@ $textActivate = T('XMLcms_activate');
 </div>
 <hr />
 <form method="get">
-    <?php 
-    echo T('XMLcms_text_on_page').' '.fsHtml::Number('onpage', $tag->onpage, array('style' => 'width:50px', 'min' => 1)).' ';
-    echo T('XMLcms_group').' '.fsHtml::Select('type', $tag->types, $tag->type); 
-    ?>
-    <input type="text" name="search" value="<?php echo $tag->search; ?>" />
+    <div class="vspace">
+    <?php _T('XMLcms_id_or_login'); ?>
+    <input type="text" name="loginOrId" value="<?php echo $tag->loginOrId; ?>" />
+    <?php echo T('XMLcms_group').' '.fsHtml::Select('type', $tag->types, $tag->type); ?>
+    </div>
+    <div>
+    <?php echo T('XMLcms_text_on_page').' '.fsHtml::Number('onpage', $tag->onpage, array('style' => 'width:50px', 'min' => 1)).' '; ?>
+    <?php _T('XMLcms_search_in_info'); ?> <input type="text" name="search" value="<?php echo $tag->search; ?>" />
     <input type="submit"  value="<?php _T('XMLcms_text_search'); ?> " />
+    <div>
 </form>
 <hr />
 <table class="list-table">

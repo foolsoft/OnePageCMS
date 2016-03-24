@@ -169,7 +169,8 @@ class AdminMUsers extends AdminPanel
                     'key' => 'LIKE'
                 ), 
                 array(
-                    'id' => $param->loginOrId,
+                    array('id' => (int)$param->loginOrId),
+                    array('id' => 0, 'key' => '!='),
                 )
             );
         }

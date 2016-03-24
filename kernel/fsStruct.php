@@ -5,7 +5,7 @@
 */
 class fsStruct
 {
-    /** @var array Data lisst */   
+    /** @var array Data list */   
     protected $fields = array();
     /** @var bollean Flag for allow inline data generation */ 
     protected $allowNull;
@@ -19,7 +19,8 @@ class fsStruct
       * @param boolean $formated (optional) Flag for 'pre' tag using. Default <b>true</b>.   
       * @return void.  
       */
-    public function ToScreen($formated = true) {
+    public function ToScreen($formated = true) 
+    {
       if($formated !== true) {
         print_r($this->fields);
       } else {
@@ -27,6 +28,21 @@ class fsStruct
       }
     }
 
+    /**
+      * Push value in array value.
+      * @since 1.1.0
+      * @api
+      * @param string $field Array property name
+      * @param mixed $value Value for inserting
+      * @return void.
+      */
+    public function PushToArray($field, $value)
+    {
+      if(isset($this->fields[$field]) && is_array($this->fields[$field]['Value'])) {
+        array_push($this->fields[$field]['Value'], $value);
+      }
+    }
+    
      /**
       * Get data fields names.    
       * @since 1.0.0

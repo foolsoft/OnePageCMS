@@ -9,6 +9,15 @@
   <text name='cms_request_new_password'>
     <en>Request for password change</en>
   </text>
+  <text name='cms_text_exist_email'>
+    <en>Email already exists</en>
+  </text>
+  <text name='cms_search_in_info'>
+    <en>Information have</en>
+  </text>
+  <text name='cms_id_or_login'>
+    <en>Id or login</en>
+  </text> 
   <text name='cms_text_image'>
     <en>Image</en>
   </text>
