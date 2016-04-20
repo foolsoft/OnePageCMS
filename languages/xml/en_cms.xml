@@ -6,6 +6,23 @@
   <text name='cms_text_invalid_password'>
     <en>Invalid password</en>
   </text>
+  <text name='cms_text_reg_thanks'>
+    <en>Thanks for registration</en>
+  </text>
+  <text name='cms_text_team'>
+    <en>Team of site</en>
+  </text>
+  <text name='cms_text_reg_on_site'>
+    <en>Registration</en>
+  </text>
+  <text name='cms_text_mail_register'>
+    <en><![CDATA[
+        Thank you for registration! Your account data:
+    ]]></en>
+  </text>
+  <text name='cms_text_dear'>
+    <en>Dear</en>
+  </text>
   <text name='cms_request_new_password'>
     <en>Request for password change</en>
   </text>

@@ -12,9 +12,9 @@ $title = isset($page['title']) ? $page['title'] : $tag->title;
     <meta name="description" content="<?php echo isset($page['meta_description']) ? $page['meta_description'] : $tag->meta_description; ?>">
     <meta name="author" content="Mamatov Andrey / http://foolsoft.ru">
     <title><?php echo $title.' - '.$tag->constants->title; ?></title>
-    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="/plugins/bootstrap/js/ie-emulation-modes-warning.js"></script>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css?v=1.00" rel="stylesheet">
+    <link href="/plugins/bootstrap/css/bootstrap-theme.min.css?v=1.00" rel="stylesheet">
+    <script src="/plugins/bootstrap/js/ie-emulation-modes-warning.js?v=1.00"></script>
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -69,21 +69,21 @@ $title = isset($page['title']) ? $page['title'] : $tag->title;
       
     <?php
     fsFunctions::IncludeFile(PATH_TPL.'shared_footer.php');
-    echo fsInclude::GenerateCache(array('js'), fsSession::GetInstance('Language')); 
-    echo fsInclude::GenerateCache(array('css'), fsSession::GetInstance('Language'));
+    echo fsInclude::GenerateCache(array('js'), fsSession::GetInstance('Language'), fsInclude::GetVersion()); 
+    echo fsInclude::GenerateCache(array('css'), fsSession::GetInstance('Language'), fsInclude::GetVersion());
     if (file_exists(PATH_THEME_JS.$_REQUEST['controller'].'.js')) {
-        fsInclude::AttachJs(URL_THEME_JS.$_REQUEST['controller'].'.js');
+        fsInclude::AttachJs(URL_THEME_JS.$_REQUEST['controller'].'.js', true, array(), fsInclude::GetVersion());
     } else if (file_exists(PATH_DTHEME_JS.$_REQUEST['controller'].'.js')) {
-        fsInclude::AttachJs(URL_DTHEME_JS.$_REQUEST['controller'].'.js');
+        fsInclude::AttachJs(URL_DTHEME_JS.$_REQUEST['controller'].'.js', true, array(), fsInclude::GetVersion());
     } 
     if (file_exists(PATH_THEME_CSS.$_REQUEST['controller'].'.css')) {
-        fsInclude::AttachCss(URL_THEME_CSS.$_REQUEST['controller'].'.css');
+        fsInclude::AttachCss(URL_THEME_CSS.$_REQUEST['controller'].'.css', true, fsInclude::GetVersion());
     } else if (file_exists(PATH_DTHEME_CSS.$_REQUEST['controller'].'.css')) {
-        fsInclude::AttachCss(URL_DTHEME_CSS.$_REQUEST['controller'].'.css');
+        fsInclude::AttachCss(URL_DTHEME_CSS.$_REQUEST['controller'].'.css', true, fsInclude::GetVersion());
     }
     ?>
-    <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/plugins/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.min.js?v=1.00"></script>
+    <script src="/plugins/bootstrap/js/ie10-viewport-bug-workaround.js?v=1.00"></script>
     [block-footer]<?php /* ACCESS TO FOOTER FOR CHILD TEMPLATES */ ?>[endblock-footer]
   </body>
 </html>

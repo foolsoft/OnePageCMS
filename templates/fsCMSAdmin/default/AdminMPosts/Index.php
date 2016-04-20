@@ -13,10 +13,10 @@
 <hr />
 <?php _T('XMLcms_text_category'); ?>:
 <select name="category" onchange="LoadPostsTable(this.value);">
-<?php foreach ($tag->categories as $category) {
-  $selcted = ALL_TYPES == $category['id'] ? 'selected' : ''; 
+<?php foreach ($tag->categories as $id => $category) {
+  $selcted = ALL_TYPES == $id ? 'selected' : ''; 
 ?>
-  <option <?php echo $selcted; ?> value="<?php echo $category['id']; ?>">
+  <option <?php echo $selcted; ?> value="<?php echo $id; ?>">
     <?php echo FunctionsPosts::GetFullCategoryName($tag->categories, $category); ?>
   </option>
 <?php } ?>

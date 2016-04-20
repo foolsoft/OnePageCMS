@@ -6,6 +6,23 @@
   <text name='cms_controller_message'>
     <ru>Сообщение модуля</ru>
   </text>
+  <text name='cms_text_reg_thanks'>
+    <ru>Спасибо за регистрацию</ru>
+  </text>
+  <text name='cms_text_team'>
+    <ru>Команда сайта</ru>
+  </text>
+  <text name='cms_text_dear'>
+    <ru>Уважаемый</ru>
+  </text>
+  <text name='cms_text_reg_on_site'>
+    <ru>Регистрация на сайте</ru>
+  </text>
+  <text name='cms_text_mail_register'>
+    <ru><![CDATA[
+        Спасибо за регистрацию на нашем сайте. Ваши регистрационные данные:
+    ]]></ru>
+  </text>
   <text name='cms_text_exist_email'>
     <ru>Данный Email уже зарегистрирован</ru>
   </text>

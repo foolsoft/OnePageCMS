@@ -108,7 +108,7 @@ class fsHtaccess
 
     #Redirect to domain without www	
     #RewriteCond %{HTTP_HOST} ^www\.{0}$ [NC]
-    #RewriteRule ^(.*)$ {3}$1 [R=301,L]
+    #RewriteRule ^(.*)$ {3}/$1 [R=301,L]
 
     {4}
 

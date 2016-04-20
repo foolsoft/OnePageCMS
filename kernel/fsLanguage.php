@@ -26,8 +26,14 @@ class fsLanguage implements iSingleton
         }
         $languages = new fsDBTableExtension('languages');
         if (!fsSession::Exists('Language')) {
-            fsSession::Create('Language', $SYSTEM_LANGUAGE);
-            fsSession::Create('LanguageId', $languages->GetField('id', $SYSTEM_LANGUAGE, 'name'));
+            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+            switch ($lang) {
+                default:
+                    $lang = $SYSTEM_LANGUAGE;
+                    break;
+            }
+            fsSession::Create('Language', $lang);
+            fsSession::Create('LanguageId', $languages->GetField('id', $lang, 'name'));
         }
         if(isset($_REQUEST['language']) && $_REQUEST['language'] != '' && $_REQUEST['language'] != fsSession::GetInstance('Language')) {
             $lang = $languages->GetOne($_REQUEST['language'], true, 'name');

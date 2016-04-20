@@ -43,9 +43,15 @@ class MUsers extends cmsController
     $userId = $this->_table->Add($param->login, $param->password);
     if ($userId > 0 && $param->Exists('user_field')) {
       $user_fields = new user_fields();
+      $user_fields->GetSpecialField(fsSpecialFields::Email);
+      $userFieldEmailName = $user_fields->result->name;
       $user_fields = $user_fields->GetAll();
       foreach ($user_fields as $field) {
         if(isset($uf[$field['name']]) && ($field['expression'] == '' || preg_match('/^'.$field['expression'].'$/', $uf[$field['name']]))) {
+            if($userFieldEmailName == $field['name'] && !empty($uf[$field['name']])) {
+                $mailHtml = $this->CreateView(array('data' => $param->ToArray()), $this->_Template('RegistrationMail'));
+                fsFunctions::Mail($uf[$field['name']], T('XMLcms_text_reg_on_site').' '.$_SERVER['SERVER_NAME'], $mailHtml, CMSSettings::GetInstance('robot_email'));
+            }
             $user_info->Change($userId, $field['id'], $uf[$field['name']]);
         }
       }

@@ -783,14 +783,14 @@ class AdminPanel extends cmsController
               "'start_page' => array('ReadOnly' => true, 'Value' => '".$startPage."')", $s);
             $s = preg_replace(
               "/'url_404'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
-              "'url_404' => array('ReadOnly' => true, 'Value' => 'http://".$_SERVER['SERVER_NAME'].'/404'.$param->links_suffix."')", $s);
+              "'url_404' => array('ReadOnly' => true, 'Value' => '".PROTOCOL."://".$_SERVER['SERVER_NAME'].'/404'.$param->links_suffix."')", $s);
             $s = preg_replace(
               "/'multi_language'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+(true|false)\)/i", 
               "'multi_language' => array('ReadOnly' => true, 'Value' => ".$param->multi_language.")", $s);  
             fsFileWorker::UpdateFile($settingsFile, $s);
             fsHtaccess::Create($param->links_suffix, $param->multi_language == 'true');
   
-            $this->Redirect('http://'.$_SERVER['SERVER_NAME'].'/'.
+            $this->Redirect(PROTOCOL.'://'.$_SERVER['SERVER_NAME'].'/'.
               ($param->multi_language == 'true' ? fsSession::GetInstance('Language').'/' : '').
               'AdminPanel/Config'.$param->links_suffix
             );
