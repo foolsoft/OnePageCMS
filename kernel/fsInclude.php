@@ -5,6 +5,9 @@
 */
 class fsInclude implements iSingleton 
 {
+    /** @var string Version of included files */
+    private static $_version = '';
+
     /** @var object Instance of object */
     protected static $obj = null;
     
@@ -12,6 +15,17 @@ class fsInclude implements iSingleton
     private function __clone()    { } 
     private function __wakeup()   { }
     
+    /**
+    * Get version of attached files.
+    * @api
+    * @since 1.1.0
+    * @return string Version number.
+    */
+    public static function GetVersion()
+    {
+        return self::$_version;
+    }
+
     /**
     * Get instance of object.   
     * @api
@@ -58,13 +72,17 @@ class fsInclude implements iSingleton
     * @param string $type Type of include file.
     * @param string|array $files Url's of files for including.
     * @param boolean $autoShow (optional) Flag for result auto 'echo'. Default <b>true</b>.
+    * @param string $version (optional) File version. Default <b>empty string</b>.
     * @since 1.1.0
     * @param array $async (optional). Only for js type. Flags true or false for each files in $files parameter. Default value <b>false</b>. 
     * @return string Html code.     
     */
-    protected static function _Attach($type, $files, $autoShow = true, $async = array()) 
+    protected static function _Attach($type, $files, $autoShow = true, $async = array(), $version = '')
     {
         $string = ''; $result = '';
+        if($version !== '') {
+            $version = '?v='.$version;
+        }
         switch ($type) {
             case 'ico':
                 $string = '<link rel="icon" type="image/vnd.microsoft.icon" href="{0}" />';
@@ -86,7 +104,7 @@ class fsInclude implements iSingleton
         }
         $noAsync = count($async) == 0;
         foreach($files as $idx => $file) {
-            $result .= fsFunctions::StringFormat($string, array($file, $noAsync ? ' ' : ($async[$idx] === true ? ' async ' : ' ')));
+            $result .= fsFunctions::StringFormat($string, array($file.$version, $noAsync ? ' ' : ($async[$idx] === true ? ' async ' : ' ')));
         }
         if($autoShow) {
             echo $result;
@@ -100,11 +118,13 @@ class fsInclude implements iSingleton
     * @since 1.0.0
     * @param string|array $files Url's of files for including.
     * @param boolean $autoShow (optional) Flag for result auto 'echo'. Default <b>true</b>.
-    * @return string Html code.     
+    * @since 1.1.0
+    * @param string $version (optional) File version. Default <b>empty string</b>.
+    * @return string Html code.
     */
-    public static function AttachCss($files, $autoShow = true) 
+    public static function AttachCss($files, $autoShow = true, $version = '')
     {
-        return self::_Attach('css', $files, $autoShow);
+        return self::_Attach('css', $files, $autoShow, array(), $version);
     }
     
     /**
@@ -114,12 +134,13 @@ class fsInclude implements iSingleton
     * @param string|array $files Url's of files for including.
     * @param boolean $autoShow (optional) Flag for result auto 'echo'. Default <b>true</b>.
     * @since 1.1.0
-    * @param array $async (optional). Flags true or false for each files in $files parameter. Default value <b>false</b>. 
-    * @return string Html code.     
+    * @param array $async (optional). Flags true or false for each files in $files parameter. Default value <b>false</b>.
+    * @param string $version (optional) File version. Default <b>empty string</b>.
+    * @return string Html code.
     */
-    public static function AttachJs($files, $autoShow = true, $async = array()) 
+    public static function AttachJs($files, $autoShow = true, $async = array(), $version = '')
     {
-        return self::_Attach('js', $files, $autoShow, $async);
+        return self::_Attach('js', $files, $autoShow, $async, $version);
     }
     
     /**
@@ -128,11 +149,13 @@ class fsInclude implements iSingleton
     * @since 1.0.0
     * @param string $file Url of ico file for including.
     * @param boolean $autoShow (optional) Flag for result auto 'echo'. Default <b>true</b>.
-    * @return string Html code.     
+    * @since 1.1.0
+    * @param string $version (optional) File version. Default <b>empty string</b>.
+    * @return string Html code.
     */
-    public static function AttachIco($file, $autoShow = true) 
+    public static function AttachIco($file, $autoShow = true, $version = '')
     {
-        return self::_Attach('ico', $file, $autoShow);
+        return self::_Attach('ico', $file, $autoShow, array(), $version);
     }
     
     /**
@@ -178,11 +201,11 @@ class fsInclude implements iSingleton
     * @param array $types Types of files for code generating.
     * @return string HTML files include code.     
     */
-    public static function GenerateCache($types = array(), $fileSuffix = '')
+    public static function GenerateCache($types = array(), $fileSuffix = '', $version = '')
     {
         self::GetInstance();
-        $js = ''; $css = ''; $string = ''; 
-        $minCssFile = '_minify'.$fileSuffix.'.css'; $minJsFile = '_minify'.$fileSuffix.'.js'; 
+        $js = ''; $css = ''; $string = '';
+        $minCssFile = '_minify'.$fileSuffix.'.css'; $minJsFile = '_minify'.$fileSuffix.'.js';
         if(count($types) == 0) {
             $types = array_keys(self::$obj);
         }
@@ -191,23 +214,20 @@ class fsInclude implements iSingleton
                 continue;
             }
             foreach (self::$obj[$type] as $file) {
-                if(strpos($file, URL_ROOT_CLEAR) === 0) {
-                    $file = str_replace(URL_ROOT_CLEAR, PATH_ROOT, $file);
-                    if(!file_exists($file)) {
-                        continue;
-                    }
+                if(strpos($file, URL_ROOT_CLEAR) === 0 && !file_exists(str_replace(URL_ROOT_CLEAR, PATH_ROOT, $file))) {
+                    continue;
                 }
                 switch($type) {
                     case 'js':
                         if(file_exists(fsCache::GetPath($minJsFile))) {
-                            $string .= self::AttachJs(fsCache::GetUrl($minJsFile), false);
+                            $string .= self::AttachJs(fsCache::GetUrl($minJsFile), false, array(), $version);
                             break 2;
                         }
                         $js .= file_get_contents($file)."\n";
                         break;
                     case 'css':
                         if(file_exists(fsCache::GetPath($minCssFile))) {
-                            $string .= self::AttachCss(fsCache::GetUrl($minCssFile), false);
+                            $string .= self::AttachCss(fsCache::GetUrl($minCssFile), false, $version);
                             break 2;
                         }
                         $css .= file_get_contents($file)."\n";
@@ -219,11 +239,11 @@ class fsInclude implements iSingleton
         }
         if(!empty($js)) {
             fsCache::CreateOrUpdate($minJsFile, JsMinifier::minify($js));    
-            $string .= self::AttachJs(fsCache::GetUrl($minJsFile), false);
+            $string .= self::AttachJs(fsCache::GetUrl($minJsFile), false, array(), $version);
         }
         if(!empty($css)) {
             fsCache::CreateOrUpdate($minCssFile, CssMin::minify($css));
-            $string .= self::AttachCss(fsCache::GetUrl($minCssFile), false);
+            $string .= self::AttachCss(fsCache::GetUrl($minCssFile), false, $version);
         }
         return $string;
     }
@@ -233,9 +253,11 @@ class fsInclude implements iSingleton
     * @api
     * @since 1.0.0
     * @param array $types Types of files for code generating.
+    * @since 1.1.0
+    * @param string $version File version.
     * @return string HTML files include code.     
     */
-    public static function Generate($types = array())
+    public static function Generate($types = array(), $version = '')
     {
         self::GetInstance();
         $string = '';
@@ -249,13 +271,13 @@ class fsInclude implements iSingleton
             foreach (self::$obj[$type] as $file) {
                 switch($type) {
                     case 'ico':
-                        $string .= self::AttachIco($file, false);
+                        $string .= self::AttachIco($file, false, $version);
                         break;
                     case 'js':
-                        $string .= self::AttachJs($file, false);
+                        $string .= self::AttachJs($file, false, array(), $version);
                         break;
                     case 'css':
-                        $string .= self::AttachCss($file, false);
+                        $string .= self::AttachCss($file, false, $version);
                         break;
                     default:
                         break;
