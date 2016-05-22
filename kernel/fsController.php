@@ -186,7 +186,7 @@ class fsController
     if ($file === '') {
       $file = empty($_REQUEST['method']) ? 'Index' : $_REQUEST['method'];
     }
-    $file = fsFunctions::Slash($file, EXT_TPL);
+    $file = fsFunctions::Slash($file, '.'.EXT_TPL);
     return $this->_TemplatePath($folder).$file;
   }
   

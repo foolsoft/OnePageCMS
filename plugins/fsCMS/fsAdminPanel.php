@@ -201,7 +201,7 @@ class AdminPanel extends cmsController
     public function Init($request) 
     {
         if (!AUTH_ADMIN) {
-          return $this->Redirect(fsHtml::Url(URL_ROOT.'MAuth/AuthAdmin'), 401);
+          return $this->Redirect(fsHtml::Url(URL_ROOT.'MAuth/AuthAdmin'));
         }
         $this->_view->actionsCompile = false;
 
@@ -522,9 +522,14 @@ class AdminPanel extends cmsController
             $key = $param->key;
             $where = !$param->Exists('table_key')
                       ? '`'.($obj->key == '' ?  'id' : $obj->key).'`'
-                      : '`'.$param->table_key.'`';
+                      : "`".$param->table_key."`";
             if(is_array($key)) {
-              $where .= ' IN ('.implode(',', $key).')';
+              $c = count($key);
+              $where .= ' IN (';
+              for($i = 0; $i < $c; ++$i) {
+                $where .= "'".$key[$i]."'".($i == $c - 1 ? '' : ', ');  
+              }
+              $where .= ')';
             } else {
               $where .= " = '".$param->key."'";
             }
@@ -546,6 +551,7 @@ class AdminPanel extends cmsController
               if(!is_array($temp)) {
                 $paramStr .= '&'.$P.'='.$param->$P;
               } else {
+                $c = count($temp);
                 foreach($temp as $idx => $value) {
                   $paramStr .= '&'.$P.'['.$idx.']='.$value;
                 }
@@ -659,16 +665,13 @@ class AdminPanel extends cmsController
     
     protected function _ThemeTemplateFiles($theme, $selected = false)
     {
-        $arr = fsFunctions::DirectoryInfo(PATH_TPL.$theme, false, true);
+        $theme = fsFunctions::Slash($theme);
+        $arr = fsFunctions::DirectoryInfo(PATH_TPL.$theme.'MPages/', true, false, array('Index'), array(EXT_TPL));
         if ($selected === false) {
           $selected = $this->settings->main_template;
         } 
         $html = '';
-        $theme = fsFunctions::Slash($theme);
         for ($i = 0; $i < $arr['LENGTH']; ++$i) {
-          if (!file_exists(PATH_TPL.$theme.$arr['NAMES'][$i].'/Index'.EXT_TPL)) {
-            continue;
-          }
           $html .= "<option value='".$arr['NAMES'][$i]."' ".
             ($arr['NAMES'][$i] == $selected ? "selected" : "").">".
               $arr['NAMES'][$i]."</option>";
@@ -694,7 +697,7 @@ class AdminPanel extends cmsController
     {
         $this->Tag('settings', $this->settings);
         $templates = fsFunctions::DirectoryInfo(PATH_TPL.'fsCMS', false, true);
-        $templatesFiles = fsFunctions::DirectoryInfo(PATH_TPL.$this->settings->template.'/MPages/', true, array(), array('Index'), array('php'));
+        $templatesFiles = fsFunctions::DirectoryInfo(PATH_TPL.$this->settings->template.'/MPages/', true, false, array('Index'), array(EXT_TPL));
         $this->Tag('templates', $templates['NAMES']);
         $this->Tag('templatesFiles', $templatesFiles['NAMES']);
         $textPages = T('XMLcms_pages');
@@ -783,14 +786,14 @@ class AdminPanel extends cmsController
               "'start_page' => array('ReadOnly' => true, 'Value' => '".$startPage."')", $s);
             $s = preg_replace(
               "/'url_404'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+'[^']*'\)/i", 
-              "'url_404' => array('ReadOnly' => true, 'Value' => '".PROTOCOL."://".$_SERVER['SERVER_NAME'].'/404'.$param->links_suffix."')", $s);
+              "'url_404' => array('ReadOnly' => true, 'Value' => 'http://".$_SERVER['SERVER_NAME'].'/404'.$param->links_suffix."')", $s);
             $s = preg_replace(
               "/'multi_language'\s+=>\s+array\('ReadOnly'\s+=>\s+true,\s+'Value'\s+=>\s+(true|false)\)/i", 
               "'multi_language' => array('ReadOnly' => true, 'Value' => ".$param->multi_language.")", $s);  
             fsFileWorker::UpdateFile($settingsFile, $s);
             fsHtaccess::Create($param->links_suffix, $param->multi_language == 'true');
   
-            $this->Redirect(PROTOCOL.'://'.$_SERVER['SERVER_NAME'].'/'.
+            $this->Redirect('http://'.$_SERVER['SERVER_NAME'].'/'.
               ($param->multi_language == 'true' ? fsSession::GetInstance('Language').'/' : '').
               'AdminPanel/Config'.$param->links_suffix
             );

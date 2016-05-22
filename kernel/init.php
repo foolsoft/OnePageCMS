@@ -3,15 +3,16 @@
  * Initialize fsKernel 
  */
 header('Content-type: text/html; charset=utf-8');
+header('X-Powered-By: OnePageCMS');
 session_set_cookie_params(null, '/', null, null, true); // httponly
 session_start();
-$_REQUEST['includeBody'] = $_REQUEST['includeHead'] = '';
+$_REQUEST['includeBody'] = $_REQUEST['includeHead'] = ''; 
 define('PATH_ROOT',       dirname(dirname(__FILE__)).'/');
 define('PATH_PLUGINS',    PATH_ROOT.'plugins/'); 
 define('PATH_CACHE',      PATH_ROOT.'cache/');
 define('PATH_CACHE_DB',   PATH_CACHE.'db/');
 define('PATH_LANG',       PATH_ROOT.'languages/');
-define('EXT_TPL',         '.php');
+define('EXT_TPL',         'php');
 define('SYSTEM_LANGUAGE', 'ru');
 define('PATH_TPL', PATH_ROOT.'templates/');
 define('PATH_CSS', PATH_ROOT.'includes/css/');

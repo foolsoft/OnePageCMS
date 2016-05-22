@@ -127,7 +127,7 @@ class fsValidator
                     break;
 
                 case 'EMAIL': //email
-                    if(!self::Match($what, "/^[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-]+\.[a-z]{2,}$/s")) {
+                    if(!self::Match($what, "/^[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\.]+\.[a-z]{2,}$/s")) {
                         return false;
                     }
                     break;

@@ -36,7 +36,7 @@ class View
     $matches = array();
     $matchesParent = array();
     $matchesCount = preg_match_all("/\[block\-([0-9a-zA-Z_\-]+)\](.*)\[endblock\-\\1\]/s", $html, $matches);
-    $matchesCountParent = preg_match_all("/\[parent:([0-9a-zA-Z_\-\.\/]+\\".EXT_TPL.")\]/s", $html, $matchesParent);
+    $matchesCountParent = preg_match_all("/\[parent:([0-9a-zA-Z_\-\.\/]+\\.".EXT_TPL.")\]/s", $html, $matchesParent);
     if ($matchesCountParent == 1) {
       $this->blocksCompile = false;
       $html = $this->CreateView($tplPath.$matchesParent[1][0], $params, false, false);

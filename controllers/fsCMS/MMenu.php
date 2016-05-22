@@ -5,7 +5,7 @@ class MMenu extends cmsController
 
     private function _CacheFile($name, $level = 1, $parent = 0)
     {
-        return FunctionsMenus::$CACHE_PREFIX.'_'.$name.'_'.fsSession::GetInstance('Language').'_'.$parent.$level.'.html';
+        return FunctionsMenus::$CACHE_PREFIX.'_'.$name.'_'.str_replace(array('/', ' '), '', fsSession::GetInstance('Template')).'_'.fsSession::GetInstance('Language').'_'.$parent.$level.'.html';
     }
 
     private function _TagInit($param)

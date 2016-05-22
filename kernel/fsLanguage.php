@@ -103,10 +103,10 @@ class fsLanguage implements iSingleton
           if (!$isXDCACHEFILE) {
             $newXML->save($XDCACHEFILE);
           }
-          if (!$isDCACHEFILE && count($DICTIONARY) > 0) {
+          if (!$isDCACHEFILE && isset($DICTIONARY) && count($DICTIONARY) > 0) {
             fsFunctions::ArrayToFile($DICTIONARY, 'DICTIONARY', $DCACHEFILE);
           }
-          if (!$isSDCACHEFILE && count($SYSTEM_DICTIONARY) > 0) {
+          if (!$isSDCACHEFILE && isset($SYSTEM_DICTIONARY) && count($SYSTEM_DICTIONARY) > 0) {
             fsFunctions::ArrayToFile($SYSTEM_DICTIONARY, 'SYSTEM_DICTIONARY', $SDCACHEFILE);
           }
           unset($DT, $SYSTEM_DICTIONARY, $DICTIONARY);

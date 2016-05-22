@@ -92,8 +92,8 @@ class cmsController extends fsController
     */
     public function Init($request)
     {
-        $allow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : GUEST, 'type_allow'), true);
-        $disallow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : GUEST, 'type_disallow'), true);
+        $allow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : 'GUEST', 'type_allow'), true);
+        $disallow = fsFunctions::Explode("\n", fsSession::GetArrInstance(AUTH ? 'AUTH' : 'GUEST', 'type_disallow'), true);
         $denied = false;
         foreach($disallow as $d) {
             if($d == '*' || preg_match('/^'.$request->controller.'\/\*$/', $d) 

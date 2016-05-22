@@ -43,18 +43,12 @@
   <p class='title'>
     <?php _T('XMLcms_text_template'); ?>:
     <span>
-      <select class='select-small' name='template' onchange="fsCMS.Ajax('AjaxTemplateFiles', 'POST', 'theme='+this.value, 'main_template', true);">    
-      <?php
-      foreach ($tag->templates as $template) {
+      <select class='select-small' name='template' onchange="fsCMS.Ajax(URL_ROOT + 'AdminPanel/AjaxTemplateFiles' + URL_SUFFIX, 'POST', 'theme='+this.value, 'main_template', true);">    
+      <?php foreach ($tag->templates as $template) {
         echo fsFunctions::StringFormat('<option value="fsCMS/{0}" {1}>{0}</option>',
-                                       array($template,
-                                             $tag->settings->template == $template
-                                              ? 'selected'
-                                              : ''
-                                       )   
-             );
-      } 
-      ?>
+            array($template, preg_match('/\/'.$template.'$/', $tag->settings->template) ? 'selected' : '')   
+        );
+      } ?>
       </select>
     </span>
     <span class='space'></span>
