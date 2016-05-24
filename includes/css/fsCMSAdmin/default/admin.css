@@ -9,6 +9,7 @@ input::-moz-focus-inner { border: 0; padding: 0; }
 .center { text-align: center; } .right { text-align: right; } .justify { text-align: justify; }
 .title { font-weight: bold; font-size: 16px; } .small {font-size: 12px; }  
 .hidden { display: none; } 
+.duty-1 { text-decoration: underline; }
 .div-row { min-height: 30px; } .div-row .cell { float: left; } 
 .div-row, .one-of-one { width: 100%; } .one-of-two { width: 50%; } .one-of-three { width: 33.3333333333%; } .one-of-four { width: 25%; } .one-of-five { width: 20%; } 
 p { margin: 0 0 5px 0; } p.title span { font-weight: normal; }

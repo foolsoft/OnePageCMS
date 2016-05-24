@@ -25,7 +25,7 @@ class user_fields extends fsDBTableExtension
         }
         $this->Order(array('position', 'title'))->Execute('', false);
         while($this->Next()) {
-            $values = $this->_IsSelectType($this->result->type) ? explode('|', $this->result->expression) : array();
+            $values = $this->_IsSelectType($this->result->type) ? explode('|', str_replace(array('\+'), array('+'), $this->result->expression)) : array();
             $fields[$this->result->$arrayKey] = array(
                 'id' => $this->result->id,
                 'name' => $this->result->name,

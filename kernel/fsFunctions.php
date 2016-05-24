@@ -822,6 +822,26 @@ class fsFunctions
         'E', $space, 'yo','zh','tc','ch','sh','sh','yu','ya','YO','ZH','TC','CH','SH','SH','YU','YA');
       return str_replace($rus, $lat, $string);   
     }
+    
+    /**
+    * Convert string to url string.
+    * @since 1.1.0
+    * @api 
+    * @param string $string Source string.    
+    * @param string $space (optional) Symbol for space replace. Default <b>-</b>. 
+    * @param boolean $toLower (optional) Flag for lower case convertion. Default <b>true</b>. 
+    * @return string Result of action.
+    */
+    public static function ChpuUrl($string, $space = '-', $toLower = true) {
+        if($toLower) {
+          $string = self::ToLower($string);
+        }
+        $string = str_replace(array('&quot;', '&ndash;', "\xe2\x80\x93"), array('', '-', '-'), $string);
+        $string = str_replace(array("°", '!', '?', ':', '&', ';', '’', '/', '\\', ',', '.', '"', "'", '`', '~', '>', '<', ']', '[', ')', '(', '*', '+', '$', '#', '%', '@', '№', '^'), '', $string);
+        $string = self::Chpu($string, $space);
+        $string = str_replace(array($space.$space, ','.$space, '_'.$space), $space, $string);
+        return $string;
+    }
   
     /**
     * Save array to php file.
@@ -928,7 +948,10 @@ class fsFunctions
     * @return string Result of substitution.
     */ 
     public static function StringFormat($string, $arrArgs = array(), $escape = array()) 
-    {             
+    {         
+      if(empty($string)) {
+          return $string;
+      }
       $from = $to = array();
       foreach($escape as $fromEscape => $toEscape) {
         $from[] = $fromEscape;

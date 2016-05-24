@@ -221,7 +221,7 @@ class AdminMUsers extends AdminPanel
         }
     }
 
-    private function _UpdateUserFields($param) 
+    private function _UpdateUserFields($param)
     {
         if (!$param->Exists('user_field') || !is_array($param->user_field)) {
             return;
@@ -229,8 +229,15 @@ class AdminMUsers extends AdminPanel
         $user_info = new user_info();
         $user_fields = new user_fields();
         $user_fields = $user_fields->GetAssocArray();
-        foreach ($param->user_field as $fieldName => $value) {
-            if (isset($user_fields[$fieldName]) && ($user_fields[$fieldName]['expression'] == '' || preg_match('/^' . $user_fields[$fieldName]['expression'] . '$/u', $value))) {
+        $user_fields_param = $param->user_field;
+        $value = '';
+        foreach ($user_fields as $fieldName => $info) {
+            $isCheckbox = $user_fields[$fieldName]['type'] == 'checkbox';
+            $isData = isset($user_fields_param[$fieldName]);
+            $value = $isCheckbox
+                ? ($isData ? 1 : 0)
+                : ($isData ? $user_fields_param[$fieldName] : '');
+            if (($isCheckbox || $isData) && ($info['expression'] == '' || preg_match('/^' . $info['expression'] . '$/u', $value))) {
                 $user_info->Change($param->key, $fieldName, $value);
             }
         }

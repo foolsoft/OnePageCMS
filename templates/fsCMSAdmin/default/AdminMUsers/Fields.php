@@ -22,15 +22,14 @@ $textEdit = T('XMLcms_edit');
   </tr>
   <?php foreach ($tag->fields as $field) { ?>
   <tr class='admin-row-active-1'>
-    <td><?php echo $field['id']; ?></td>
+    <td class="duty-<?php echo $field['duty']; ?>"><?php echo $field['id']; ?></td>
     <td><?php echo $field['title']; ?></td>
     <td>user_field[<?php echo $field['name']; ?>]</td>
     <td>
       <div class='admin-action-td'>
         <a href='<?php echo $myLink; ?>EditField/table/user_fields/key/<?php echo $field['id']; ?>/'
            title='<?php echo $textEdit; ?>'
-           class='admin-btn-small admin-btn-edit'
-        ></a>   
+           class='admin-btn-small admin-btn-edit'></a>   
         <a href='<?php echo $myLink; ?>Delete/referer/Fields/table/user_fields/key/<?php echo $field['id']; ?>/'
            title='<?php echo $textDelete; ?>'
            class='admin-btn-small admin-btn-delete'></a>   

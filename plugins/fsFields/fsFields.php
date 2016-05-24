@@ -43,6 +43,9 @@ class fsFields implements iSingleton
     if($obj == null) {
       return '';
     }           
+    if($fieldsArray[$fieldName]['type'] == 'checkbox' && !empty($fieldValue)) {
+        $htmlAttributes['checked'] = 'checked';
+    }
     return $obj->Input($fieldsArray[$fieldName]['name'], $fieldValue, $htmlAttributes, $fieldsArray[$fieldName]['values'], $arrayName);
   }
   

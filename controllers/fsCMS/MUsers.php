@@ -12,6 +12,23 @@ class MUsers extends cmsController
         '</form>';
   }
   
+  public function actionAjaxCheckEmail($param)
+  {
+    $user_fields = new user_fields();
+    $user_fields->GetSpecialField(fsSpecialFields::Email);
+    $userFieldEmailName = $user_fields->result->name;
+    $user_info = new user_info();
+    $emailExists = array();
+    if($param->email != '' && $userFieldEmailName != '') {
+      $emailExists = $user_info->FindByValue($userFieldEmailName, $param->email);
+    }
+    $result = count($emailExists) > 0;
+    if(!$result && $param->login != '') {
+        $result = $this->_table->CheckLogin($param->login);
+    }
+    $this->Json(array('status' => $result));
+  }
+  
   public function actionDoRegistration($param) 
   {
     if($this->settings->allow_register != '1') {
@@ -31,10 +48,13 @@ class MUsers extends cmsController
       return $this->Message(T('XMLcms_text_login_not_unique'));
     } 
     
+    $user_fields = new user_fields();
+    $user_fields->GetSpecialField(fsSpecialFields::Email);
+    $userFieldEmailName = $user_fields->result->name;
     $user_info = new user_info();
     $uf = $param->user_field;
-    if(!empty($uf['email'])) {
-        $emailExists = $user_info->FindByValue('email', $uf['email']);
+    if(!empty($uf[$userFieldEmailName])) {
+        $emailExists = $user_info->FindByValue($userFieldEmailName, $uf[$userFieldEmailName]);
         if(count($emailExists) > 0) {
             return $this->Message(T('XMLcms_text_exist_email'));
         }
@@ -42,9 +62,6 @@ class MUsers extends cmsController
 
     $userId = $this->_table->Add($param->login, $param->password);
     if ($userId > 0 && $param->Exists('user_field')) {
-      $user_fields = new user_fields();
-      $user_fields->GetSpecialField(fsSpecialFields::Email);
-      $userFieldEmailName = $user_fields->result->name;
       $user_fields = $user_fields->GetAll();
       foreach ($user_fields as $field) {
         if(isset($uf[$field['name']]) && ($field['expression'] == '' || preg_match('/^'.$field['expression'].'$/', $uf[$field['name']]))) {

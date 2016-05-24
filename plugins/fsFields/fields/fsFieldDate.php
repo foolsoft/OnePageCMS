@@ -6,7 +6,11 @@ class fsFieldDate extends fsField
   
   public function Input($htmlFormName, $value = '', $htmlAttributes = array(), $possibleValues = array(), $arrayName = 'fields')
   {
-    $htmlAttributes = $htmlAttributes + array('class' => 'datepicker');
+    if(!isset($htmlAttributes['class'])) {
+        $htmlAttributes['class'] = 'datepicker';
+    } else {
+        $htmlAttributes['class'] .= ' datepicker';
+    }
     return parent::Input($htmlFormName, $value, $htmlAttributes, $possibleValues, $arrayName);
   }
   

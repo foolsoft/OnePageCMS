@@ -83,6 +83,7 @@ class fsInclude implements iSingleton
         if($version !== '') {
             $version = '?v='.$version;
         }
+        $countAsync = count($async);
         switch ($type) {
             case 'ico':
                 $string = '<link rel="icon" type="image/vnd.microsoft.icon" href="{0}" />';
@@ -91,7 +92,7 @@ class fsInclude implements iSingleton
                 $string = '<link rel="stylesheet" type="text/css" href="{0}" />';
                 break;
             case 'js':
-                if(is_array($files) && count($files) != count($async)) {
+                if(is_array($files) && count($files) != $countAsync) {
                     $async = array();
                 }
                 $string = '<script{1}src="{0}"></script>';
@@ -102,7 +103,7 @@ class fsInclude implements iSingleton
         if(!is_array($files)) {
             $files = array($files);
         }
-        $noAsync = count($async) == 0;
+        $noAsync = $countAsync == 0; 
         foreach($files as $idx => $file) {
             $result .= fsFunctions::StringFormat($string, array($file.$version, $noAsync ? ' ' : ($async[$idx] === true ? ' async ' : ' ')));
         }

@@ -26,7 +26,7 @@ $textActivate = T('XMLcms_activate');
     <?php echo T('XMLcms_text_on_page').' '.fsHtml::Number('onpage', $tag->onpage, array('style' => 'width:50px', 'min' => 1)).' '; ?>
     <?php _T('XMLcms_search_in_info'); ?> <input type="text" name="search" value="<?php echo $tag->search; ?>" />
     <input type="submit"  value="<?php _T('XMLcms_text_search'); ?> " />
-    <div>
+    </div>
 </form>
 <hr />
 <table class="list-table">

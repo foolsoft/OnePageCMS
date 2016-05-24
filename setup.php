@@ -359,10 +359,10 @@ if ($_POST) {
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."posts_category_info` (`id_category`, `id_language`, `title`, `alt`, `meta_description`, `meta_keywords`) VALUES ('0', '1', '".$LL["ru"]['text_all_category']."', 'all', '".$LL["ru"]['text_all_category']."', '".$LL["ru"]['text_all_category']."');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."posts_category_info` (`id_category`, `id_language`, `title`, `alt`, `meta_description`, `meta_keywords`) VALUES ('0', '2', '".$LL["en"]['text_all_category']."', 'all', '".$LL["en"]['text_all_category']."', '".$LL["en"]['text_all_category']."');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."menu_items` (`id`, `menu_name`, `title`, `href`, `parent`, `position`) VALUES ('1', 'main', '".$L['text_main']."', '{URL_ROOT}page/index', '0', '0');");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."types_users` (`id`, `name`, `allow`) VALUES (1, '".$L['text_admin']."', '*'), (2, '".$L['text_guest']."', '*'), (3, '".$L['text_user']."', '*');");
-    $connection->Query("UPDATE `".$_POST['db_prefix']."types_users` SET `id` = '0' WHERE `id` = '2';");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."types_users` (`id`, `name`, `allow`) VALUES (1, '".$L['text_admin']."', '*'), (2, '".$L['text_user']."', '*'), (3, '".$L['text_guest']."', '*');");
+    $connection->Query("UPDATE `".$_POST['db_prefix']."types_users` SET `id` = '0' WHERE `id` = '3';");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."users` (`id`, `login`, `password`, `active`, `type`) VALUES ('1', '".$_POST["admin_login"]."', '".sha1($secret.$_POST["admin_password"])."', '1', '1');");
-    $connection->Query("INSERT INTO `".$_POST['db_prefix']."user_fields` (`name`, `title`, `expression`, `position`, `type`, `special_type`) VALUES ('email', 'Email', '[a-zA-Z\.\-_0-9]+@[a-zA-Z0-9\-]{2,}\.[a-zA-Z]{2,7}', '0', 'input', '1');");
+    $connection->Query("INSERT INTO `".$_POST['db_prefix']."user_fields` (`name`, `title`, `expression`, `position`, `type`, `special_type`) VALUES ('email', 'Email', '[a-zA-Z\\.\\-_0-9]+@[a-zA-Z0-9\\-\\.]{2,}\\.[a-zA-Z]{2,7}', '0', 'input', '1');");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."users` (`id`, `login`, `password`, `active`, `type`) VALUES ('2', '".$L["text_guest"]."', '*', '1', '0');");
     $connection->Query("UPDATE `".$_POST['db_prefix']."users` SET `id` = '0' WHERE `id` = '2';");
     $connection->Query("INSERT INTO `".$_POST['db_prefix']."pages` (`id`, `in_menu`, `active`, `tpl`) VALUES (1, '1', '1', 'Index.php');");
