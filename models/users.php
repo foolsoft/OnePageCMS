@@ -11,8 +11,7 @@ class users extends fsDBTableExtension
         $newPassword = users::HashPassword($newPassword);
         if($newPassword !== '') {
             return $this->Update(array('password'), array($newPassword))
-                ->Where('`login` = "'.$login.'"')
-                ->Execute();
+                ->Where('`login` = "'.$login.'"')->Execute();
         }
         return false;
     }
@@ -21,7 +20,7 @@ class users extends fsDBTableExtension
     {
         $login = fsValidator::ClearData($login);
         $this->GetOne($login, false, 'login');
-        return $this->result->login != $login;
+        return fsFunctions::ToLower($this->result->login) != fsFunctions::ToLower($login);
     }
   
     public function Get($idType = false) 
@@ -30,7 +29,7 @@ class users extends fsDBTableExtension
         if($idType !== false) {
             $this->Where('`type` = "'.$idType.'"');
         } 
-      return $this->Order(array('login'))->ExecuteToArray();
+        return $this->Order(array('login'))->ExecuteToArray();
     }
   
     public static function HashPassword($password)
@@ -68,7 +67,6 @@ class users extends fsDBTableExtension
     public function IsUser($login, $password, $maxAuth = 10)
     {
         $login = fsValidator::ClearData($login);
-        $password = fsValidator::ClearData($password);
         if ($login == '') {
             return false;
         }

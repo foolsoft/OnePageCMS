@@ -8,7 +8,7 @@ class fsInclude implements iSingleton
     /** @var string Version of included files */
     private static $_version = '';
 
-    /** @var object Instance of object */
+    /** @var objec$async[$idx]t Instance of object */
     protected static $obj = null;
     
     private function __construct(){ }
@@ -105,7 +105,7 @@ class fsInclude implements iSingleton
         }
         $noAsync = $countAsync == 0; 
         foreach($files as $idx => $file) {
-            $result .= fsFunctions::StringFormat($string, array($file.$version, $noAsync ? ' ' : ($async[$idx] === true ? ' async ' : ' ')));
+            $result .= fsFunctions::StringFormat($string, array($file.$version, $noAsync ? ' ' : (isset($async[$idx]) && $async[$idx] === true ? ' async ' : ' ')));
         }
         if($autoShow) {
             echo $result;

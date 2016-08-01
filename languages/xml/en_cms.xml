@@ -12,6 +12,9 @@
   <text name='cms_text_team'>
     <en>Team of site</en>
   </text>
+  <text name='cms_text_change_password'>
+    <en>Change password</en>
+  </text>
   <text name='cms_text_reg_on_site'>
     <en>Registration</en>
   </text>

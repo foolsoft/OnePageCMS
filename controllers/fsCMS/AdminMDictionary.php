@@ -130,6 +130,7 @@ class AdminMDictionary extends AdminPanel
         $param->to = strtolower(substr(strip_tags($param->to), 0, 3));    
         if($param->to != $param->from) {
           fsFunctions::CreateDirectory(PATH_LANG.$param->from.'-to-'.$param->to);
+          fsCache::Clear('di_'); 
         } else {
           $this->Message(T('XMLcms_unique_data_error'));
         }

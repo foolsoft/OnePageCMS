@@ -19,13 +19,14 @@ class MAuth extends cmsController
     $this->_Referer();
     $userData = $this->_table->IsUser($param->login, $param->password);
     if($userData !== false) {
-        fsSession::Create('AUTH', $userData);  
+        fsSession::Create('AUTH', $userData);
         if(fsSession::Exists('GUEST')) {
             fsSession::Delete('GUEST');
         }
-    } else {
-        $this->Message(T('XMLcms_text_login_error'));
+        return;
     }
+    $this->Message(T('XMLcms_text_login_error'));
+    $this->Redirect(fsHtml::Url(URL_ROOT.'user/auth'));
   }
   
   public function actionDoAuthAdmin($param)

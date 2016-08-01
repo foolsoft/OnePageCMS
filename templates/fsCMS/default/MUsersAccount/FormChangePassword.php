@@ -19,5 +19,5 @@
     </div>
 </div>
 <div class="margin-top-15">
-    <input class="btn btn-default" type="submit" value="<?php _T('XMLcms_save'); ?>" />
+    <input class="btn btn-default" type="submit" value="<?php _T('XMLcms_text_change_password'); ?>" />
 </div>

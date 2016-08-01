@@ -9,6 +9,9 @@
   <text name='cms_text_reg_thanks'>
     <ru>Спасибо за регистрацию</ru>
   </text>
+  <text name='cms_text_change_password'>
+    <ru>Сменить пароль</ru>
+  </text>
   <text name='cms_text_team'>
     <ru>Команда сайта</ru>
   </text>

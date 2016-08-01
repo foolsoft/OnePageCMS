@@ -146,13 +146,17 @@ class fsDBTable
         $str = ' ('.$this->_WhereArrayToString($arr[$i], $prefix).') ';
       } else {
         $key = '=';
-        if (isset($arr[$i]['key']) &&  fsValidator::Match($arr[$i]['key'], '(=|<|>|>=|<=|\!=|LIKE|NOT LIKE)')) {
+        if (isset($arr[$i]['key']) &&  fsValidator::Match($arr[$i]['key'], '(=|<|>|>=|<=|\!=|LIKE|NOT LIKE|IN|NOT IN)')) {
           $key = $arr[$i]['key'];
         }  
         foreach($arr[$i] as $field => $value) {
-          if ($field != 'key' && $field != 'logic') {
+          if ($field !== 'key' && $field !== 'logic') {
             $fieldName = strpos($field, '.') !== false ? $field : '`'.$prefix.'`.`'.$field.'`';  
-            $str = '('.$fieldName.' '.$key.' "'.$value.'")';
+            $ql = $qr = '"'; 
+            if($key === 'IN' || $key === 'NOT IN') {
+                $ql = '('; $qr = ')';
+            }
+            $str = '('.$fieldName.' '.$key.' '.$ql.$value.$qr.')';
             break;
           }
         }
@@ -325,26 +329,24 @@ class fsDBTable
       case 'select':
         $f = '';
         if ($this->_query->select === '*') {
-          for ($i = 0; $i < $this->_columnsCount; ++$i) {
+          for ($i = 0, $lastI = $this->_columnsCount - 1; $i < $this->_columnsCount; ++$i) {
             $f .= '`'.$this->_struct->name.'`.`'.$this->_columns[$i].'`'.
-                  ($i == $this->_columnsCount - 1 ? ' ' : ', ');
+                  ($i == $lastI ? ' ' : ', ');
           }
         } else {
-          $cs = count($this->_query->select);
-          for ($i = 0; $i < $cs; ++$i) {
+          $cs = count($this->_query->select) - 1;
+          for ($i = 0; $i <= $cs; ++$i) {
             $f .= '`'.$this->_struct->name.'`.`'.$this->_query->select[$i].'`'.
-                  ($i == $cs - 1 ? ' ' : ', ');
+                  ($i == $cs ? ' ' : ', ');
           }
         }
         $links = '';
         if ($this->_query->selectLinks) {
           $cj = count($this->_join);
           for ($i = 0; $i < $cj; ++$i) {
-            $links .= ' LEFT JOIN `'.$this->_join[$i]['Table'].'` ON `'.$this->_struct->name.
-                      "`.`".$this->_join[$i]['MyField'].'` = `'.$this->_join[$i]['Table'].'`.`'.
-                      $this->_join[$i]['On'].'` '; 
-            $f .= ', `'.$this->_join[$i]['Table'].'`.`'.$this->_join[$i]['View'].'` AS `link_'.
-                  $this->_join[$i]['MyField'].'` ';
+            $links .= ' LEFT JOIN `'.$this->_join[$i]['Table'].'` j'.$i.' ON `'.$this->_struct->name.
+                      "`.`".$this->_join[$i]['MyField'].'` = j'.$i.'.`'.$this->_join[$i]['On'].'` ';
+            $f .= ', j'.$i.'.`'.$this->_join[$i]['View'].'` AS `link_'.$this->_join[$i]['MyField'].'` ';
           }
         }
         $this->_query->sql = 'SELECT '.($this->_query->limit != false ? 'SQL_CALC_FOUND_ROWS ' : '').
@@ -463,20 +465,20 @@ class fsDBTable
   */
   public function Update($fields, $values)
   {
-    $arr_len = count($fields);
-    if (!is_array($fields) || !is_array($values) || $arr_len != count($values)) { 
+    $arr_len = count($fields) - 1;
+    if (!is_array($fields) || !is_array($values) || $arr_len != count($values) - 1) { 
       throw new Exception('Bad parameter: update');
     }
     $this->_query->action = 'update';
     $this->_query->update = '';
-    for ($i = 0; $i < $arr_len; ++$i) {
+    for ($i = 0; $i <= $arr_len; ++$i) {
       $vr = $this->_Validate($fields[$i], $values[$i]);
       if (!empty($vr)) {
         throw new Exception('Update error: '.$vr);
       }
       $this->_query->update .= '`'.$this->_struct->name.'`.`'.$fields[$i].'` = "'.
             $this->_struct->db->Escape($values[$i]).'"'.
-            ($i == $arr_len - 1 ? ' ' : ', ');
+            ($i == $arr_len ? ' ' : ', ');
     }
     return $this;
   }
@@ -640,7 +642,7 @@ class fsDBTable
   public function Link($field)
   {
     if (!in_array($field, $this->_columns)) {
-      throw new Exception('Ivalid field: '.$field);
+      throw new Exception('Invalid field: '.$field);
     }
     if (!isset($this->_result->mysqlRow['link_'.$field])) {
       throw new Exception('No link found for field: '.$field);
@@ -863,6 +865,7 @@ class fsDBTable
   
   public function __destruct() 
   { 
+      $this->_struct->db->Close();
   }
   
   /**

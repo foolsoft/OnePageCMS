@@ -29,8 +29,8 @@ class fsValidator
     {
         $data = strip_tags($data);
         $data = str_replace(
-          array('"', "'", '%', ';', '--', '`', '_', '#', '$'), 
-          array('&#34;', "&#39;", '&#37;', '&#59;', '-', '``', '&#95;', '&#35;', '&#36;'),
+          array('"', "'", '%', ';', '--', '`', '#', '$'), 
+          array('&#34;', "&#39;", '&#37;', '&#59;', '-', '``', '&#35;', '&#36;'),
           $data
         );
         return $data;
@@ -109,7 +109,7 @@ class fsValidator
                     break;
 
                 case 'LENGTH': //string length
-                    if (!isset($attr[$i]) || strlen($what) > $attr[$i]) {
+                    if (!isset($attr[$i]) || mb_strlen($what) > $attr[$i]) {
                         return false;
                     }
                     break;

@@ -807,20 +807,36 @@ class fsFunctions
     * @since 1.0.0
     * @api 
     * @param string $string Source string.    
-    * @param string $space (optional) Symbol for space replace. Default <b>_</b>. 
+    * @param string $space (optional) Symbol for space replace. Default <b>-</b>. 
     * @return string Result of action.
     */
-    public static function Chpu($string, $space = '_')
+    public static function Chpu($string, $space = '-')
     {
       $rus = array('а', 'б', 'в', 'г', 'д', 'е', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п',
         'р', 'с', 'т', 'у', 'ф', 'х', 'ъ', 'ы', 'ь', 'э', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'З', 
         'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ъ', 'Ы', 'Ь',
         'Э', ' ', 'ё','ж','ц','ч','ш','щ','ю','я','Ё','Ж','Ц','Ч','Ш','Щ','Ю','Я');
       $lat = array('a', 'b', 'v', 'g', 'd', 'e', 'z', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-        'r', 's', 't', 'u', 'f', 'h', '_', 'i', '_', 'e', 'A', 'B', 'V', 'G', 'D', 'E', 'Z',
-        'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', '_', 'I', '_',
+        'r', 's', 't', 'u', 'f', 'h', '', 'i', '', 'e', 'A', 'B', 'V', 'G', 'D', 'E', 'Z',
+        'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'F', 'H', '', 'I', '',
         'E', $space, 'yo','zh','tc','ch','sh','sh','yu','ya','YO','ZH','TC','CH','SH','SH','YU','YA');
       return str_replace($rus, $lat, $string);   
+    }
+    
+    /**
+    * Convert russian string to valid url string.
+    * @since 1.1.0
+    * @api 
+    * @param string $string Source string.    
+    * @param string $space (optional) Symbol for space replace. Default <b>-</b>. 
+    * @return string Result of action.
+    */
+    public static function ToUrl($string, $space = '-')
+    {
+      $string = str_replace(array('&quot;', '&ndash;', "\xe2\x80\x93"), array('', '-', '-'), $string);
+      $string = str_replace(array("°", '!', '?', ':', '&', ';', '’', '/', '\\', ',', '.', '"', "'", '`', '~', '>', '<', ']', '[', ')', '(', '*', '+', '$', '#', '%', '@', '№', '^'), '', $string);
+      $string = strtolower(self::Chpu($string, $space));
+      return str_replace(array($space.$space, ','.$space, '_'.$space), $space, $string);
     }
     
     /**

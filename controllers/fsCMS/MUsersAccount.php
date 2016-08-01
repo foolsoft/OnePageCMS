@@ -48,34 +48,9 @@ class MUsersAccount extends cmsNeedAuthController
   public function FormFields($param)
   {
     $user_fields = new user_fields();
-    $fields_all = $user_fields->GetAll();
-    $user_fields =  $this->_table->GetInfo(fsSession::GetArrInstance('AUTH', 'id'));
-    
-    $first = false;
-    if(count($user_fields) > 0) {
-      reset($user_fields);
-      $first = key($user_fields);
-    }
-    
-    if($first === false) {
-        $user_fields = array();
-        foreach($fields_all as $field) {
-            $user_fields[$field['name']] = $field;
-            unset($user_fields[$field['name']]['name']);
-        }
-    } else {
-      foreach($fields_all as $field) {
-          if(!isset($user_fields[$field['name']]) && $field['duty'] == 0) {
-              foreach($user_fields[$first] as $key => $value) {
-                if($key != 'name') {
-                    $user_fields[$field['name']][$key] = $field[$key];
-                }
-              }
-          }
-      }
-    }
-    
-    $html = $this->CreateView(array('fields' => $user_fields), $this->_Template('FormFields'));
+    $user_fields = $user_fields->GetAssocArray('name', 'duty = "0"');
+    $info =  $this->_table->GetInfo(fsSession::GetArrInstance('AUTH', 'id'));
+    $html = $this->CreateView(array('fields' => $user_fields, 'info' => $info), $this->_Template('FormFields'));
     return "<form method='post' action='".fsHtml::Url(URL_ROOT.'MUsersAccount/DoChangeFields')."' id='user-change-fields-form' class='user-change-fields-form'>".$html.'</form>';
   }
 

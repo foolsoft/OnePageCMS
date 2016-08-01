@@ -110,7 +110,7 @@ class fsHtaccess
     #RewriteCond %{HTTP_HOST} ^www\.{0}$ [NC]
     #RewriteRule ^(.*)$ {3}/$1 [R=301,L]
 
-    {4}
+    RewriteRule ^/?$ /index.php?method=StartPage [L]
 
     #MPages #Part of OnePageCMS
     RewriteRule ^{11}404{1}$ /index.php?{7}controller=MPages&method=View&page=?404 [L]

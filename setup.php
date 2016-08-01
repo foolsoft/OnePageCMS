@@ -270,6 +270,7 @@ if ($_POST) {
         `active` enum('0','1') NOT NULL DEFAULT '1',
         `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '".$_POST['db_prefix']."types_users:name:id#',
         `date_last_auth` timestamp NOT NULL,
+        `last_auth_ip` varchar(40) NOT NULL,
         `auth_count` int(4) NOT NULL DEFAULT '0',
         PRIMARY KEY (`id`),
         UNIQUE KEY `login` (`login`)

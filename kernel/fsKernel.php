@@ -111,7 +111,8 @@ class fsKernel extends fsController
     */
     public function actionStartPage($param)
     {
-        $this->Redirect(fsHtml::Url(URL_ROOT.fsConfig::GetInstance('start_page')));
+        $lang = $param->Exists('language') ? $param->language : fsSession::GetInstance('Language');
+        $this->Redirect(fsHtml::Url(URL_ROOT_CLEAR.$lang.'/'.fsConfig::GetInstance('start_page')));
     }
   
    /**

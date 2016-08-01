@@ -4,7 +4,8 @@
  */
 header('Content-type: text/html; charset=utf-8');
 header('X-Powered-By: OnePageCMS');
-session_set_cookie_params(null, '/', null, null, true); // httponly
+session_set_cookie_params(null, '/', null, null, true); 
+mb_internal_encoding('UTF-8');
 session_start();
 $_REQUEST['includeBody'] = $_REQUEST['includeHead'] = ''; 
 define('PATH_ROOT',       dirname(dirname(__FILE__)).'/');
