@@ -92,7 +92,7 @@ class AdminMComments extends AdminPanel
   
   public function actionDelete($param)
   {
-    if(parent::actionDoDelete($param) == 0) {
+    if(parent::actionDelete($param) == 0) {
       $this->_table->Remove($param->key);
     }
   }
