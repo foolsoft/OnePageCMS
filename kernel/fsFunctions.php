@@ -856,7 +856,7 @@ class fsFunctions
         $string = str_replace(array("°", '!', '?', ':', '&', ';', '’', '/', '\\', ',', '.', '"', "'", '`', '~', '>', '<', ']', '[', ')', '(', '*', '+', '$', '#', '%', '@', '№', '^'), '', $string);
         $string = self::Chpu($string, $space);
         $string = str_replace(array($space.$space, ','.$space, '_'.$space), $space, $string);
-        return $string;
+        return trim($string);
     }
   
     /**

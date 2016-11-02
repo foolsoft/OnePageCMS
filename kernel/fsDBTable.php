@@ -276,11 +276,9 @@ class fsDBTable
   */
   protected function _ClearAfterQuery()
   {
-    $this->_query->where = false;
-    $this->_query->group = false;
-    $this->_query->order = false;
-    $this->_query->order_desc = false;
-    $this->_query->limit = false;
+    $this->_query->where = $this->_query->distinct = 
+    $this->_query->group = $this->_query->order = 
+    $this->_query->order_desc = $this->_query->limit =
     $this->_query->selectLinks = false;
     $this->_query->action = '';
   }
@@ -349,7 +347,8 @@ class fsDBTable
             $f .= ', j'.$i.'.`'.$this->_join[$i]['View'].'` AS `link_'.$this->_join[$i]['MyField'].'` ';
           }
         }
-        $this->_query->sql = 'SELECT '.($this->_query->limit != false ? 'SQL_CALC_FOUND_ROWS ' : '').
+        $this->_query->sql = 'SELECT '.($this->_query->distinct ? 'DISTINCT ' : '').
+            ($this->_query->limit != false ? 'SQL_CALC_FOUND_ROWS ' : '').
             $f.' FROM `'.$this->_struct->name.'` '.$links;
         break;
       default:
@@ -397,13 +396,16 @@ class fsDBTable
   * @since 1.0.0
   * @param string|array $fileds (optional) Columns for select. As string value understands only '*' value. Default <b>*</b>.
   * @param boolean $useLinks (optional) <b>True</b> will will join tables by existing foreign keys. Default <b>false</b>.  
+  * @since 1.1.0
+  * @param boolean $distinct (optional) Use distinct filter for select query. Default <b>false</b>.
   * @return fDBTable Current object.      
   */
-  public function Select($fileds = '*', $useLinks = false)
+  public function Select($fileds = '*', $useLinks = false, $distinct = false)
   {
     if (!is_array($fileds) && $fileds !== '*') { 
       throw new Exception('Bad parameter: select');
     }
+    $this->_query->distinct = $distinct === true;
     $this->_query->select = $fileds;
     $this->_query->selectLinks = $useLinks;
     $this->_query->action = 'select';
@@ -913,7 +915,8 @@ class fsDBTable
     $queryConfig['where'] = array('Value' => false);
     $queryConfig['order_desc'] = array('Value' => false);
     $queryConfig['limit'] = array('Value' => '');
-
+    $queryConfig['distinct'] = array('Value' => false);
+    
     $structConfig['current'] = array('Value' => false, 'ReadOnly' => false);
     $structConfig['name'] = array('Value' => $className, 'ReadOnly' => true);
     $structConfig['db'] = array('Value' => new fsDBconnection(), 'ReadOnly' => true);
@@ -939,10 +942,10 @@ class fsDBTable
             $key_f = $conf[2];
           }
           $this->_join[] = array('Table' => $conf[0],
-                                'On' => $key_f,
-                                'View' => $conf[1],
-                                'MyField' => $row['Field']
-                              );
+            'On' => $key_f,
+            'View' => $conf[1],
+            'MyField' => $row['Field']
+          );
           
         }
       }

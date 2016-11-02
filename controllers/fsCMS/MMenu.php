@@ -63,10 +63,10 @@ class MMenu extends cmsController
         if(!is_numeric($this->Tag('parent'))) {
             return '';
         }
-        $template = $this->_table->GetMenuTemplate($param->name);
+        $template = $param->Exists('template') ? $param->template : $this->_table->GetMenuTemplate($param->name);
         if ($template == '') {
             $template = $this->settings->default_template;
-        }
+        } 
         $arr = fsMenuGenerator::GetArray('menu_items',
             'parent',
             'id',
