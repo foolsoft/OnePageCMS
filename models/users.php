@@ -9,8 +9,8 @@ class users extends fsDBTableExtension
     public function ChangePassword($login, $newPassword)
     {
         $newPassword = users::HashPassword($newPassword);
-        if($newPassword !== '') {
-            return $this->Update(array('password'), array($newPassword))
+        if($newPassword !== '') { 
+            return $this->Update(array('password', 'active', 'auth_count'), array($newPassword, 1, 0))
                 ->Where('`login` = "'.$login.'"')->Execute();
         }
         return false;

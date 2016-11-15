@@ -42,7 +42,7 @@ class MAuth extends cmsController
         return $this->Redirect($this->_My($this->_methodAuthAdmin));
       }
       $login = fsValidator::ClearData($param->login);
-      $userData = $this->_table->IsAdmin($login, fsValidator::ClearData($param->password), $this->_authCount);
+      $userData = $this->_table->IsAdmin($login, $param->password, $this->_authCount);
       if($userData !== false) {
         fsSession::Delete('AUTH_COUNT');
         fsSession::SetOrCreate('AUTH', $userData);
