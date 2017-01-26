@@ -406,7 +406,7 @@ class fsController
       $request->Delete('tag'); 
     }
     $message = fsSession::GetInstance('Message');
-    if ($message !== null && !empty($message)) {
+    if (!empty($message)) {
       $this->Tag('message', "<div class='fs-controller-message' id='fs-controller-message'>".$message."</div>");
     }
   }

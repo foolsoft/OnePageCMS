@@ -1092,13 +1092,15 @@ class fsFunctions
     * @since 1.0.0
     * @api 
     * @param string $fileSrc Source file path. 
-    * @param string $size Width of new file.    
+    * @param int $size Size of longest side of new file.    
     * @param string $fileDesc New file path. 
+    * @since 1.1.0
+    * @param int $fileQuality (optional) New file quality. Default <b>90</b>.
     * @return boolean Result of action.
     */ 
-    public static function ResizeImage($fileSrc, $size, $fileDesc)
+    public static function ResizeImage($fileSrc, $size, $fileDesc, $fileQuality = 90)
     {
-      $gis = GetImageSize($fileSrc);
+      $gis = getimagesize($fileSrc);
       $type = $gis[2];
       switch($type) {
         case '1':
@@ -1116,22 +1118,18 @@ class fsFunctions
         default:
           $imorig = imagecreatefromjpeg($fileSrc);
       }
-      $x = imageSX($imorig);
-      $y = imageSY($imorig);
-      if($gis[0] <= $size) {
+      $x = $gis[0]; $y = $gis[1];
+      if(($x >= $y && $x <= $size) || ($x < $y && $y <= $size)) {
         $av = $x;
         $ah = $y;
       } else {
-        $yc = $y * 1.3333333;
-        $d = $x > $yc ? $x : $yc;
-        $c = $d > $size ? $size / $d : $size;
-        $av = $x * $c;       
+        $c = $size / ($x > $y ? $x : $y);
+        $av = $x * $c;
         $ah = $y * $c;       
       }   
-      $im = imagecreate($av, $ah);
       $im = imagecreatetruecolor($av, $ah);
       if (imagecopyresampled($im, $imorig, 0, 0, 0, 0, $av, $ah, $x, $y)) { 
-        if (imagejpeg($im, $fileDesc)) {
+        if (imagejpeg($im, $fileDesc, $fileQuality)) {
           return true;
         }
       }
@@ -1167,9 +1165,11 @@ class fsFunctions
     public static function GetExifGpsInfo($file)
     {
       $exif = exif_read_data($file);
-      $result = array('DateTime' => $exif['DateTimeOriginal'],
-                      'Lat'      => self::_GetGps($exif["GPSLatitude"], $exif['GPSLatitudeRef']),
-                      'Lng'      => self::_GetGps($exif["GPSLongitude"], $exif['GPSLongitudeRef']));
+      $result = array(
+            'DateTime' => $exif['DateTimeOriginal'],
+            'Lat'      => self::_GetGps($exif["GPSLatitude"], $exif['GPSLatitudeRef']),
+            'Lng'      => self::_GetGps($exif["GPSLongitude"], $exif['GPSLongitudeRef'])
+      );
       return $result;
     } 
 }
