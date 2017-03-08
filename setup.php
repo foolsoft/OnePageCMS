@@ -99,7 +99,7 @@ if ($_POST) {
     $f->WriteLine("'url_404' => array('ReadOnly' => true, 'Value' => '{0}'),",
                   array($page404.$url_suffix));
     $f->WriteLine("'multi_language' => array('ReadOnly' => true, 'Value' => {0}),",
-                  array(i('multilang', 'true', false))); 
+                  array(i('multilang', 'true', 'false'))); 
     $f->WriteLine("'start_page' => array('ReadOnly' => true, 'Value' => '{0}'),",
                   array('page/index')); 
     $f->WriteLine(");");

@@ -793,12 +793,14 @@ class AdminPanel extends cmsController
             fsFileWorker::UpdateFile($settingsFile, $s);
             fsHtaccess::Create($param->links_suffix, $param->multi_language == 'true');
   
-            $this->Redirect('http://'.$_SERVER['SERVER_NAME'].'/'.
+            $this->Redirect(PROTOCOL.'://'.$_SERVER['SERVER_NAME'].'/'.
               ($param->multi_language == 'true' ? fsSession::GetInstance('Language').'/' : '').
               'AdminPanel/Config'.$param->links_suffix
             );
-  
-            fsFunctions::DeleteFile(PATH_JS.'initFsCMS.js');
+            $scripts = fsFunctions::DirectoryInfo(PATH_JS, true, false, array('initFsCMS'), array('js'), true);
+            foreach($scripts['NAMES'] as $name) {
+                fsFunctions::DeleteFile(PATH_JS.$name);
+            }
           }
         }
         if ($this->Message() == '') {
